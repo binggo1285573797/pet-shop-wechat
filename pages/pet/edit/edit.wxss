@@ -1,0 +1,3 @@
+/* pages/pet/edit/edit.wxss */
+.info-field { margin-bottom: 8rpx; }
+.form-input { flex: 1; font-size: 30rpx; color: var(--text-primary); height: 96rpx; }

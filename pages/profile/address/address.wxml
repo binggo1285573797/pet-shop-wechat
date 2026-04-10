@@ -1,0 +1,78 @@
+<view class="address-page">
+  <scroll-view scroll-y class="address-scroll" style="padding-top: calc(40rpx + env(safe-area-inset-top));">
+    <view class="address-container">
+      <!-- Address List -->
+      <view class="address-list" wx:if="{{addresses.length > 0}}">
+        <view
+          class="address-card"
+          wx:for="{{addresses}}"
+          wx:key="id"
+          bindtap="{{isSelect ? 'selectAddress' : ''}}"
+          data-address="{{item}}"
+        >
+          <view class="address-main">
+            <view class="address-icon-box">
+              <text class="material-symbols-outlined address-icon">location_on</text>
+            </view>
+            <view class="address-info">
+              <view class="address-user-row">
+                <text class="address-name">{{item.receiverName}}</text>
+                <text class="address-phone">{{item.receiverPhone}}</text>
+                <view class="default-badge" wx:if="{{item.isDefault === 1}}">
+                  <text>默认</text>
+                </view>
+              </view>
+              <text class="address-detail">{{item.detailAddress}}</text>
+            </view>
+          </view>
+          <view class="address-actions" catchtap="stopPropagation">
+            <view
+              class="action-btn set-default-btn"
+              wx:if="{{item.isDefault !== 1}}"
+              bindtap="setDefault"
+              data-id="{{item.id}}"
+            >
+              <text class="material-symbols-outlined action-icon">star</text>
+              <text class="action-text">设为默认</text>
+            </view>
+            <view class="action-btn edit-btn" bindtap="editAddress" data-item="{{item}}">
+              <text class="material-symbols-outlined action-icon">edit</text>
+              <text class="action-text">编辑</text>
+            </view>
+            <view class="action-btn delete-btn" bindtap="deleteAddress" data-id="{{item.id}}">
+              <text class="material-symbols-outlined action-icon">delete</text>
+              <text class="action-text">删除</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- Empty State -->
+      <view class="empty-state" wx:if="{{addresses.length === 0 && !loading}}">
+        <view class="empty-icon-box">
+          <text class="material-symbols-outlined empty-icon">location_on</text>
+        </view>
+        <text class="empty-title">还没有收货地址</text>
+        <text class="empty-desc">快来添加收货地址吧~</text>
+        <view class="empty-btn" bindtap="addAddress">
+          <text class="material-symbols-outlined btn-icon">add</text>
+          <text>新增地址</text>
+        </view>
+      </view>
+
+      <!-- Loading -->
+      <view class="loading-state" wx:if="{{loading}}">
+        <text class="loading-text">加载中...</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- Add Button (Fixed) -->
+  <view class="fab-add" bindtap="addAddress">
+    <text class="material-symbols-outlined fab-icon">add</text>
+  </view>
+
+  <!-- Decorative Blurs -->
+  <view class="blur-top-right"></view>
+  <view class="blur-bottom-left"></view>
+</view>

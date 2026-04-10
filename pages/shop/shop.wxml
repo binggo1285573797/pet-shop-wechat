@@ -1,0 +1,94 @@
+<view class="shop-page">
+  <!-- Top Glassmorphism Sticky Header -->
+  <view class="shop-header" style="top: 0;">
+    <!-- Search Bar with Inner Shadow -->
+    <view class="search-box">
+      <view class="search-inner">
+        <text class="material-symbols-outlined search-icon">search</text>
+        <input
+          class="search-input"
+          placeholder="寻找心仪的萌宠或用品..."
+          placeholder-class="search-ph"
+          value="{{keyword}}"
+          bindinput="onKeywordInput"
+          confirm-type="search"
+          bindconfirm="onSearch"
+        />
+      </view>
+    </view>
+
+    <!-- Horizontal Category Navigation -->
+    <view class="cat-nav-wrap">
+      <scroll-view class="cat-scroll" scroll-x enable-flex enhanced show-scrollbar="{{false}}">
+        <view class="cat-list">
+          <view
+            class="cat-item {{activeCategoryId === 0 ? 'active' : ''}}"
+            bindtap="onCategoryTap"
+            data-id="{{0}}"
+          >
+            <text class="material-symbols-outlined cat-icon" style="font-variation-settings: 'FILL' {{activeCategoryId === 0 ? 1 : 0}};">apps</text>
+            <text class="cat-name">全部</text>
+          </view>
+          <view
+            class="cat-item {{activeCategoryId === item.id ? 'active' : ''}}"
+            wx:for="{{categories}}"
+            wx:key="id"
+            bindtap="onCategoryTap"
+            data-id="{{item.id}}"
+          >
+            <text class="material-symbols-outlined cat-icon" style="font-variation-settings: 'FILL' {{activeCategoryId === item.id ? 1 : 0}};">{{item.icon || 'category'}}</text>
+            <text class="cat-name">{{item.name}}</text>
+          </view>
+          <!-- 如果没有分类数据，显示提示 -->
+          <view class="cat-empty" wx:if="{{categories.length === 0}}">
+            <text class="cat-empty-text">暂无分类</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- Product Grid -->
+  <view class="product-area">
+    <view class="shop-grid">
+      <view
+        class="product-card"
+        wx:for="{{products}}"
+        wx:key="id"
+        bindtap="goToDetail"
+        data-id="{{item.id}}"
+      >
+        <view class="card-img-wrap">
+          <image wx:if="{{item.firstPic}}" src="{{item.firstPic}}" mode="aspectFill" class="card-img" lazy-load />
+          <view wx:else class="card-placeholder">
+            <text class="material-symbols-outlined">pets</text>
+          </view>
+          <view wx:if="{{item.sales > 0}}" class="card-badge">月售 {{item.sales}}+</view>
+        </view>
+        <view class="card-body">
+          <text class="product-title">{{item.name}}</text>
+          <view class="merchant-tag" wx:if="{{item.merchantName}}">
+            <text class="material-symbols-outlined">verified</text>
+            <text>{{item.merchantName}}</text>
+          </view>
+          <view class="price-row">
+            <text class="price-val">¥{{item.price}}</text>
+            <view class="buy-circle" catchtap="addToCart" data-id="{{item.id}}">
+              <text class="material-symbols-outlined">add_shopping_cart</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- States -->
+    <view class="status-msg" wx:if="{{loading}}">加载中...</view>
+    <view class="status-msg" wx:if="{{noMore && products.length > 0}}">到底啦 ~</view>
+    <view class="empty-view" wx:if="{{products.length === 0 && !loading}}">
+      <text class="material-symbols-outlined">search_off</text>
+      <text>没有找到相关商品</text>
+    </view>
+    
+    <view class="list-end-spacer"></view>
+  </view>
+</view>

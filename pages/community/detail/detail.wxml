@@ -1,0 +1,148 @@
+<view class="detail-page">
+  <!-- TopAppBar -->
+  <view class="app-header">
+    <view class="header-row">
+      <view class="back-btn" bindtap="goBack">
+        <text class="material-symbols-outlined back-icon">arrow_back</text>
+      </view>
+      <text class="header-title">帖子详情</text>
+      <view class="header-spacer"></view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="detail-scroll" enhanced>
+    <view class="detail-container" wx:if="{{post}}">
+      <!-- Author Info -->
+      <view class="author-card">
+        <view class="author-main">
+          <view class="author-avatar-box">
+            <image wx:if="{{post.authorAvatar}}" src="{{post.authorAvatar}}" mode="aspectFill" class="author-avatar-img" />
+            <view wx:else class="author-avatar-placeholder">
+              <text class="material-symbols-outlined placeholder-icon">pets</text>
+            </view>
+          </view>
+          <view class="author-info">
+            <view class="author-name-row">
+              <text class="author-name">{{post.authorName || '匿名用户'}}</text>
+              <view class="follow-btn" wx:if="{{!post.isFollowed}}">
+                <text>+ 关注</text>
+              </view>
+            </view>
+            <text class="post-time">{{post.createTimeText}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Post Content -->
+      <view class="content-card">
+        <text class="post-text">{{post.content}}</text>
+
+        <!-- Image Grid -->
+        <view class="post-images" wx:if="{{picList.length > 0}}">
+          <view
+            class="post-img-item {{picList.length === 1 ? 'single' : ''}}"
+            wx:for="{{picList}}"
+            wx:key="index"
+            bindtap="previewImage"
+            data-src="{{item}}"
+          >
+            <image src="{{item}}" mode="aspectFill" class="post-img" />
+          </view>
+        </view>
+
+        <!-- Tags -->
+        <view class="post-tags" wx:if="{{post.tags}}">
+          <text class="post-tag" wx:for="{{post.tags}}" wx:key="index">#{{item}}</text>
+        </view>
+
+        <!-- Stats -->
+        <view class="post-stats">
+          <view class="stat-item">
+            <text class="material-symbols-outlined stat-icon">visibility</text>
+            <text class="stat-value">{{post.viewCount || 0}}</text>
+          </view>
+          <view class="stat-item">
+            <text class="material-symbols-outlined stat-icon {{post.isLiked ? 'icon-fill' : ''}}">favorite</text>
+            <text class="stat-value">{{post.likeCount || 0}}</text>
+          </view>
+          <view class="stat-item">
+            <text class="material-symbols-outlined stat-icon">chat_bubble</text>
+            <text class="stat-value">{{comments.length || 0}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Comments Section -->
+      <view class="comments-section">
+        <view class="comments-header">
+          <text class="comments-title">全部评论 ({{comments.length}})</text>
+        </view>
+
+        <view class="comment-list">
+          <view class="comment-item" wx:for="{{comments}}" wx:key="id">
+            <view class="comment-avatar-box">
+              <image wx:if="{{item.userAvatar}}" src="{{item.userAvatar}}" mode="aspectFill" class="comment-avatar-img" />
+              <view wx:else class="comment-avatar-placeholder">
+                <text class="material-symbols-outlined placeholder-icon">pets</text>
+              </view>
+            </view>
+            <view class="comment-body">
+              <view class="comment-header-row">
+                <text class="comment-author">{{item.userName || '匿名'}}</text>
+                <text class="comment-time">{{item.createTimeText}}</text>
+              </view>
+              <text class="comment-text">{{item.content}}</text>
+              <view class="comment-actions">
+                <view class="comment-action" bindtap="likeComment" data-id="{{item.id}}">
+                  <text class="material-symbols-outlined action-icon {{item.isLiked ? 'icon-fill' : ''}}">favorite</text>
+                  <text class="action-count">{{item.likeCount || 0}}</text>
+                </view>
+                <view class="comment-action" bindtap="replyComment" data-id="{{item.id}}">
+                  <text class="material-symbols-outlined action-icon">reply</text>
+                  <text class="action-count">回复</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- Empty Comments -->
+        <view class="empty-comments" wx:if="{{comments.length === 0}}">
+          <text class="material-symbols-outlined empty-icon">chat_bubble</text>
+          <text class="empty-text">暂无评论，快来抢沙发~</text>
+        </view>
+      </view>
+
+      <view class="bottom-spacer"></view>
+    </view>
+  </scroll-view>
+
+  <!-- Comment Input Bar -->
+  <view class="comment-bar">
+    <view class="comment-input-wrap">
+      <input
+        class="comment-input"
+        placeholder="写下你的评论..."
+        value="{{commentText}}"
+        bindinput="onCommentInput"
+        confirm-type="send"
+        bindconfirm="submitComment"
+      />
+    </view>
+    <view class="comment-actions-row">
+      <view class="action-btn {{post.isLiked ? 'liked' : ''}}" bindtap="likePost">
+        <text class="material-symbols-outlined action-icon {{post.isLiked ? 'icon-fill' : ''}}">favorite</text>
+      </view>
+      <view class="action-btn" bindtap="sharePost">
+        <text class="material-symbols-outlined action-icon">share</text>
+      </view>
+    </view>
+    <view class="send-btn" bindtap="submitComment">
+      <text>发送</text>
+    </view>
+  </view>
+
+  <!-- Decorative Blurs -->
+  <view class="blur-top-left"></view>
+  <view class="blur-bottom-right"></view>
+</view>

@@ -1,0 +1,236 @@
+/* pages/auth/register/register.wxss */
+
+.register-page {
+  min-height: 100vh;
+  background-color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header */
+.register-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 50;
+  height: 128rpx; /* h-16 = 64px = 128rpx */
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48rpx;
+  box-sizing: border-box;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+.nav-logo-icon { 
+  font-size: 48rpx; 
+  color: var(--primary); 
+}
+.nav-logo-text {
+  font-size: 40rpx;
+  font-weight: 800; /* font-black */
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: var(--primary);
+  letter-spacing: 2rpx;
+}
+
+.close-btn {
+  width: 80rpx; /* w-10 = 40px = 80rpx */
+  height: 80rpx;
+  border-radius: 50%;
+  background: var(--surface-container-high);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.close-btn:active {
+  opacity: 0.8;
+}
+
+.text-outline {
+  color: rgba(86, 66, 60, 0.8); /* on-surface-variant */
+  font-size: 40rpx;
+}
+
+/* Main */
+.register-main {
+  width: 100%;
+  max-width: 800rpx;
+  padding: 192rpx 48rpx 96rpx; /* pt-24 (96px/192rpx) pb-12 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Hero Banner */
+.hero-banner {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 96rpx; /* rounded-xl=3rem=96rpx */
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 64rpx; /* mb-8 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-banner-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.9;
+}
+
+.hero-banner-overlay {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.hero-title {
+  font-size: 56rpx; /* text-3xl */
+  font-weight: 800; /* font-extrabold */
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: #fff;
+  text-shadow: 0 4rpx 8rpx rgba(0,0,0,0.3);
+  letter-spacing: -1rpx;
+}
+
+.hero-subtitle {
+  font-size: 28rpx; /* text-sm */
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.3);
+}
+
+/* Card */
+.register-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 96rpx;
+  padding: 64rpx; /* p-8 */
+  box-shadow: 0 24rpx 64rpx rgba(159, 65, 34, 0.04);
+  margin-bottom: 48rpx;
+  box-sizing: border-box;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.mt-5 {
+  margin-top: 40rpx; /* space-y-5 */
+}
+
+.form-label {
+  font-size: 24rpx; /* text-xs */
+  font-weight: 600;
+  color: rgba(122, 73, 58, 0.8); /* on-secondary-container */
+  margin-bottom: 16rpx; /* mb-2 */
+  margin-left: 8rpx;
+}
+
+.input-group-auth {
+  display: flex;
+  align-items: center;
+  background: var(--surface-low);
+  border-radius: 64rpx; /* rounded-lg=2rem=64rpx */
+  height: 112rpx;
+  padding: 0 32rpx;
+  box-sizing: border-box;
+  transition: all 0.2s;
+}
+
+.input-group-auth:focus-within {
+  background: rgba(255, 138, 101, 0.05);
+  border: 2rpx solid rgba(255, 138, 101, 0.3);
+}
+
+.input-icon {
+  font-size: 44rpx;
+  color: rgba(137, 114, 107, 0.6);
+  margin-right: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-input {
+  flex: 1;
+  height: 100%;
+  font-size: 30rpx;
+  color: var(--text-primary);
+  background: transparent;
+}
+
+.auth-placeholder {
+  color: #a8a29e; /* text-stone-400 */
+}
+
+/* Button */
+.register-btn {
+  width: 100%;
+  height: 112rpx; /* h-14 */
+  margin-top: 64rpx; /* mt-8 */
+  background: var(--primary); /* bg-[#FF8A65] */
+  color: #fff;
+  border-radius: var(--radius-full);
+  font-size: 32rpx;
+  font-weight: 700; /* font-bold */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16rpx 40rpx rgba(255, 138, 101, 0.2);
+  letter-spacing: 4rpx;
+  transition: transform 0.2s;
+}
+
+.register-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 8rpx 20rpx rgba(255, 138, 101, 0.15);
+}
+
+/* Auth Link */
+.login-link-wrap {
+  margin-top: 48rpx; /* mt-6 */
+  text-align: right;
+  font-size: 28rpx; /* text-sm */
+  font-weight: 500;
+}
+
+/* Footer */
+.register-footer {
+  width: 100%;
+  text-align: center;
+  padding: 0 32rpx; /* px-4 */
+  font-size: 22rpx; /* text-[11px] */
+  line-height: 1.6;
+}
+
+.footer-text {
+  color: rgba(137, 114, 107, 0.8); /* text-outline */
+}
+
+.footer-link {
+  color: rgba(122, 73, 58, 0.9); /* text-on-secondary-container */
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4rpx;
+}

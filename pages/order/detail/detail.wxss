@@ -1,0 +1,9 @@
+/* pages/order/detail/detail.wxss */
+.confirm-section-title { font-size: 30rpx; font-weight: 700; color: var(--text-secondary); margin-bottom: 20rpx; }
+.address-name { font-size: 32rpx; font-weight: 600; color: var(--text-primary); }
+.address-detail { font-size: 28rpx; line-height: 1.5; margin-top: 8rpx; }
+.confirm-product-item { display: flex; gap: 24rpx; align-items: center; margin-top: 20rpx; padding-top: 20rpx; border-top: 1rpx solid var(--border); }
+.cart-img-box { width: 120rpx; height: 120rpx; border-radius: var(--radius-md); overflow: hidden; flex-shrink: 0; background: var(--surface-container); display: flex; align-items: center; justify-content: center; }
+.confirm-item-info { flex: 1; }
+.cart-item-name { font-size: 28rpx; font-weight: 600; color: var(--text-primary); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.cart-item-price { font-size: 32rpx; font-weight: 700; color: var(--primary); margin-top: 12rpx; }

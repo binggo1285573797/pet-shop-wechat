@@ -1,0 +1,67 @@
+<view class="favorites-page">
+  <!-- TopAppBar -->
+  <view class="app-header">
+    <view class="header-row">
+      <view class="back-btn" bindtap="goBack">
+        <text class="material-symbols-outlined back-icon">arrow_back</text>
+      </view>
+      <text class="header-title">我的收藏</text>
+      <view class="header-spacer"></view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="favorites-scroll">
+    <view class="favorites-container">
+      <!-- Favorites Grid -->
+      <view class="favorites-grid" wx:if="{{favorites.length > 0}}">
+        <view
+          class="favorite-card"
+          wx:for="{{favorites}}"
+          wx:key="id"
+          bindtap="goToDetail"
+          data-id="{{item.targetId}}"
+        >
+          <view class="product-img-box">
+            <image wx:if="{{item.productPic}}" src="{{item.productPic}}" mode="aspectFill" class="product-img" />
+            <view wx:else class="product-placeholder">
+              <text class="material-symbols-outlined">pets</text>
+            </view>
+          </view>
+          <view class="product-info">
+            <text class="product-name">{{item.productName || '收藏商品'}}</text>
+            <view class="product-bottom">
+              <view class="price-row">
+                <text class="price-symbol">¥</text>
+                <text class="price-value">{{item.productPrice || '--'}}</text>
+              </view>
+              <view class="unfavorite-btn" catchtap="unfavorite" data-id="{{item.id}}">
+                <text class="material-symbols-outlined unfavorite-icon">favorite</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- Empty State -->
+      <view class="empty-state" wx:if="{{favorites.length === 0 && !loading}}">
+        <view class="empty-icon-box">
+          <text class="material-symbols-outlined empty-icon">favorite</text>
+        </view>
+        <text class="empty-title">还没有收藏内容</text>
+        <text class="empty-desc">快去收藏你喜欢的商品吧~</text>
+        <view class="empty-btn" bindtap="goShopping">
+          <text>去逛逛</text>
+        </view>
+      </view>
+
+      <!-- Loading -->
+      <view class="loading-state" wx:if="{{loading}}">
+        <text class="loading-text">加载中...</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- Decorative Blurs -->
+  <view class="blur-top-right"></view>
+  <view class="blur-bottom-left"></view>
+</view>

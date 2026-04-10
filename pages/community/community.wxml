@@ -1,0 +1,127 @@
+<view class="community-page">
+  <!-- TopAppBar -->
+  <view class="app-header">
+    <view class="header-row">
+      <view class="logo-box">
+        <text class="material-symbols-outlined logo-icon icon-fill">pets</text>
+      </view>
+      <text class="header-title">萌宠圈</text>
+      <view class="header-spacer"></view>
+    </view>
+  </view>
+
+  <!-- Category Tabs -->
+  <view class="category-tabs">
+    <scroll-view scroll-x class="tabs-scroll" enhanced show-scrollbar="{{false}}">
+      <view class="tabs-container">
+        <view
+          class="tab-item {{activeCategory === item.value ? 'active' : ''}}"
+          wx:for="{{categories}}"
+          wx:key="value"
+          bindtap="onCategoryTap"
+          data-value="{{item.value}}"
+        >
+          <text class="tab-icon {{item.icon}}">{{item.emoji}}</text>
+          <text class="tab-label">{{item.label}}</text>
+          <view class="tab-indicator" wx:if="{{activeCategory === item.value}}"></view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- Posts Grid -->
+  <scroll-view
+    scroll-y
+    class="posts-scroll"
+    bindscrolltolower="loadMore"
+    enable-flex
+  >
+    <view class="posts-container">
+      <!-- Waterfall Grid -->
+      <view class="waterfall-grid" wx:if="{{posts.length > 0}}">
+        <view
+          class="post-card"
+          wx:for="{{posts}}"
+          wx:key="id"
+          bindtap="goToDetail"
+          data-id="{{item.id}}"
+        >
+          <!-- Image -->
+          <view class="post-img-box">
+            <image
+              wx:if="{{item.firstPic}}"
+              src="{{item.firstPic}}"
+              mode="aspectFill"
+              class="post-img"
+              lazy-load
+            />
+            <view wx:else class="post-img-placeholder">
+              <text class="material-symbols-outlined placeholder-icon">pets</text>
+            </view>
+            <view class="post-img-overlay">
+              <view class="like-badge {{item.isLiked ? 'liked' : ''}}">
+                <text class="material-symbols-outlined like-icon">{{item.isLiked ? 'favorite' : 'favorite_border'}}</text>
+                <text class="like-count">{{item.likeCount || 0}}</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- Content -->
+          <view class="post-content">
+            <text class="post-title">{{item.content}}</text>
+
+            <!-- Author -->
+            <view class="post-author">
+              <view class="author-avatar">
+                <text class="author-avatar-text">{{item.avatarLetter}}</text>
+              </view>
+              <text class="author-name">{{item.nickname || '匿名'}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- Empty State -->
+      <view class="empty-state" wx:if="{{posts.length === 0 && !loading}}">
+        <view class="empty-icon-box">
+          <text class="material-symbols-outlined empty-icon">forum</text>
+        </view>
+        <text class="empty-title">还没有帖子</text>
+        <text class="empty-desc">快来分享你的毛孩子吧~</text>
+        <view class="empty-btn" bindtap="goToPost">
+          <text>发布第一篇</text>
+        </view>
+      </view>
+
+      <!-- Loading -->
+      <view class="loading-state" wx:if="{{loading}}">
+        <view class="loading-paw">
+          <text class="material-symbols-outlined paw-icon">pets</text>
+        </view>
+        <text class="loading-text">加载中...</text>
+      </view>
+
+      <!-- No More -->
+      <view class="no-more-state" wx:if="{{noMore && posts.length > 0}}">
+        <view class="paw-divider">
+          <text class="material-symbols-outlined divider-icon">pets</text>
+        </view>
+        <text class="no-more-text">— 已加载全部 —</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- FAB Post Button -->
+  <view class="fab-container" bindtap="goToPost">
+    <view class="fab-btn">
+      <text class="material-symbols-outlined fab-icon">edit</text>
+    </view>
+    <view class="fab-label">
+      <text>发布</text>
+    </view>
+  </view>
+
+  <!-- Decorative Blurs -->
+  <view class="blur-top-right"></view>
+  <view class="blur-bottom-left"></view>
+</view>

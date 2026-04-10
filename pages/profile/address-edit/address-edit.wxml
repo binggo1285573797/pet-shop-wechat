@@ -1,0 +1,24 @@
+<!--pages/profile/address-edit/address-edit.wxml-->
+<view class="page-no-tab" style="padding:24rpx;">
+  <view class="card">
+    <view class="info-field">
+      <text class="input-label">收货人姓名</text>
+      <view class="input-group"><input class="form-input" value="{{form.receiverName}}" bindinput="e=>setField('receiverName',e)" placeholder="请输入姓名" /></view>
+    </view>
+    <view class="info-field">
+      <text class="input-label">手机号</text>
+      <view class="input-group"><input class="form-input" type="number" value="{{form.receiverPhone}}" bindinput="e=>setField('receiverPhone',e)" placeholder="请输入手机号" /></view>
+    </view>
+    <view class="info-field">
+      <text class="input-label">详细地址</text>
+      <view class="input-group" style="height:auto;padding:24rpx 32rpx;">
+        <textarea class="form-input" style="height:120rpx;" value="{{form.detailAddress}}" bindinput="e=>setField('detailAddress',e)" placeholder="省/市/区/街道/门牌号" />
+      </view>
+    </view>
+    <view class="flex-between" style="margin-top:24rpx;">
+      <text class="input-label">设为默认地址</text>
+      <switch checked="{{form.isDefault===1}}" bindchange="onDefaultChange" color="#FF8A65" />
+    </view>
+  </view>
+  <button class="btn btn-primary" style="width:100%;margin-top:40rpx;" bindtap="saveAddress" loading="{{loading}}">保存地址</button>
+</view>

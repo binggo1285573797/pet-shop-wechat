@@ -1,0 +1,123 @@
+<view class="profile-page">
+  <!-- TopAppBar -->
+  <view class="app-header">
+    <view class="header-row">
+      <view class="header-spacer"></view>
+      <text class="header-title">爱宠家</text>
+      <view class="header-spacer"></view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="scroll-body" enable-back-to-top>
+    <!-- Hero Section -->
+    <view class="hero-section">
+      <view class="hero-bg">
+        <view class="hero-deco hero-deco-1"></view>
+        <view class="hero-deco hero-deco-2"></view>
+      </view>
+      <view class="hero-user" bindtap="goToInfo">
+        <view class="avatar-wrap">
+          <view class="avatar-circle">
+            <image wx:if="{{userInfo.avatar}}" src="{{userInfo.avatar}}" mode="aspectFill" class="avatar-img" />
+            <view wx:else class="avatar-fallback">
+              <text class="material-symbols-outlined">person</text>
+            </view>
+          </view>
+          <view class="avatar-edit">
+            <text class="material-symbols-outlined">edit</text>
+          </view>
+        </view>
+        <text class="user-name">{{userInfo.username || '布丁的铲屎官'}}</text>
+      </view>
+    </view>
+
+    <!-- Main Content -->
+    <view class="main-content">
+      <!-- Orders Card -->
+      <view class="orders-card">
+        <view class="card-header">
+          <text class="card-title">我的订单</text>
+          <view class="card-more" bindtap="goToOrders">
+            <text class="card-more-text">查看全部</text>
+            <text class="material-symbols-outlined card-more-icon">chevron_right</text>
+          </view>
+        </view>
+        <view class="order-grid">
+          <view class="order-item" bindtap="goToOrdersByStatus" data-status="0">
+            <view class="order-icon">
+              <text class="material-symbols-outlined">inventory_2</text>
+            </view>
+            <view class="order-badge" wx:if="{{orderCounts.unpaid > 0}}">
+              <text>{{orderCounts.unpaid}}</text>
+            </view>
+            <text class="order-label">待付款</text>
+          </view>
+          <view class="order-item" bindtap="goToOrdersByStatus" data-status="1">
+            <view class="order-icon">
+              <text class="material-symbols-outlined">local_shipping</text>
+            </view>
+            <view class="order-badge" wx:if="{{orderCounts.toShip > 0}}">
+              <text>{{orderCounts.toShip}}</text>
+            </view>
+            <text class="order-label">待发货</text>
+          </view>
+          <view class="order-item" bindtap="goToOrdersByStatus" data-status="2">
+            <view class="order-icon">
+              <text class="material-symbols-outlined">package</text>
+            </view>
+            <view class="order-badge" wx:if="{{orderCounts.shipped > 0}}">
+              <text>{{orderCounts.shipped}}</text>
+            </view>
+            <text class="order-label">待收货</text>
+          </view>
+          <view class="order-item" bindtap="goToOrdersByStatus" data-status="4">
+            <view class="order-icon">
+              <text class="material-symbols-outlined">headset_mic</text>
+            </view>
+            <text class="order-label">售后/退款</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Menu Card -->
+      <view class="menu-card">
+        <view class="menu-item" bindtap="goToAddress">
+          <view class="menu-left">
+            <view class="menu-icon location">
+              <text class="material-symbols-outlined">location_on</text>
+            </view>
+            <text class="menu-label">收货地址管理</text>
+          </view>
+          <text class="material-symbols-outlined menu-arrow">chevron_right</text>
+        </view>
+        <view class="menu-divider"></view>
+        <view class="menu-item" bindtap="goToFavorites">
+          <view class="menu-left">
+            <view class="menu-icon favorite">
+              <text class="material-symbols-outlined">favorite</text>
+            </view>
+            <text class="menu-label">我的收藏</text>
+          </view>
+          <text class="material-symbols-outlined menu-arrow">chevron_right</text>
+        </view>
+        <view class="menu-divider"></view>
+        <view class="menu-item" bindtap="goToPosts">
+          <view class="menu-left">
+            <view class="menu-icon post">
+              <text class="material-symbols-outlined">article</text>
+            </view>
+            <text class="menu-label">帖子管理</text>
+          </view>
+          <text class="material-symbols-outlined menu-arrow">chevron_right</text>
+        </view>
+      </view>
+
+      <!-- Logout Button -->
+      <view class="logout-btn" bindtap="logout">
+        <text class="logout-text">切换账号</text>
+      </view>
+
+      <view class="bottom-spacer"></view>
+    </view>
+  </scroll-view>
+</view>

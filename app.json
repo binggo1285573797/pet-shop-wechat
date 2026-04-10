@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/shop/shop",
+    "pages/community/community",
+    "pages/cart/cart",
+    "pages/profile/profile",
+    "pages/auth/login/login",
+    "pages/auth/register/register",
+    "pages/shop/detail/detail",
+    "pages/community/detail/detail",
+    "pages/community/post/post",
+    "pages/order/confirm/confirm",
+    "pages/order/list/list",
+    "pages/order/detail/detail",
+    "pages/profile/info/info",
+    "pages/profile/address/address",
+    "pages/profile/address-edit/address-edit",
+    "pages/profile/favorites/favorites",
+    "pages/profile/posts/posts",
+    "pages/pet/pets/pets",
+    "pages/pet/edit/edit"
+  ],
+  "tabBar": {
+    "custom": true,
+    "color": "#999999",
+    "selectedColor": "#FF8A65",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页" },
+      { "pagePath": "pages/shop/shop", "text": "商城" },
+      { "pagePath": "pages/community/community", "text": "社区" },
+      { "pagePath": "pages/cart/cart", "text": "购物车" },
+      { "pagePath": "pages/profile/profile", "text": "我的" }
+    ]
+  },
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "爱宠家",
+    "navigationBarBackgroundColor": "#f9f9f9",
+    "backgroundTextStyle": "light",
+    "backgroundColor": "#f9f9f9"
+  },
+  "style": "v2",
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

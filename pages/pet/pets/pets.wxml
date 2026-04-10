@@ -1,0 +1,84 @@
+<view class="pets-page">
+  <!-- TopAppBar -->
+  <view class="app-header">
+    <view class="header-row">
+      <view class="back-btn" bindtap="goBack">
+        <text class="material-symbols-outlined back-icon">arrow_back</text>
+      </view>
+      <text class="header-title">我的爱宠</text>
+      <view class="add-btn" bindtap="addPet">
+        <text class="material-symbols-outlined add-icon">add</text>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="pets-scroll">
+    <view class="pets-container">
+      <!-- Pets List -->
+      <view class="pets-list" wx:if="{{pets.length > 0}}">
+        <view class="pet-card" wx:for="{{pets}}" wx:key="id">
+          <view class="pet-main">
+            <view class="pet-avatar">
+              <image wx:if="{{item.avatar}}" src="{{item.avatar}}" mode="aspectFill" class="pet-avatar-img" />
+              <view wx:else class="pet-avatar-placeholder">
+                <text class="material-symbols-outlined">{{item.species === '猫' ? 'pets' : 'pets'}}</text>
+              </view>
+            </view>
+            <view class="pet-info">
+              <view class="pet-name-row">
+                <text class="pet-name">{{item.name}}</text>
+                <view class="pet-gender {{item.gender === '母' ? 'female' : 'male'}}">
+                  <text class="material-symbols-outlined gender-icon">{{item.gender === '母' ? 'female' : 'male'}}</text>
+                </view>
+              </view>
+              <view class="pet-meta">
+                <text class="meta-tag">{{item.species}}</text>
+                <text class="meta-dot">·</text>
+                <text class="meta-text">{{item.breed || '未知品种'}}</text>
+                <text class="meta-dot">·</text>
+                <text class="meta-text">{{item.age || 0}}岁</text>
+              </view>
+            </view>
+          </view>
+          <view class="pet-actions">
+            <view class="action-btn edit-btn" bindtap="editPet" data-item="{{item}}">
+              <text class="material-symbols-outlined action-icon">edit</text>
+              <text class="action-text">编辑</text>
+            </view>
+            <view class="action-btn delete-btn" bindtap="deletePet" data-id="{{item.id}}">
+              <text class="material-symbols-outlined action-icon">delete</text>
+              <text class="action-text">删除</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- Empty State -->
+      <view class="empty-state" wx:if="{{pets.length === 0 && !loading}}">
+        <view class="empty-icon-box">
+          <text class="material-symbols-outlined empty-icon">pets</text>
+        </view>
+        <text class="empty-title">还没有爱宠档案</text>
+        <text class="empty-desc">快来添加你的毛孩子吧~</text>
+        <view class="empty-btn" bindtap="addPet">
+          <text class="material-symbols-outlined btn-icon">add</text>
+          <text>添加爱宠</text>
+        </view>
+      </view>
+
+      <!-- Loading -->
+      <view class="loading-state" wx:if="{{loading}}">
+        <text class="loading-text">加载中...</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- Add Button (Fixed) -->
+  <view class="fab-add" bindtap="addPet">
+    <text class="material-symbols-outlined fab-icon">add</text>
+  </view>
+
+  <!-- Decorative Blurs -->
+  <view class="blur-top-right"></view>
+  <view class="blur-bottom-left"></view>
+</view>

@@ -1,0 +1,144 @@
+<view class="confirm-page">
+  <!-- TopAppBar -->
+  <view class="app-header">
+    <view class="header-row">
+      <view class="back-btn" bindtap="goBack">
+        <text class="material-symbols-outlined back-icon">arrow_back</text>
+      </view>
+      <text class="header-title">确认订单</text>
+      <view class="header-spacer"></view>
+    </view>
+  </view>
+
+  <scroll-view class="scroll-body" scroll-y>
+    <view class="main-container">
+      <!-- Address Card -->
+      <view class="address-card" bindtap="selectAddress">
+        <view class="address-brand-bg">
+          <text class="material-symbols-outlined brand-paw">pets</text>
+        </view>
+        <view class="address-content" wx:if="{{address}}">
+          <view class="address-user-row">
+            <view class="address-icon-box">
+              <text class="material-symbols-outlined address-icon">location_on</text>
+            </view>
+            <view class="address-info">
+              <view class="address-name-row">
+                <text class="address-name">{{address.receiverName}}</text>
+                <text class="address-phone">{{address.receiverPhone}}</text>
+              </view>
+            </view>
+          </view>
+          <view class="address-detail-text">
+            <text>{{address.detailAddress}}</text>
+          </view>
+        </view>
+        <view class="address-empty" wx:else>
+          <view class="address-icon-box">
+            <text class="material-symbols-outlined address-icon">location_on</text>
+          </view>
+          <text class="address-empty-text">点击选择收货地址</text>
+        </view>
+        <view class="address-chevron">
+          <text class="material-symbols-outlined">chevron_right</text>
+        </view>
+        <view class="rainbow-line"></view>
+      </view>
+
+      <!-- Product List Card -->
+      <view class="product-card">
+        <view class="shop-header-row">
+          <view class="shop-icon-box">
+            <text class="material-symbols-outlined shop-icon">storefront</text>
+          </view>
+          <text class="shop-name">萌宠治愈生活馆</text>
+        </view>
+
+        <view class="product-list">
+          <view class="product-item" wx:for="{{orderItems}}" wx:key="productId">
+            <view class="product-img-box">
+              <image wx:if="{{item.productPic}}" src="{{item.productPic}}" mode="aspectFill" class="product-img" />
+              <view wx:else class="product-placeholder">
+                <text class="material-symbols-outlined">pets</text>
+              </view>
+            </view>
+            <view class="product-info">
+              <view class="product-name">{{item.productName}}</view>
+              <view class="product-spec">
+                <text>{{item.spec || '规格：默认'}}</text>
+              </view>
+              <view class="product-bottom">
+                <view class="product-price-row">
+                  <text class="price-symbol">¥</text>
+                  <text class="price-value">{{item.productPrice}}</text>
+                </view>
+                <text class="product-qty">x{{item.quantity}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- Order Note -->
+      <view class="note-card">
+        <view class="note-header-row">
+          <view class="note-icon-box">
+            <text class="material-symbols-outlined note-icon">edit_note</text>
+          </view>
+          <text class="note-title">订单备注</text>
+        </view>
+        <view class="note-input-wrap">
+          <textarea
+            class="note-textarea"
+            placeholder="给商家留言 (限50字)"
+            maxlength="50"
+            value="{{orderNote}}"
+            bindinput="onNoteInput"
+          ></textarea>
+          <view class="note-count">{{noteLength}}/50</view>
+        </view>
+      </view>
+
+      <!-- Final Calculation Card -->
+      <view class="calc-card">
+        <view class="calc-row">
+          <text class="calc-label">商品总额</text>
+          <text class="calc-value">¥{{totalAmount}}</text>
+        </view>
+        <view class="calc-row">
+          <text class="calc-label">运费</text>
+          <text class="calc-value-free">免运费</text>
+        </view>
+        <view class="calc-total-row">
+          <text class="calc-total-label">共 {{totalQty}} 件商品，合计：</text>
+          <view class="calc-total-price">
+            <text class="calc-total-symbol">¥</text>
+            <text class="calc-total-value">{{totalAmount}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Healing Space -->
+      <view class="healing-space">
+        <text class="material-symbols-outlined healing-icon">relax_auto</text>
+      </view>
+
+      <view class="bottom-spacer"></view>
+    </view>
+  </scroll-view>
+
+  <!-- Bottom Action Bar -->
+  <view class="action-bar">
+    <view class="action-price">
+      <text class="action-price-symbol">¥</text>
+      <text class="action-price-value">{{totalAmount}}</text>
+    </view>
+    <view class="action-btn" bindtap="submitOrder">
+      <text>立即支付</text>
+    </view>
+  </view>
+
+  <!-- Decorative Blurs -->
+  <view class="blur-top-left"></view>
+  <view class="blur-bottom-right"></view>
+</view>

@@ -1,0 +1,64 @@
+<view class="info-page">
+  <scroll-view scroll-y class="info-scroll" style="margin-top: 0;">
+    <view class="info-container">
+      <!-- Avatar Card -->
+      <view class="avatar-card">
+        <view class="avatar-section" bindtap="changeAvatar">
+          <view class="avatar-circle">
+            <image wx:if="{{userInfo.avatar}}" src="{{userInfo.avatar}}" mode="aspectFill" class="avatar-img" />
+            <view wx:else class="avatar-placeholder">
+              <text class="material-symbols-outlined">person</text>
+            </view>
+          </view>
+          <view class="avatar-change">
+            <text class="material-symbols-outlined change-icon">camera_alt</text>
+          </view>
+        </view>
+        <text class="avatar-hint">点击更换头像</text>
+      </view>
+
+      <!-- Profile Card -->
+      <view class="profile-card">
+        <view class="form-item">
+          <view class="form-label">
+            <text class="material-symbols-outlined label-icon">person</text>
+            <text>用户名</text>
+          </view>
+          <input
+            class="form-input"
+            value="{{form.username}}"
+            bindinput="onUsernameInput"
+            placeholder="请输入用户名"
+            placeholder-class="input-placeholder"
+          />
+        </view>
+        <view class="form-divider"></view>
+        <view class="form-item">
+          <view class="form-label">
+            <text class="material-symbols-outlined label-icon">phone</text>
+            <text>手机号</text>
+          </view>
+          <input
+            class="form-input"
+            type="number"
+            value="{{form.phone}}"
+            bindinput="onPhoneInput"
+            placeholder="请输入手机号"
+            placeholder-class="input-placeholder"
+          />
+        </view>
+      </view>
+
+      <!-- Save Button -->
+      <view class="save-btn {{canSave ? 'active' : ''}}" bindtap="saveInfo">
+        <text class="save-text">保存修改</text>
+      </view>
+
+      <view class="bottom-spacer"></view>
+    </view>
+  </scroll-view>
+
+  <!-- Decorative Blurs -->
+  <view class="blur-top-left"></view>
+  <view class="blur-bottom-right"></view>
+</view>

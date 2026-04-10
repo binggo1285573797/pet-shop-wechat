@@ -1,0 +1,82 @@
+<view class="index-page">
+  <scroll-view class="scroll-body" scroll-y enable-back-to-top style="margin-top: 0;">
+    <view class="main-container">
+      <!-- Hero Carousel Section -->
+      <view class="hero-section shadow-lg">
+        <swiper class="hero-swiper" autoplay circular bindchange="onBannerChange">
+          <swiper-item wx:for="{{banners}}" wx:key="index">
+            <view class="hero-slide">
+              <image wx:if="{{item.pic}}" src="{{item.pic}}" mode="aspectFill" class="hero-image" />
+              <view wx:else class="hero-placeholder {{item.theme}}"></view>
+              <view class="hero-content">
+                <text class="hero-title">{{item.title}}</text>
+                <text class="hero-subtitle">{{item.desc}}</text>
+              </view>
+            </view>
+          </swiper-item>
+        </swiper>
+        <!-- Paw Indicators -->
+        <view class="hero-indicators">
+          <text wx:for="{{banners}}" wx:key="index" class="material-symbols-outlined indicator {{currentBanner === index ? 'active' : ''}}">potted_plant</text>
+        </view>
+      </view>
+
+      <!-- Stats Bento Section -->
+      <view class="stats-bento">
+        <view class="stat-card" wx:for="{{stats}}" wx:key="index">
+          <view class="stat-inner">
+            <view class="stat-label-row">
+              <view class="stat-icon-bg">
+                <text class="material-symbols-outlined stat-icon">{{index === 0 ? 'pets' : 'auto_awesome'}}</text>
+              </view>
+              <text class="stat-label">{{item.label}}</text>
+            </view>
+            <text class="stat-value">{{item.value}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Waterfall Recommendations -->
+      <view class="section-area">
+        <view class="section-title-row">
+          <text class="h3">为你推荐</text>
+          <text class="view-more" bindtap="goToShop">查看更多</text>
+        </view>
+
+        <view class="waterfall-grid">
+          <view
+            class="waterfall-item"
+            wx:for="{{products}}"
+            wx:key="id"
+            bindtap="goToDetail"
+            data-id="{{item.id}}"
+          >
+            <view class="wf-img-box">
+              <image wx:if="{{item.firstPic}}" src="{{item.firstPic}}" mode="widthFix" class="wf-img" lazy-load />
+              <view wx:else class="wf-placeholder">
+                <text class="material-symbols-outlined">pets</text>
+              </view>
+            </view>
+            <view class="wf-info">
+              <text class="wf-name">{{item.name}}</text>
+              <view class="wf-bottom">
+                <text class="wf-price">¥{{item.price}}</text>
+                <view class="wf-cart-btn" catchtap="addToCartQuick" data-id="{{item.id}}">
+                  <text class="material-symbols-outlined">add_shopping_cart</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- Empty/Loading State -->
+        <view class="empty-state" wx:if="{{products.length === 0 && !loading}}">
+          <text class="material-symbols-outlined">pets</text>
+          <text>发现更多萌宠惊喜...</text>
+        </view>
+      </view>
+      
+      <view class="bottom-spacer"></view>
+    </view>
+  </scroll-view>
+</view>

@@ -1,0 +1,46 @@
+<!--pages/auth/login/login.wxml-->
+<view class="login-page">
+  <!-- Top Section: Illustration & Branding -->
+  <view class="login-header">
+    <view class="illustration-wrap">
+      <image
+        class="illustration-img"
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBs03wrM1C44eDlhXfDGJogbZ2NNEBZIxsZ1TUVIN8NsJyVfXt-8i8P8mZ_j2ajB1KpbFBQvtxgcVeJwDAn8j2WYZtPSMYEh_gineL80a2xucnes0XGxoAKWXdn_1wUQ5PX4dbp3SEPc8bQsTMxqa0PDCp_520uKmkGf_8MsISPdJzngBu6B1C4tPdigPYQJiy3IOlSNRPrtHX7l0wq60JcaYZoWlzin9viWeRkpSNPB7DOQ0NcIoq7XLlQqME_p9BdffhR4mDmYS4"
+        mode="aspectFit"
+      ></image>
+    </view>
+    <view class="brand-title-wrap">
+      <text class="brand-title cat-ear">爱宠家</text>
+    </view>
+    <text class="brand-subtitle">给毛孩子一个温暖的家</text>
+  </view>
+
+  <!-- Middle Section: Login Card -->
+  <view class="login-main">
+    <view class="login-card">
+      <view class="input-group-auth">
+        <text class="material-symbols-outlined input-icon">pets</text>
+        <input class="auth-input" placeholder="用户名" placeholder-class="auth-placeholder" bindinput="onUsernameInput" />
+      </view>
+
+      <view class="input-group-auth mt-6">
+        <text class="material-symbols-outlined input-icon">lock</text>
+        <input class="auth-input" password="true" placeholder="密码" placeholder-class="auth-placeholder" bindinput="onPasswordInput" />
+      </view>
+
+      <button class="login-btn" bindtap="onLogin">登 录</button>
+
+      <!-- Registration Link -->
+      <view class="register-link-wrap">
+        <text class="text-hint">没有账号？</text>
+        <text class="text-primary-color text-bold" bindtap="goToRegister">注册</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Footer Section -->
+  <view class="login-footer">
+    <text class="footer-text">登录即代表同意</text>
+    <text class="footer-link" bindtap="showAgreement">《爱宠家用户协议》</text>
+  </view>
+</view>

@@ -1,0 +1,266 @@
+/* app.wxss - 全局设计系统 - 结合全新 Stitch 设计规范重构 */
+/* 核心令牌参考 _20 等界面的 Tailwind 配置 */
+
+page {
+  /* 精确颜色 Token - 基于 "The Organic Sanctuary" */
+  --primary: #FF8A65;          /* 主橙色 */
+  --primary-light: #FFB59E;    /* 浅橙 */
+  --primary-container: #ffdbd0; /* 主色容器底色 */
+  --on-primary: #FFFFFF;       /* 按钮文字 */
+  
+  --bg: #f9f9f9;               /* 页面全局背景 */
+  --surface: #ffffff;          /* 卡片背景 */
+  --surface-low: #f3f3f3;      /* 浅灰容器层 */
+  --surface-container-high: #e8e8e8;
+  
+  --text-primary: #1a1c1c;     /* 极深灰 */
+  --text-secondary: #56423c;   /* 次级棕灰 */
+  --text-hint: #89726b;        /* 提示色 */
+  --border: #f5f5f4;           /* border-stone-50 极浅边框 */
+
+  /* Stitch Exact Tailwind Tokens */
+  --on-surface: #1a1c1c;
+  --on-surface-variant: #56423c;
+  --surface-container-low: #f3f3f3;
+  --surface-container-lowest: #ffffff;
+  --on-secondary-container: #7a493a;
+  --primary-fixed: #ffdbd0;
+  --tertiary: #006a60;
+  
+  --shadow-nav: 0 12rpx 32rpx rgba(159, 65, 34, 0.06);
+  --shadow-card: 0 8rpx 20rpx rgba(255, 138, 101, 0.08); /* 特有橘色阴影 */
+  --shadow-sm: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+
+  /* 圆角参数 - 匹配 1rem, 2rem, 3rem, 9999px */
+  --radius-sm: 16rpx;
+  --radius-md: 24rpx;
+  --radius-lg: 32rpx;  /* 1rem */
+  --radius-xl: 48rpx;  /* 1.5rem */
+  --radius-2xl: 64rpx; /* 2rem */
+  --radius-full: 9999rpx;
+
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: "Be Vietnam Pro", -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+  font-size: 28rpx;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+/* 引入 Material Symbols Outlined（小程序中使用 unicode 或自建类，这里预留样式） */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined', sans-serif;
+  font-style: normal;
+  display: inline-block;
+}
+
+/* ===== 页面容器 ===== */
+.page {
+  min-height: 100vh;
+  background-color: var(--bg);
+  padding-bottom: 220rpx; /* 给极高的新版 TabNav 留出空间 */
+}
+
+.page-no-tab {
+  min-height: 100vh;
+  background-color: var(--bg);
+  padding-bottom: 40rpx;
+}
+
+/* ===== 顶部导航标题栏 (极简毛玻璃) ===== */
+.nav-bar {
+  background: rgba(250, 250, 249, 0.7); /* stone-50/70 */
+  backdrop-filter: blur(20px);
+  padding: 96rpx 32rpx 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: var(--shadow-nav);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.nav-logo-icon { 
+  font-size: 40rpx; 
+  color: var(--primary); 
+}
+.nav-logo-text {
+  font-size: 38rpx;
+  font-weight: 800; /* font-black */
+  color: var(--primary);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  letter-spacing: 2rpx;
+}
+
+/* ===== 卡片 ===== */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-2xl); /* rounded-3xl in tailwind = 1.5rem~2rem */
+  padding: 40rpx;
+  box-shadow: var(--shadow-card);
+  border: 1rpx solid var(--border);
+  margin-bottom: 32rpx;
+}
+
+/* ===== 按钮 ===== */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  font-size: 30rpx;
+  font-weight: 700;
+  height: 96rpx;
+  border: none;
+  margin: 0;
+  padding: 0 48rpx;
+  letter-spacing: 2rpx;
+  transition: all 0.2s;
+}
+
+.btn:active { transform: scale(0.95); }
+.btn::after { border: none; }
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: 0 8rpx 24rpx rgba(255, 138, 101, 0.35);
+}
+
+.btn-primary-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 2rpx solid var(--primary);
+}
+
+.btn-secondary {
+  background: var(--surface-container-high);
+  color: var(--text-secondary);
+}
+
+.btn-danger {
+  background: #ba1a1a;
+  color: #fff;
+}
+
+.btn-sm {
+  height: 64rpx;
+  font-size: 26rpx;
+  border-radius: var(--radius-full);
+  padding: 0 28rpx;
+}
+
+/* ===== 圆形辅助图标按钮 (商品加购、加号) ===== */
+.icon-btn-round {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: rgba(255, 138, 101, 0.1); /* primary/10 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 36rpx;
+  font-weight: 300;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.icon-btn-round:active { background: rgba(255, 138, 101, 0.2); transform: scale(0.9); }
+
+/* ===== 输入框 ===== */
+.input-group {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  padding: 0 32rpx;
+  margin-bottom: 24rpx;
+  height: 104rpx;
+  border: 1.5rpx solid #e2e2e2;
+  transition: border-color 0.2s;
+}
+
+.input-group:focus-within {
+  border-color: var(--primary);
+}
+
+.input-group input {
+  flex: 1;
+  font-size: 30rpx;
+  color: var(--text-primary);
+  height: 100%;
+}
+
+.input-icon {
+  font-size: 40rpx;
+  margin-right: 20rpx;
+  color: var(--primary);
+}
+
+.input-label {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  margin-bottom: 12rpx;
+  display: block;
+  font-weight: 600;
+  margin-left: 8rpx;
+}
+
+/* ===== 搜索栏 ===== */
+.search-bar {
+  background: var(--surface);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  padding: 0 32rpx;
+  height: 88rpx;
+  border: 1rpx solid #e2e2e2;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-input { flex: 1; font-size: 28rpx; color: var(--text-primary); }
+.search-icon-text { font-size: 36rpx; color: var(--primary); margin-right: 16rpx; }
+
+/* ===== 工具类 ===== */
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-1 { flex: 1; }
+.gap8 { gap: 16rpx; }
+.gap16 { gap: 32rpx; }
+.text-center { text-align: center; }
+.text-primary-color { color: var(--primary); }
+.text-secondary-color { color: var(--text-secondary); }
+.text-hint-color { color: var(--text-hint); }
+.text-sm { font-size: 24rpx; }
+.text-md { font-size: 28rpx; }
+.text-lg { font-size: 34rpx; }
+.text-xl { font-size: 40rpx; }
+.text-bold { font-weight: 700; }
+.text-black { font-weight: 800; font-family: "Plus Jakarta Sans", sans-serif; }
+.no-more { text-align: center; padding: 40rpx; color: var(--text-hint); font-size: 24rpx; }
+
+/* ===== 空状态 ===== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+  color: var(--text-hint);
+}
+
+.empty-icon { font-size: 100rpx; margin-bottom: 24rpx; opacity: 0.8; }
+.empty-text { font-size: 28rpx; font-weight: 600; color: var(--text-secondary); }
+.empty-sub { font-size: 24rpx; margin-top: 8rpx; color: var(--text-hint); }
+
+.icon-fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}

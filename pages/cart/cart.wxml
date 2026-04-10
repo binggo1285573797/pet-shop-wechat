@@ -1,0 +1,90 @@
+<view class="cart-page">
+  <!-- Header -->
+  <view class="cart-header">
+    <text class="header-title">购物车</text>
+    <text class="header-subtitle" wx:if="{{cartItems.length > 0}}">共 {{cartItems.length}} 件宝贝，为您的小家增添温暖</text>
+  </view>
+
+  <scroll-view class="scroll-body" scroll-y enable-back-to-top>
+    <view class="main-container">
+      <!-- Cart List -->
+      <view class="cart-list" wx:if="{{cartItems.length > 0}}">
+        <view class="cart-item-card" wx:for="{{cartItems}}" wx:key="id">
+          <!-- Checkbox -->
+          <view class="cart-checkbox-wrap" bindtap="toggleCheck" data-id="{{item.id}}">
+            <view class="cart-checkbox {{item.checked ? 'checked' : ''}}">
+              <text wx:if="{{item.checked}}" class="material-symbols-outlined check-icon">check</text>
+            </view>
+          </view>
+
+          <!-- Product Image -->
+          <view class="cart-product-img-box" bindtap="goToDetail" data-id="{{item.productId}}">
+            <image wx:if="{{item.productPic}}" src="{{item.productPic}}" mode="aspectFill" class="cart-product-img" />
+            <view wx:else class="cart-product-placeholder">
+              <text class="material-symbols-outlined">pets</text>
+            </view>
+          </view>
+
+          <!-- Product Info -->
+          <view class="cart-item-info">
+            <text class="cart-item-name">{{item.productName}}</text>
+            <text class="cart-item-spec" wx:if="{{item.spec}}">{{item.spec}}</text>
+            
+            <view class="cart-item-bottom">
+              <text class="cart-item-price">¥{{item.productPrice}}</text>
+              
+              <!-- Quantity Control -->
+              <view class="qty-control">
+                <view class="qty-btn minus" bindtap="decreaseQty" data-id="{{item.id}}">
+                  <text class="material-symbols-outlined">remove</text>
+                </view>
+                <text class="qty-num">{{item.quantity}}</text>
+                <view class="qty-btn plus" bindtap="increaseQty" data-id="{{item.id}}">
+                  <text class="material-symbols-outlined">add</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- Empty State -->
+      <view class="empty-state" wx:if="{{cartItems.length === 0 && !loading}}">
+        <view class="empty-icon-box">
+          <text class="material-symbols-outlined">shopping_basket</text>
+        </view>
+        <text class="empty-text">让购物车丰富起来</text>
+        <text class="empty-hint">去挑选几件心仪的商品吧</text>
+      </view>
+
+      <!-- Loading State -->
+      <view class="loading-state" wx:if="{{loading}}">
+        <text>加载中...</text>
+      </view>
+
+      <view class="bottom-spacer"></view>
+    </view>
+  </scroll-view>
+
+  <!-- Checkout Bar -->
+  <view class="checkout-bar-wrapper" wx:if="{{cartItems.length > 0}}">
+    <view class="checkout-bar">
+      <view class="checkout-left" bindtap="toggleSelectAll">
+        <view class="cart-checkbox {{allChecked ? 'checked' : ''}}">
+          <text wx:if="{{allChecked}}" class="material-symbols-outlined check-icon">check</text>
+        </view>
+        <text class="select-all-text">全选</text>
+      </view>
+      
+      <view class="checkout-right">
+        <view class="checkout-total">
+          <text class="total-label">合计：</text>
+          <text class="total-price">¥{{totalPrice}}</text>
+        </view>
+        <view class="checkout-btn {{checkedCount > 0 ? 'active' : ''}}" bindtap="checkout">
+          <text>去结算({{checkedCount}})</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

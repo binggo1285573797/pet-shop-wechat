@@ -1,0 +1,90 @@
+<view class="posts-page">
+  <!-- TopAppBar -->
+  <view class="app-header">
+    <view class="header-row">
+      <view class="back-btn" bindtap="goBack">
+        <text class="material-symbols-outlined back-icon">arrow_back</text>
+      </view>
+      <text class="header-title">我的帖子</text>
+      <view class="header-spacer"></view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="posts-scroll">
+    <view class="posts-container">
+      <!-- Posts List -->
+      <view class="posts-list" wx:if="{{posts.length > 0}}">
+        <view
+          class="post-card"
+          wx:for="{{posts}}"
+          wx:key="id"
+          bindtap="goToDetail"
+          data-id="{{item.id}}"
+        >
+          <!-- Post Image -->
+          <view class="post-img-box" wx:if="{{item.firstPic}}">
+            <image src="{{item.firstPic}}" mode="aspectFill" class="post-img" />
+          </view>
+
+          <!-- Post Content -->
+          <view class="post-content">
+            <text class="post-text">{{item.content}}</text>
+            <view class="post-meta">
+              <view class="meta-item">
+                <text class="material-symbols-outlined meta-icon">schedule</text>
+                <text class="meta-text">{{item.createTimeText}}</text>
+              </view>
+              <view class="meta-item">
+                <text class="material-symbols-outlined meta-icon {{item.isLiked ? 'icon-fill' : ''}}">favorite</text>
+                <text class="meta-text">{{item.likeCount || 0}}</text>
+              </view>
+              <view class="meta-item">
+                <text class="material-symbols-outlined meta-icon">chat_bubble</text>
+                <text class="meta-text">{{item.commentCount || 0}}</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- Post Actions -->
+          <view class="post-actions" catchtap="stopPropagation">
+            <view class="action-btn edit-btn" bindtap="editPost" data-item="{{item}}">
+              <text class="material-symbols-outlined action-icon">edit</text>
+              <text class="action-text">编辑</text>
+            </view>
+            <view class="action-btn delete-btn" bindtap="deletePost" data-id="{{item.id}}">
+              <text class="material-symbols-outlined action-icon">delete</text>
+              <text class="action-text">删除</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- Empty State -->
+      <view class="empty-state" wx:if="{{posts.length === 0 && !loading}}">
+        <view class="empty-icon-box">
+          <text class="material-symbols-outlined empty-icon">article</text>
+        </view>
+        <text class="empty-title">还没有发布过帖子</text>
+        <text class="empty-desc">快去分享你的萌宠生活吧~</text>
+        <view class="empty-btn" bindtap="goToPost">
+          <text class="material-symbols-outlined btn-icon">edit</text>
+          <text>去发帖</text>
+        </view>
+      </view>
+
+      <!-- Loading -->
+      <view class="loading-state" wx:if="{{loading}}">
+        <text class="loading-text">加载中...</text>
+      </view>
+
+      <!-- No More -->
+      <view class="no-more-state" wx:if="{{noMore && posts.length > 0}}">
+        <text class="no-more-text">— 已加载全部 —</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- Decorative Blurs -->
+  <view class="blur-top-right"></view>
+  <view class="blur-bottom-left"></view>
+</view>

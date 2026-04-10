@@ -1,0 +1,63 @@
+<!--pages/auth/register/register.wxml-->
+<view class="register-page">
+  <!-- 顶部玻璃态导航 & 关闭按钮 (可用于返回) -->
+  <view class="register-header">
+    <view class="nav-logo">
+      <text class="nav-logo-icon material-symbols-outlined">pets</text>
+      <text class="nav-logo-text">爱宠家</text>
+    </view>
+  </view>
+
+  <view class="register-main">
+    <!-- Hero Banner with Text Overlay -->
+    <view class="hero-banner">
+      <image class="hero-banner-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk6V4Jyr3E1jObA8MVEae_5zGJkk4RP0tMIzd2wyx3ZurkIoz0wo2MvHAyf2bl5iLulJeRjibEq0IODDA6uvZjWLBIXlcsxlquSk6jzhV151WYI1vnFBDqxzQ8XzoXxP4Qlxotzs-o0RwCcYmMhggvx68lzeSaEejgFFtb3N273BaimNr7419GDno1Vck1pISJnVWPl3VM9eNco5vDWKzmshWVB_P33aIVh12sYUjdZPSjBUp1ZG2ft_MSfxz1AKDaRwiJtr6ECcE" mode="aspectFill" />
+      <view class="hero-banner-overlay">
+        <text class="hero-title">开启宠爱之旅</text>
+        <text class="hero-subtitle">为您的毛孩子打造温馨数字家园</text>
+      </view>
+    </view>
+
+    <!-- Registration Form Card -->
+    <view class="register-card">
+      <view class="form-group">
+        <text class="form-label">用户名</text>
+        <view class="input-group-auth">
+          <text class="material-symbols-outlined input-icon">pets</text>
+          <input class="auth-input" placeholder="设置用户名" placeholder-class="auth-placeholder" bindinput="onInputUsername" />
+        </view>
+      </view>
+
+      <view class="form-group mt-5">
+        <text class="form-label">密码</text>
+        <view class="input-group-auth">
+          <text class="material-symbols-outlined input-icon">lock</text>
+          <input class="auth-input" password="true" placeholder="设置密码 (6-18位)" placeholder-class="auth-placeholder" bindinput="onInputPassword" />
+        </view>
+      </view>
+
+      <view class="form-group mt-5">
+        <text class="form-label">确认密码</text>
+        <view class="input-group-auth">
+          <text class="material-symbols-outlined input-icon">verified_user</text>
+          <input class="auth-input" password="true" placeholder="请再次输入密码" placeholder-class="auth-placeholder" bindinput="onInputConfirmPassword" />
+        </view>
+      </view>
+
+      <button class="register-btn" bindtap="doRegister">注 册</button>
+
+      <!-- Redirect Link -->
+      <view class="login-link-wrap">
+        <text class="text-hint">已有账号？</text>
+        <text class="text-primary-color text-bold" bindtap="goToLogin">登录</text>
+      </view>
+    </view>
+
+    <!-- Footer Terms -->
+    <view class="register-footer">
+      <text class="footer-text">注册即代表同意</text>
+      <text class="footer-link" bindtap="showAgreement">《爱宠家用户协议》</text>
+      <text class="footer-text">及隐私政策</text>
+    </view>
+  </view>
+</view>

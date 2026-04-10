@@ -1,0 +1,52 @@
+<!--pages/order/detail/detail.wxml-->
+<view class="page-no-tab" style="padding-bottom:40rpx;">
+  <view wx:if="{{order}}">
+    <!-- 状态 -->
+    <view class="card" style="margin:24rpx;text-align:center;background:linear-gradient(135deg,var(--primary-dark),var(--primary));">
+      <text style="display:block;font-size:48rpx;margin-bottom:12rpx;">{{statusIcon}}</text>
+      <text style="font-size:36rpx;font-weight:800;color:#fff;">{{order.statusText}}</text>
+      <text style="display:block;font-size:26rpx;color:rgba(255,255,255,0.85);margin-top:8rpx;">订单号：{{order.orderSn}}</text>
+    </view>
+
+    <!-- 收货地址 -->
+    <view class="card" style="margin:0 24rpx 24rpx;">
+      <view class="confirm-section-title">📍 收货信息</view>
+      <view class="address-name">{{order.receiverName}} <text class="text-hint">{{order.receiverPhone}}</text></view>
+      <view class="address-detail text-hint">{{order.detailAddress}}</view>
+    </view>
+
+    <!-- 商品 -->
+    <view class="card" style="margin:0 24rpx 24rpx;">
+      <view class="confirm-section-title">🛒 商品明细</view>
+      <view class="confirm-product-item" wx:for="{{order.orderItems}}" wx:key="id">
+        <view class="cart-img-box"><text style="font-size:48rpx;">🐾</text></view>
+        <view class="confirm-item-info">
+          <text class="cart-item-name">{{item.productName}}</text>
+          <view class="flex-between">
+            <text class="cart-item-price">¥{{item.productPrice}}</text>
+            <text class="text-hint">×{{item.quantity}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 金额 -->
+    <view class="card" style="margin:0 24rpx 24rpx;">
+      <view class="flex-between">
+        <text class="text-hint">下单时间</text>
+        <text class="text-sm">{{order.createTimeText}}</text>
+      </view>
+      <view class="flex-between" style="margin-top:12rpx;">
+        <text class="text-hint">实付金额</text>
+        <text class="price price-lg">¥{{order.totalAmount}}</text>
+      </view>
+    </view>
+
+    <!-- 物流（有数据才显示） -->
+    <view class="card" style="margin:0 24rpx 24rpx;" wx:if="{{order.deliverySn}}">
+      <view class="confirm-section-title">🚚 物流信息</view>
+      <view class="text-hint">承运公司：{{order.logisticsCmp}}</view>
+      <view class="text-hint" style="margin-top:8rpx;">运单号：{{order.deliverySn}}</view>
+    </view>
+  </view>
+</view>

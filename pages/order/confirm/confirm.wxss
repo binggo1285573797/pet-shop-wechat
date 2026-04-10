@@ -1,0 +1,558 @@
+/* pages/order/confirm/confirm.wxss - 基于Stitch设计 */
+.confirm-page {
+  width: 100vw;
+  min-height: 100vh;
+  background: #fdfbf9;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* TopAppBar */
+.app-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 96rpx;
+  background: #ffffff;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 32rpx;
+  padding-top: env(safe-area-inset-top);
+  border-bottom: 1rpx solid rgba(255, 138, 101, 0.1);
+}
+
+.header-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-btn {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.back-icon {
+  font-size: 44rpx;
+  color: #ff8a65;
+}
+
+.header-title {
+  flex: 1;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1a1c1c;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  text-align: center;
+}
+
+.header-spacer {
+  width: 80rpx;
+}
+
+/* Scroll Body */
+.scroll-body {
+  flex: 1;
+  margin-top: 96rpx;
+  height: calc(100vh - 96rpx);
+}
+
+.main-container {
+  padding: 24rpx 32rpx 280rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+  max-width: 750rpx;
+  margin: 0 auto;
+}
+
+/* Address Card */
+.address-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 80rpx;
+  padding: 60rpx;
+  box-shadow: 0 24rpx 80rpx rgba(255, 138, 101, 0.06);
+  overflow: hidden;
+  border: 1rpx solid rgba(255, 138, 101, 0.05);
+}
+
+.address-brand-bg {
+  position: absolute;
+  top: -40rpx;
+  right: -40rpx;
+  opacity: 0.03;
+}
+
+.brand-paw {
+  font-size: 240rpx;
+  color: #ff8a65;
+}
+
+.address-content {
+  position: relative;
+  z-index: 10;
+}
+
+.address-user-row {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.address-icon-box {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: rgba(255, 138, 101, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.address-icon {
+  font-size: 40rpx;
+  color: #ff8a65;
+}
+
+.address-info {
+  flex: 1;
+}
+
+.address-name-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.address-name {
+  font-size: 36rpx;
+  font-weight: 800;
+  color: #1a1c1c;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.address-phone {
+  font-size: 28rpx;
+  color: #56423c;
+  background: #f3f3f3;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+.address-detail-text {
+  font-size: 28rpx;
+  color: #56423c;
+  line-height: 1.6;
+  padding-left: 4rpx;
+}
+
+.address-empty {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.address-empty-text {
+  font-size: 28rpx;
+  color: #56423c;
+}
+
+.address-chevron {
+  position: absolute;
+  right: 40rpx;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.address-chevron .material-symbols-outlined {
+  font-size: 48rpx;
+  color: #ddc0b8;
+}
+
+.rainbow-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 6rpx;
+  background: linear-gradient(to right, transparent, rgba(255, 138, 101, 0.3), transparent);
+}
+
+/* Product Card */
+.product-card {
+  background: #ffffff;
+  border-radius: 80rpx;
+  padding: 60rpx;
+  box-shadow: 0 24rpx 80rpx rgba(255, 138, 101, 0.06);
+  border: 1rpx solid rgba(255, 138, 101, 0.05);
+}
+
+.shop-header-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.shop-icon-box {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 12rpx;
+  background: rgba(255, 138, 101, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shop-icon {
+  font-size: 28rpx;
+  color: #ff8a65;
+}
+
+.shop-name {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #1a1c1c;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  letter-spacing: 1rpx;
+  text-transform: uppercase;
+}
+
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 48rpx;
+}
+
+.product-item {
+  display: flex;
+  gap: 32rpx;
+}
+
+.product-img-box {
+  width: 192rpx;
+  height: 192rpx;
+  border-radius: 32rpx;
+  overflow: hidden;
+  background: #f3f3f3;
+  flex-shrink: 0;
+  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.06);
+}
+
+.product-img {
+  width: 100%;
+  height: 100%;
+}
+
+.product-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-placeholder .material-symbols-outlined {
+  font-size: 64rpx;
+  color: rgba(0,0,0,0.1);
+}
+
+.product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8rpx 0;
+}
+
+.product-name {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #1a1c1c;
+  line-height: 1.4;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.product-spec {
+  font-size: 24rpx;
+  color: #89726b;
+  margin-top: 8rpx;
+  background: #f3f3f3;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  display: inline-block;
+}
+
+.product-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.product-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+}
+
+.price-symbol {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #1a1c1c;
+}
+
+.price-value {
+  font-size: 40rpx;
+  font-weight: 900;
+  color: #1a1c1c;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.product-qty {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #89726b;
+}
+
+/* Note Card */
+.note-card {
+  background: #ffffff;
+  border-radius: 80rpx;
+  padding: 60rpx;
+  box-shadow: 0 24rpx 80rpx rgba(255, 138, 101, 0.06);
+  border: 1rpx solid rgba(255, 138, 101, 0.05);
+}
+
+.note-header-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 24rpx;
+}
+
+.note-icon-box {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 12rpx;
+  background: rgba(255, 138, 101, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note-icon {
+  font-size: 28rpx;
+  color: #ff8a65;
+}
+
+.note-title {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #1a1c1c;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  letter-spacing: 1rpx;
+  text-transform: uppercase;
+}
+
+.note-input-wrap {
+  position: relative;
+}
+
+.note-textarea {
+  width: 100%;
+  background: #f3f3f3;
+  border: none;
+  border-radius: 32rpx;
+  padding: 32rpx;
+  font-size: 28rpx;
+  color: #1a1c1c;
+  line-height: 1.6;
+  box-sizing: border-box;
+  min-height: 120rpx;
+}
+
+.note-textarea::placeholder {
+  color: rgba(137, 114, 107, 0.5);
+}
+
+.note-count {
+  position: absolute;
+  bottom: 16rpx;
+  right: 24rpx;
+  font-size: 20rpx;
+  color: rgba(137, 114, 107, 0.4);
+  font-weight: 500;
+}
+
+/* Calculation Card */
+.calc-card {
+  background: #ffffff;
+  border-radius: 80rpx;
+  padding: 60rpx;
+  box-shadow: 0 24rpx 80rpx rgba(255, 138, 101, 0.06);
+  border: 1rpx solid rgba(255, 138, 101, 0.05);
+}
+
+.calc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.calc-label {
+  font-size: 28rpx;
+  color: #89726b;
+}
+
+.calc-value {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1a1c1c;
+}
+
+.calc-value-free {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #ff8a65;
+}
+
+.calc-total-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16rpx;
+  padding-top: 32rpx;
+  border-top: 2rpx dashed rgba(137, 114, 107, 0.2);
+}
+
+.calc-total-label {
+  font-size: 24rpx;
+  color: #89726b;
+}
+
+.calc-total-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+}
+
+.calc-total-symbol {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #ff8a65;
+}
+
+.calc-total-value {
+  font-size: 56rpx;
+  font-weight: 900;
+  color: #ff8a65;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  letter-spacing: -2rpx;
+}
+
+/* Healing Space */
+.healing-space {
+  height: 160rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.2;
+}
+
+.healing-icon {
+  font-size: 80rpx;
+  color: #ff8a65;
+}
+
+.bottom-spacer {
+  height: 40rpx;
+}
+
+/* Bottom Action Bar */
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32rpx;
+  padding: 48rpx 48rpx;
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(48rpx);
+  border-radius: 80rpx 80rpx 0 0;
+  z-index: 200;
+  box-shadow: 0 -20rpx 96rpx rgba(255, 138, 101, 0.12);
+  border-top: 1rpx solid rgba(255, 138, 101, 0.05);
+}
+
+.action-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+}
+
+.action-price-symbol {
+  font-size: 48rpx;
+  font-weight: 900;
+  color: #ff8a65;
+}
+
+.action-price-value {
+  font-size: 72rpx;
+  font-weight: 900;
+  color: #ff8a65;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  letter-spacing: -2rpx;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, #ff8a65 0%, #ffab91 100%);
+  color: #fff;
+  padding: 32rpx 80rpx;
+  border-radius: 64rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  box-shadow: 0 16rpx 48rpx rgba(255, 138, 101, 0.4);
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.action-btn:active {
+  transform: scale(0.96);
+}
+
+/* Decorative Blurs */
+.blur-top-left {
+  position: fixed;
+  top: 25%;
+  left: -160rpx;
+  width: 320rpx;
+  height: 320rpx;
+  background: rgba(255, 138, 101, 0.05);
+  border-radius: 50%;
+  filter: blur(80rpx);
+  z-index: -1;
+}
+
+.blur-bottom-right {
+  position: fixed;
+  bottom: 25%;
+  right: -200rpx;
+  width: 400rpx;
+  height: 400rpx;
+  background: rgba(255, 138, 101, 0.1);
+  border-radius: 50%;
+  filter: blur(100rpx);
+  z-index: -1;
+}

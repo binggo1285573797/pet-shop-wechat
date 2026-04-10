@@ -1,0 +1,161 @@
+<!--pages/shop/detail/detail.wxml-->
+<view class="detail-page" wx:if="{{product}}">
+  <!-- 自定义导航栏：悬浮返回按钮 -->
+  <view class="custom-nav-bar" style="top: {{statusBarHeight}}px;">
+    <button class="nav-back-btn" bindtap="goBack">
+      <text class="material-symbols-outlined nav-icon">arrow_back</text>
+    </button>
+  </view>
+
+  <!-- Product Image Carousel Area -->
+  <view class="swiper-container">
+    <swiper class="detail-swiper" circular bindchange="onSwiperChange" wx:if="{{picList.length > 0}}">
+      <swiper-item wx:for="{{picList}}" wx:key="index">
+        <block wx:if="{{item}}">
+          <image src="{{item}}" mode="aspectFill" class="detail-image" />
+        </block>
+        <block wx:else>
+          <view class="fallback-img">
+            <text class="material-symbols-outlined" style="font-size: 80rpx; color: #ccc;">pets</text>
+          </view>
+        </block>
+      </swiper-item>
+    </swiper>
+    <view class="swiper-badge">
+      <text>{{currentSwiperIndex}} / {{picList.length || 1}}</text>
+    </view>
+  </view>
+
+  <!-- Main Content Container -->
+  <view class="main-content">
+    
+    <!-- Price/Title Card -->
+    <view class="info-card">
+      <view class="price-header">
+        <view class="price-wrap">
+          <text class="price-symbol">¥</text>
+          <text class="price-value">{{product.price}}</text>
+          <text class="price-original">¥{{product.price + 121}}</text> <!-- 模拟原价 -->
+        </view>
+        <button class="btn-favorite">
+          <text class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</text>
+        </button>
+      </view>
+      
+      <view class="title-wrap">
+        <text class="detail-title">{{product.name}}</text>
+      </view>
+      
+      <view class="desc-wrap">
+        <text class="detail-desc">{{product.description || '为您的爱宠提供深层呵护。优质面料，四季通用，享受极致舒压睡眠之旅。'}}</text>
+      </view>
+      
+      <view class="tags-wrap">
+        <view class="tag-item tag-new" wx:if="{{product.breed}}">{{product.breed}}</view>
+        <view class="tag-item tag-new" wx:else>新款首发</view>
+        <view class="tag-item tag-genuine">官方正品</view>
+      </view>
+    </view>
+
+    <!-- Detail Area: Rich Content (Static Framework mixed with Dynamic) -->
+    <view class="details-card">
+      <!-- Section: Material Details -->
+      <view class="section-block">
+        <view class="section-header">
+          <text class="material-symbols-outlined text-primary paw-icon" style="font-variation-settings: 'FILL' 1;">pets</text>
+          <text class="section-title">细节品质</text>
+        </view>
+        
+        <view class="grid-features">
+          <view class="feature-box">
+            <text class="feature-label">材质核心</text>
+            <text class="feature-value">高密度记忆棉</text>
+          </view>
+          <view class="feature-box">
+            <text class="feature-label">外套面料</text>
+            <text class="feature-value">防抓耐磨处理</text>
+          </view>
+          <view class="feature-box">
+            <text class="feature-label">清洗方式</text>
+            <text class="feature-value">全拆机洗</text>
+          </view>
+          <view class="feature-box">
+            <text class="feature-label">底部特性</text>
+            <text class="feature-value">硅胶点状防滑</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Section: Usage Scene -->
+      <view class="section-block">
+        <view class="section-header">
+          <text class="material-symbols-outlined text-primary paw-icon" style="font-variation-settings: 'FILL' 1;">pets</text>
+          <text class="section-title">深度呵护</text>
+        </view>
+        <view class="usage-scene">
+          <image class="scene-img" mode="aspectFill" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_a9HGMOlrnKxbwmTLuwOvSZsBnwEzSrJCdlwC8NZh1gOMER4JHf5KwYkjhAAI9bQe-Mb4ipxZzTYmYULJaB1OtKzcPZYwQf4_C6JzTRcxe2kOngaKBZ2I0-h-MhaW7yqaP1fA1fAyoycxQIJrGUGP4VbQZuO8A4bVXiXreEN1nNZitGGL-pDuKSl-BhnN2x_UQO8vSvRnKA5oureMVywezxMWpMuLxBsxSnb0s8QWGJ5rxSuSQXhsfoVGEsJOiLFjCWiEXyC3B74"></image>
+          <text class="scene-desc">我们深知宠物的脊椎脆弱。经过多次压力测试，即使长时间使用也不会塌陷，完美贴合爱宠的身体曲线。</text>
+          <image class="scene-img" mode="aspectFill" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB84QAjjyqaMD2twsQftR1xS1ln51V52pg34mnZbVh0fXhPYkPJzSkZYPS_PvxAL3MQpjuqworbvUn8GOQTE9_mxe746DvDUIRtMgkCR0iJ2xHJIfYwd6av4125PJeqU3Fhm-Wr7u9VXre1ttJ1NgYFgAejlxIqLQ9UQnRV5ZrRdJ_LF-hjvfVRANM89JI14G5UUle6tCMk__347DXNyt4_PixLw6vvDwwDn5eBLH1dNllhF5OeWSmTsmamRf41z-oBDsC29ERECDw"></image>
+        </view>
+      </view>
+
+      <!-- Section: Reviews Bento -->
+      <view class="section-block">
+        <view class="review-header row-between">
+          <view class="section-header" style="margin-bottom:0;">
+            <text class="material-symbols-outlined text-primary paw-icon" style="font-variation-settings: 'FILL' 1;">pets</text>
+            <text class="section-title">家长评价</text>
+          </view>
+          <text class="view-all text-primary">查看全部 (128)</text>
+        </view>
+        
+        <view class="review-bento">
+          <view class="reviewer-info">
+            <view class="avatar-wrap">
+              <image class="avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOjH2sxdZdHXIYnTpJrOhP2d93eu4DlBJxOoMInhRj3faR7v4zjE1uFzRKKEP-O2Tz0BCQn3xMk7Ie9MOIar4cromhaUSj2itHvVD_LartbNlT5nTGcHDt3VRCE5V0gBJhuKU_W5k2TSXwvtXnDZd0GT7f7_v86XWfCb220L7f7MXZybTOVGF0_kxAGbs2WOb3RBI9D01yh0vVUCXw8KTj0KdT8gF6f1eHDLIGBVnPDzA0rDbtUMpGlI9iXU4xSznkt3TUmQdRT28" mode="aspectFill"></image>
+            </view>
+            <view class="name-stars">
+              <text class="reviewer-name">泡泡妈</text>
+              <view class="stars">
+                <text class="material-symbols-outlined star" style="font-variation-settings: 'FILL' 1;">star</text>
+                <text class="material-symbols-outlined star" style="font-variation-settings: 'FILL' 1;">star</text>
+                <text class="material-symbols-outlined star" style="font-variation-settings: 'FILL' 1;">star</text>
+                <text class="material-symbols-outlined star" style="font-variation-settings: 'FILL' 1;">star</text>
+                <text class="material-symbols-outlined star" style="font-variation-settings: 'FILL' 1;">star</text>
+              </view>
+            </view>
+          </view>
+          <text class="review-content">质量出乎意料的好！猫咪放上去就不肯下来了，面料手感真的像兔毛一样。包装也很精美，推荐。</text>
+        </view>
+      </view>
+    </view>
+    
+  </view>
+  
+  <view style="height: 240rpx;"></view>
+
+  <!-- Bottom Action Bar -->
+  <view class="bottom-action-bar">
+    <view class="quick-icons">
+      <view class="icon-item" bindtap="goHome">
+        <text class="material-symbols-outlined icon-size">home</text>
+        <text class="icon-label">首页</text>
+      </view>
+      <view class="icon-item" bindtap="goCart">
+        <text class="material-symbols-outlined icon-size">shopping_cart</text>
+        <text class="icon-label">购物车</text>
+        <view class="cart-badge" wx:if="{{cartCount > 0}}">{{cartCount}}</view>
+      </view>
+    </view>
+    <view class="action-buttons">
+      <button class="btn-add-cart" hover-class="btn-add-cart-hover" bindtap="addToCart">加入购物车</button>
+      <button class="btn-buy" hover-class="btn-buy-hover" bindtap="buyNow">立即购买</button>
+    </view>
+  </view>
+
+</view>
+
+<view class="empty" wx:if="{{!product && !loading}}">
+  <text class="empty-icon">😿</text>
+  <text class="empty-text">商品不存在或已下架</text>
+</view>

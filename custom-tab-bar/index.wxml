@@ -1,0 +1,25 @@
+<!--custom-tab-bar/index.wxml-->
+<view class="custom-tab-bar">
+  <!-- Top spacing/blur placeholder -->
+  <view class="tab-bar-inner">
+    <view
+      class="tab-item {{selected===index?'active':''}}"
+      wx:for="{{tabs}}"
+      wx:key="index"
+      bindtap="switchTab"
+      data-index="{{index}}"
+    >
+      <view class="tab-item-content {{selected===index?'active-content':''}}">
+        <!-- 购物车角标容器内嵌，绝对定位 -->
+        <view class="tab-icon-wrap" style="position: relative;">
+          <text class="material-symbols-outlined tab-icon {{selected===index?'icon-fill':''}}">{{item.icon}}</text>
+          <!-- 购物车角标 -->
+          <view class="badge" wx:if="{{index===3 && cartCount>0}}">
+            <text class="badge-text">{{cartCount>99?'99+':cartCount}}</text>
+          </view>
+        </view>
+        <text class="tab-label">{{item.text}}</text>
+      </view>
+    </view>
+  </view>
+</view>
