@@ -1,127 +1,113 @@
+<!--pages/community/community.wxml - Stitch 风格社区页面-->
 <view class="community-page">
-  <!-- TopAppBar -->
-  <view class="app-header">
-    <view class="header-row">
-      <view class="logo-box">
-        <text class="material-symbols-outlined logo-icon icon-fill">pets</text>
-      </view>
-      <text class="header-title">萌宠圈</text>
-      <view class="header-spacer"></view>
+  <!-- 顶部导航栏 -->
+  <view class="community-header">
+    <view class="header-content">
+      <text class="material-symbols-outlined header-icon">pets</text>
+      <text class="header-title">爱宠家</text>
     </view>
   </view>
 
-  <!-- Category Tabs -->
-  <view class="category-tabs">
-    <scroll-view scroll-x class="tabs-scroll" enhanced show-scrollbar="{{false}}">
-      <view class="tabs-container">
-        <view
-          class="tab-item {{activeCategory === item.value ? 'active' : ''}}"
-          wx:for="{{categories}}"
-          wx:key="value"
-          bindtap="onCategoryTap"
-          data-value="{{item.value}}"
-        >
-          <text class="tab-icon {{item.icon}}">{{item.emoji}}</text>
-          <text class="tab-label">{{item.label}}</text>
-          <view class="tab-indicator" wx:if="{{activeCategory === item.value}}"></view>
-        </view>
+  <!-- 主内容区 -->
+  <view class="community-content">
+    <!-- 加载状态 -->
+    <view wx:if="{{loading && posts.length === 0}}" class="loading-container">
+      <view class="paw-loader">
+        <text class="material-symbols-outlined paw-icon">pets</text>
+        <text class="material-symbols-outlined paw-icon">pets</text>
+        <text class="material-symbols-outlined paw-icon">pets</text>
       </view>
-    </scroll-view>
-  </view>
+      <text class="loading-text">正在加载萌宠动态...</text>
+    </view>
 
-  <!-- Posts Grid -->
-  <scroll-view
-    scroll-y
-    class="posts-scroll"
-    bindscrolltolower="loadMore"
-    enable-flex
-  >
-    <view class="posts-container">
-      <!-- Waterfall Grid -->
-      <view class="waterfall-grid" wx:if="{{posts.length > 0}}">
-        <view
-          class="post-card"
-          wx:for="{{posts}}"
-          wx:key="id"
-          bindtap="goToDetail"
-          data-id="{{item.id}}"
-        >
-          <!-- Image -->
-          <view class="post-img-box">
-            <image
-              wx:if="{{item.firstPic}}"
-              src="{{item.firstPic}}"
-              mode="aspectFill"
-              class="post-img"
-              lazy-load
-            />
-            <view wx:else class="post-img-placeholder">
-              <text class="material-symbols-outlined placeholder-icon">pets</text>
+    <!-- 空状态 -->
+    <view wx:elif="{{posts.length === 0}}" class="empty-state">
+      <text class="material-symbols-outlined empty-icon">forum</text>
+      <text class="empty-text">还没有帖子哦</text>
+      <text class="empty-subtext">快来分享你和宠物的故事吧~</text>
+    </view>
+
+    <!-- 瀑布流帖子列表 -->
+    <view wx:else class="waterfall-container">
+      <!-- 左列 -->
+      <view class="waterfall-column">
+        <block wx:for="{{posts}}" wx:key="id" wx:if="{{index % 2 === 0}}">
+          <view class="post-card" bindtap="goToDetail" data-id="{{item.id}}">
+            <!-- 有图片时显示图片 -->
+            <image wx:if="{{item.picList && item.picList.length > 0}}" class="post-image" src="{{item.picList[0]}}" mode="widthFix" lazy-load/>
+            <!-- 无图片时显示文字背景卡片 -->
+            <view wx:else class="post-text-card {{item.bgClass || 'bg-gradient-1'}}">
+              <text class="post-text-content">{{item.title || item.content}}</text>
+              <view class="post-text-mask"></view>
             </view>
-            <view class="post-img-overlay">
-              <view class="like-badge {{item.isLiked ? 'liked' : ''}}">
-                <text class="material-symbols-outlined like-icon">{{item.isLiked ? 'favorite' : 'favorite_border'}}</text>
-                <text class="like-count">{{item.likeCount || 0}}</text>
+            <view class="post-content">
+              <text wx:if="{{item.picList && item.picList.length > 0}}" class="post-title">{{item.title || item.content}}</text>
+              <view class="post-footer">
+                <view class="post-author">
+                  <image wx:if="{{item.authorAvatar}}" class="author-avatar" src="{{item.authorAvatar}}"/>
+                  <view wx:else class="author-avatar-text">{{item.authorName ? item.authorName[0] : 'U'}}</view>
+                  <text class="author-name">{{item.authorName || '匿名用户'}}</text>
+                </view>
+                <view class="post-likes">
+                  <text class="material-symbols-outlined like-icon {{item.isLiked ? 'active' : ''}}">pets</text>
+                  <text class="like-count {{item.isLiked ? 'active' : ''}}">{{item.likeCount || 0}}</text>
+                </view>
               </view>
             </view>
           </view>
+        </block>
+      </view>
 
-          <!-- Content -->
-          <view class="post-content">
-            <text class="post-title">{{item.content}}</text>
-
-            <!-- Author -->
-            <view class="post-author">
-              <view class="author-avatar">
-                <text class="author-avatar-text">{{item.avatarLetter}}</text>
+      <!-- 右列 -->
+      <view class="waterfall-column">
+        <block wx:for="{{posts}}" wx:key="id" wx:if="{{index % 2 === 1}}">
+          <view class="post-card" bindtap="goToDetail" data-id="{{item.id}}">
+            <!-- 有图片时显示图片 -->
+            <image wx:if="{{item.picList && item.picList.length > 0}}" class="post-image" src="{{item.picList[0]}}" mode="widthFix" lazy-load/>
+            <!-- 无图片时显示文字背景卡片 -->
+            <view wx:else class="post-text-card {{item.bgClass || 'bg-gradient-1'}}">
+              <text class="post-text-content">{{item.title || item.content}}</text>
+              <view class="post-text-mask"></view>
+            </view>
+            <view class="post-content">
+              <text wx:if="{{item.picList && item.picList.length > 0}}" class="post-title">{{item.title || item.content}}</text>
+              <view class="post-footer">
+                <view class="post-author">
+                  <image wx:if="{{item.authorAvatar}}" class="author-avatar" src="{{item.authorAvatar}}"/>
+                  <view wx:else class="author-avatar-text">{{item.authorName ? item.authorName[0] : 'U'}}</view>
+                  <text class="author-name">{{item.authorName || '匿名用户'}}</text>
+                </view>
+                <view class="post-likes">
+                  <text class="material-symbols-outlined like-icon {{item.isLiked ? 'active' : ''}}">pets</text>
+                  <text class="like-count {{item.isLiked ? 'active' : ''}}">{{item.likeCount || 0}}</text>
+                </view>
               </view>
-              <text class="author-name">{{item.nickname || '匿名'}}</text>
             </view>
           </view>
-        </view>
-      </view>
-
-      <!-- Empty State -->
-      <view class="empty-state" wx:if="{{posts.length === 0 && !loading}}">
-        <view class="empty-icon-box">
-          <text class="material-symbols-outlined empty-icon">forum</text>
-        </view>
-        <text class="empty-title">还没有帖子</text>
-        <text class="empty-desc">快来分享你的毛孩子吧~</text>
-        <view class="empty-btn" bindtap="goToPost">
-          <text>发布第一篇</text>
-        </view>
-      </view>
-
-      <!-- Loading -->
-      <view class="loading-state" wx:if="{{loading}}">
-        <view class="loading-paw">
-          <text class="material-symbols-outlined paw-icon">pets</text>
-        </view>
-        <text class="loading-text">加载中...</text>
-      </view>
-
-      <!-- No More -->
-      <view class="no-more-state" wx:if="{{noMore && posts.length > 0}}">
-        <view class="paw-divider">
-          <text class="material-symbols-outlined divider-icon">pets</text>
-        </view>
-        <text class="no-more-text">— 已加载全部 —</text>
+        </block>
       </view>
     </view>
-  </scroll-view>
 
-  <!-- FAB Post Button -->
-  <view class="fab-container" bindtap="goToPost">
-    <view class="fab-btn">
-      <text class="material-symbols-outlined fab-icon">edit</text>
+    <!-- 底部加载更多 -->
+    <view wx:if="{{!loading && posts.length > 0 && !noMore}}" class="loading-container">
+      <view class="paw-loader">
+        <text class="material-symbols-outlined paw-icon">pets</text>
+      </view>
     </view>
-    <view class="fab-label">
-      <text>发布</text>
+
+    <view wx:if="{{noMore && posts.length > 0}}" class="loading-container">
+      <text class="loading-text">已经到底啦~</text>
     </view>
   </view>
 
-  <!-- Decorative Blurs -->
-  <view class="blur-top-right"></view>
-  <view class="blur-bottom-left"></view>
+  <!-- 发布按钮 FAB -->
+  <view class="fab-button" bindtap="goToPost">
+    <text class="material-symbols-outlined fab-icon">add</text>
+    <view class="fab-decoration">
+      <text class="material-symbols-outlined">pets</text>
+    </view>
+  </view>
+
+  <!-- 底部安全区域 -->
+  <view class="safe-area-bottom"></view>
 </view>

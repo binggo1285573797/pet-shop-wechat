@@ -20,7 +20,7 @@
     <view class="login-card">
       <view class="input-group-auth">
         <text class="material-symbols-outlined input-icon">pets</text>
-        <input class="auth-input" placeholder="用户名" placeholder-class="auth-placeholder" bindinput="onUsernameInput" />
+        <input class="auth-input" placeholder="账号" placeholder-class="auth-placeholder" bindinput="onUsernameInput" />
       </view>
 
       <view class="input-group-auth mt-6">

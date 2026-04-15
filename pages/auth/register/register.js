@@ -18,8 +18,12 @@ Page({
     api.register({ username: username.trim(), phone: phone || null, password }).then(() => {
       wx.showToast({ title: '注册成功', icon: 'success' });
       setTimeout(() => { wx.navigateBack(); }, 1000);
-    }).catch(() => {
+    }).catch((err) => {
       this.setData({ loading: false });
+      // 显示具体的错误信息
+      const errorMsg = err.message || err.data?.message || '注册失败，请重试';
+      wx.showToast({ title: errorMsg, icon: 'none', duration: 2000 });
+      console.error('注册失败:', err);
     });
   },
 

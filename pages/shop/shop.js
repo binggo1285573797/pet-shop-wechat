@@ -1,30 +1,20 @@
-// pages/shop/shop.js
 const api = require('../../utils/api');
 const util = require('../../utils/util');
 
-// 分类图标映射
-const CATEGORY_ICONS = {
-  '猫': 'pets',
-  '狗': 'pets',
-  '兔子': 'cruelty_free',
-  '鸟类': 'flutter',
-  '水族': 'water_drop',
-  '猫粮': 'restaurant',
-  '狗粮': 'restaurant',
-  '零食': 'cake',
-  '玩具': 'toys',
-  '用品': 'shopping_bag',
-  '医疗': 'medical_services',
-  '美容': 'spa',
-  '服装': 'checkroom',
-  '窝垫': 'bed'
-};
+// 固定四大分类
+// type: 1=宠物, 2=用品
+const FIXED_CATEGORIES = [
+  { id: 'cat', name: '猫咪', icon: 'pets', type: 1 },
+  { id: 'dog', name: '狗狗', icon: 'pets', type: 1 },
+  { id: 'food', name: '粮食', icon: 'restaurant', type: 2 },
+  { id: 'supplies', name: '用品', icon: 'shopping_bag', type: 2 }
+];
 
 Page({
   data: {
     keyword: '',
-    categories: [],
-    activeCategoryId: 0,
+    categories: FIXED_CATEGORIES,
+    activeCategoryId: '',
     products: [],
     page: 1,
     pageSize: 10,
@@ -33,7 +23,6 @@ Page({
   },
 
   onLoad() {
-    this.loadCategories();
     this.loadProducts(true);
   },
 
@@ -50,23 +39,8 @@ Page({
   },
 
   onPullDownRefresh() {
-    this.loadCategories();
     this.loadProducts(true).then(() => {
       wx.stopPullDownRefresh();
-    });
-  },
-
-  loadCategories() {
-    api.getCategoryList().then(res => {
-      console.log('分类数据:', res.data);
-      const categories = (res.data || []).map(cat => ({
-        ...cat,
-        icon: CATEGORY_ICONS[cat.name] || 'category'
-      }));
-      this.setData({ categories });
-    }).catch(err => {
-      console.error('加载分类失败:', err);
-      wx.showToast({ title: '加载分类失败', icon: 'none' });
     });
   },
 
@@ -84,12 +58,17 @@ Page({
       params.keyword = this.data.keyword;
     }
     
-    if (this.data.activeCategoryId && this.data.activeCategoryId !== 0) {
-      params.categoryId = this.data.activeCategoryId;
+    // 根据分类筛选 - 使用 type 参数
+    // 猫咪/狗狗 -> type=1 (宠物)
+    // 粮食/用品 -> type=2 (用品)
+    if (this.data.activeCategoryId) {
+      const category = FIXED_CATEGORIES.find(c => c.id === this.data.activeCategoryId);
+      if (category) {
+        params.type = category.type;
+      }
     }
 
     return api.getProductPage(params).then(res => {
-      console.log('商品数据:', res.data);
       const records = (res.data?.records || []).map(p => ({
         ...p,
         firstPic: util.getFirstPic(p.picUrls)
@@ -123,8 +102,9 @@ Page({
 
   onCategoryTap(e) {
     const id = e.currentTarget.dataset.id;
-    console.log('选择分类:', id);
-    this.setData({ activeCategoryId: id });
+    // 如果点击的是当前激活的分类，则取消筛选
+    const newId = this.data.activeCategoryId === id ? '' : id;
+    this.setData({ activeCategoryId: newId });
     this.loadProducts(true);
   },
 

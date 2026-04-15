@@ -2,18 +2,33 @@
 const api = require('../../../utils/api');
 
 Page({
-  data: { addresses: [], isSelect: false },
+  data: { 
+    addresses: [], 
+    isSelect: false,
+    loading: true
+  },
 
   onLoad(options) {
-    this.setData({ isSelect: options.select === '1' });
+    this.setData({ 
+      isSelect: options.select === '1',
+      loading: true
+    });
     this.loadAddresses();
   },
 
-  onShow() { this.loadAddresses(); },
+  onShow() { 
+    this.loadAddresses(); 
+  },
 
   loadAddresses() {
+    this.setData({ loading: true });
     api.getAddressList().then(res => {
-      this.setData({ addresses: res.data || [] });
+      this.setData({ 
+        addresses: res.data || [],
+        loading: false
+      });
+    }).catch(() => {
+      this.setData({ loading: false });
     });
   },
 
@@ -40,8 +55,27 @@ Page({
   },
 
   deleteAddress(e) {
-    wx.showModal({ title: '确认删除此地址？', success: res => {
-      if (res.confirm) api.deleteAddress(e.currentTarget.dataset.id).then(() => this.loadAddresses());
-    }});
+    wx.showModal({ 
+      title: '确认删除',
+      content: '确定要删除这个收货地址吗？',
+      confirmColor: '#FF8A65',
+      success: res => {
+        if (res.confirm) {
+          api.deleteAddress(e.currentTarget.dataset.id).then(() => {
+            wx.showToast({ title: '删除成功', icon: 'success' });
+            this.loadAddresses();
+          });
+        }
+      }
+    });
+  },
+
+  goBack() {
+    const pages = getCurrentPages();
+    if (pages.length > 1) {
+      wx.navigateBack();
+    } else {
+      wx.switchTab({ url: '/pages/profile/profile' });
+    }
   }
 });

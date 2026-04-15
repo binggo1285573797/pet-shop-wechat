@@ -1,48 +1,67 @@
 <view class="address-page">
-  <scroll-view scroll-y class="address-scroll" style="padding-top: calc(40rpx + env(safe-area-inset-top));">
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav">
+    <view class="nav-content">
+      <view class="back-btn" bindtap="goBack">
+        <text class="material-symbols-outlined back-icon">arrow_back</text>
+      </view>
+      <text class="nav-title">收货地址</text>
+      <view class="nav-placeholder"></view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="address-scroll">
     <view class="address-container">
       <!-- Address List -->
       <view class="address-list" wx:if="{{addresses.length > 0}}">
         <view
-          class="address-card"
+          class="address-card {{item.isDefault === 1 ? 'default' : ''}}"
           wx:for="{{addresses}}"
           wx:key="id"
           bindtap="{{isSelect ? 'selectAddress' : ''}}"
           data-address="{{item}}"
         >
-          <view class="address-main">
-            <view class="address-icon-box">
-              <text class="material-symbols-outlined address-icon">location_on</text>
-            </view>
-            <view class="address-info">
-              <view class="address-user-row">
+          <!-- 选中标记 -->
+          <view class="select-indicator" wx:if="{{isSelect}}">
+            <text class="material-symbols-outlined">check_circle</text>
+          </view>
+
+          <!-- 卡片内容区域 -->
+          <view class="card-content">
+            <view class="address-header">
+              <view class="address-user">
                 <text class="address-name">{{item.receiverName}}</text>
                 <text class="address-phone">{{item.receiverPhone}}</text>
                 <view class="default-badge" wx:if="{{item.isDefault === 1}}">
                   <text>默认</text>
                 </view>
               </view>
-              <text class="address-detail">{{item.detailAddress}}</text>
+            </view>
+            <view class="address-body">
+              <text class="address-detail">{{item.region}} {{item.detailAddress}}</text>
+            </view>
+            <!-- 设为默认按钮 -->
+            <view class="default-action-row" wx:if="{{item.isDefault !== 1 && !isSelect}}">
+              <view class="set-default-btn" catchtap="setDefault" data-id="{{item.id}}">
+                <text class="material-symbols-outlined default-icon">check_circle</text>
+                <text class="default-text">设为默认</text>
+              </view>
             </view>
           </view>
-          <view class="address-actions" catchtap="stopPropagation">
-            <view
-              class="action-btn set-default-btn"
-              wx:if="{{item.isDefault !== 1}}"
-              bindtap="setDefault"
-              data-id="{{item.id}}"
-            >
-              <text class="material-symbols-outlined action-icon">star</text>
-              <text class="action-text">设为默认</text>
-            </view>
-            <view class="action-btn edit-btn" bindtap="editAddress" data-item="{{item}}">
+
+          <!-- 操作按钮区域 -->
+          <view class="card-actions" wx:if="{{!isSelect}}">
+            <view class="action-btn edit-btn" catchtap="editAddress" data-item="{{item}}">
               <text class="material-symbols-outlined action-icon">edit</text>
-              <text class="action-text">编辑</text>
             </view>
-            <view class="action-btn delete-btn" bindtap="deleteAddress" data-id="{{item.id}}">
+            <view class="action-btn delete-btn" catchtap="deleteAddress" data-id="{{item.id}}">
               <text class="material-symbols-outlined action-icon">delete</text>
-              <text class="action-text">删除</text>
             </view>
+          </view>
+
+          <!-- Decorative Element -->
+          <view class="decorative-plant">
+            <text class="material-symbols-outlined plant-icon">potted_plant</text>
           </view>
         </view>
       </view>
@@ -50,29 +69,28 @@
       <!-- Empty State -->
       <view class="empty-state" wx:if="{{addresses.length === 0 && !loading}}">
         <view class="empty-icon-box">
-          <text class="material-symbols-outlined empty-icon">location_on</text>
+          <text class="material-symbols-outlined empty-icon">location_off</text>
         </view>
         <text class="empty-title">还没有收货地址</text>
-        <text class="empty-desc">快来添加收货地址吧~</text>
-        <view class="empty-btn" bindtap="addAddress">
-          <text class="material-symbols-outlined btn-icon">add</text>
-          <text>新增地址</text>
-        </view>
+        <text class="empty-desc">添加收货地址，让商品准确送达</text>
       </view>
 
       <!-- Loading -->
       <view class="loading-state" wx:if="{{loading}}">
+        <view class="loading-spinner"></view>
         <text class="loading-text">加载中...</text>
       </view>
+
+      <!-- Bottom Spacer -->
+      <view class="bottom-spacer"></view>
     </view>
   </scroll-view>
 
-  <!-- Add Button (Fixed) -->
-  <view class="fab-add" bindtap="addAddress">
-    <text class="material-symbols-outlined fab-icon">add</text>
+  <!-- Sticky Bottom Button -->
+  <view class="bottom-button-area">
+    <view class="add-address-btn" bindtap="addAddress">
+      <text class="material-symbols-outlined btn-icon">add_location_alt</text>
+      <text class="btn-text">新增收货地址</text>
+    </view>
   </view>
-
-  <!-- Decorative Blurs -->
-  <view class="blur-top-right"></view>
-  <view class="blur-bottom-left"></view>
 </view>

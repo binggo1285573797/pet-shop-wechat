@@ -1,3 +1,362 @@
-/* pages/profile/address-edit/address-edit.wxss */
-.info-field { margin-bottom: 8rpx; }
-.form-input { flex: 1; font-size: 30rpx; color: var(--text-primary); height: 96rpx; }
+/* pages/profile/address-edit/address-edit.wxss - Stitch设计风格 */
+.address-edit-page {
+  width: 100vw;
+  min-height: 100vh;
+  background: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* ========== 自定义导航栏 ========== */
+.custom-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(249, 249, 249, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding-top: var(--status-bar-height, 44rpx);
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 88rpx;
+  padding: 0 32rpx;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: rgba(255, 138, 101, 0.1);
+  transition: all 0.2s ease;
+}
+
+.back-btn:active {
+  background: rgba(255, 138, 101, 0.2);
+  transform: scale(0.95);
+}
+
+.back-icon {
+  font-size: 32rpx;
+  color: #FF8A65;
+}
+
+.nav-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #1a1c1c;
+}
+
+.nav-placeholder {
+  width: 72rpx;
+}
+
+/* ========== 页面内容 ========== */
+.edit-scroll {
+  flex: 1;
+  padding-top: calc(var(--status-bar-height, 44rpx) + 88rpx);
+}
+
+.edit-container {
+  padding: 24rpx 32rpx;
+}
+
+/* 页面标题区域 */
+.page-header-section {
+  margin-bottom: 32rpx;
+  padding: 0 8rpx;
+}
+
+.page-subtitle {
+  font-size: 26rpx;
+  color: #89726b;
+}
+
+/* Form Card */
+.form-card {
+  background: #ffffff;
+  border-radius: 28rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.04);
+  margin-bottom: 24rpx;
+}
+
+.form-item {
+  margin-bottom: 32rpx;
+}
+
+.form-item:last-child {
+  margin-bottom: 0;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.label-icon {
+  font-size: 32rpx;
+  color: #FF8A65;
+}
+
+.form-label-text {
+  font-size: 28rpx;
+  color: #56423c;
+  font-weight: 600;
+}
+
+.form-input {
+  height: 88rpx;
+  background: #f5f5f5;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 30rpx;
+  color: #1a1c1c;
+}
+
+.form-input.error {
+  background: #fff2f0;
+  border: 2rpx solid #ff4d4f;
+}
+
+.input-placeholder {
+  color: #cccccc;
+}
+
+.error-text {
+  font-size: 24rpx;
+  color: #ff4d4f;
+  margin-top: 12rpx;
+}
+
+/* Picker */
+.form-item-picker {
+  cursor: pointer;
+}
+
+.picker-value {
+  height: 88rpx;
+  background: #f5f5f5;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 30rpx;
+  color: #cccccc;
+}
+
+.picker-value.has-value {
+  color: #1a1c1c;
+}
+
+.picker-arrow {
+  font-size: 32rpx;
+  color: #999999;
+}
+
+/* Textarea */
+.form-item-textarea {
+  margin-bottom: 0;
+}
+
+.form-item-textarea .form-label {
+  margin-bottom: 16rpx;
+}
+
+.form-textarea {
+  width: calc(100% - 48rpx);
+  height: 160rpx;
+  background: #f5f5f5;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  font-size: 30rpx;
+  color: #1a1c1c;
+  line-height: 1.5;
+  box-sizing: content-box;
+}
+
+/* Switch Card */
+.switch-card {
+  background: #ffffff;
+  border-radius: 28rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.04);
+  margin-bottom: 48rpx;
+}
+
+.switch-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.switch-label {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.switch-icon {
+  font-size: 32rpx;
+  color: #FF8A65;
+}
+
+.switch-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.switch-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1a1c1c;
+}
+
+.switch-desc {
+  font-size: 24rpx;
+  color: #89726b;
+}
+
+/* Save Button */
+.save-btn {
+  background: #e0e0e0;
+  color: #ffffff;
+  height: 96rpx;
+  border-radius: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.save-btn.active {
+  background: linear-gradient(135deg, #FF8A65 0%, #FF7043 100%);
+  box-shadow: 0 12rpx 36rpx rgba(255, 138, 101, 0.3);
+}
+
+.save-text {
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.bottom-spacer {
+  height: 60rpx;
+}
+
+/* Picker Popup */
+.picker-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.picker-popup.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+.picker-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.picker-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-radius: 32rpx 32rpx 0 0;
+  transform: translateY(100%);
+  transition: transform 0.3s;
+}
+
+.picker-popup.show .picker-content {
+  transform: translateY(0);
+}
+
+.picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx;
+  border-bottom: 2rpx solid #f5f5f5;
+}
+
+.picker-cancel {
+  font-size: 30rpx;
+  color: #89726b;
+}
+
+.picker-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1a1c1c;
+}
+
+.picker-confirm {
+  font-size: 30rpx;
+  color: #FF8A65;
+  font-weight: 600;
+}
+
+.picker-view {
+  height: 480rpx;
+  padding: 24rpx 0;
+}
+
+.picker-item {
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #56423c;
+}
+
+/* Decorative Blurs */
+.blur-top-right {
+  position: fixed;
+  top: 15%;
+  right: -160rpx;
+  width: 320rpx;
+  height: 320rpx;
+  background: rgba(255, 138, 101, 0.05);
+  border-radius: 50%;
+  filter: blur(80rpx);
+  z-index: -1;
+}
+
+.blur-bottom-left {
+  position: fixed;
+  bottom: 15%;
+  left: -200rpx;
+  width: 400rpx;
+  height: 400rpx;
+  background: rgba(255, 138, 101, 0.08);
+  border-radius: 50%;
+  filter: blur(100rpx);
+  z-index: -1;
+}

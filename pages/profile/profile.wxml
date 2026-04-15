@@ -27,7 +27,7 @@
             <text class="material-symbols-outlined">edit</text>
           </view>
         </view>
-        <text class="user-name">{{userInfo.username || '布丁的铲屎官'}}</text>
+        <text class="user-name">{{userInfo.nickname || userInfo.username || '布丁的铲屎官'}}</text>
       </view>
     </view>
 

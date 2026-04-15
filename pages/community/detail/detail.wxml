@@ -1,148 +1,142 @@
+<!--pages/community/detail/detail.wxml - Stitch 风格帖子详情页面-->
 <view class="detail-page">
-  <!-- TopAppBar -->
-  <view class="app-header">
-    <view class="header-row">
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav">
+    <view class="nav-content">
       <view class="back-btn" bindtap="goBack">
         <text class="material-symbols-outlined back-icon">arrow_back</text>
       </view>
-      <text class="header-title">帖子详情</text>
-      <view class="header-spacer"></view>
+      <text class="nav-title">帖子详情</text>
+      <!-- 更多操作按钮（仅自己帖子显示） -->
+      <view class="nav-actions" wx:if="{{isMyPost}}">
+        <view class="more-btn" bindtap="showPostActions">
+          <text class="material-symbols-outlined more-icon">more_vert</text>
+        </view>
+      </view>
+      <view class="nav-actions" wx:else></view>
     </view>
   </view>
 
-  <scroll-view scroll-y class="detail-scroll" enhanced>
-    <view class="detail-container" wx:if="{{post}}">
-      <!-- Author Info -->
-      <view class="author-card">
-        <view class="author-main">
-          <view class="author-avatar-box">
-            <image wx:if="{{post.authorAvatar}}" src="{{post.authorAvatar}}" mode="aspectFill" class="author-avatar-img" />
-            <view wx:else class="author-avatar-placeholder">
-              <text class="material-symbols-outlined placeholder-icon">pets</text>
-            </view>
-          </view>
-          <view class="author-info">
-            <view class="author-name-row">
-              <text class="author-name">{{post.authorName || '匿名用户'}}</text>
-              <view class="follow-btn" wx:if="{{!post.isFollowed}}">
-                <text>+ 关注</text>
-              </view>
-            </view>
-            <text class="post-time">{{post.createTimeText}}</text>
-          </view>
-        </view>
-      </view>
-
-      <!-- Post Content -->
-      <view class="content-card">
-        <text class="post-text">{{post.content}}</text>
-
-        <!-- Image Grid -->
-        <view class="post-images" wx:if="{{picList.length > 0}}">
-          <view
-            class="post-img-item {{picList.length === 1 ? 'single' : ''}}"
-            wx:for="{{picList}}"
-            wx:key="index"
-            bindtap="previewImage"
-            data-src="{{item}}"
-          >
-            <image src="{{item}}" mode="aspectFill" class="post-img" />
-          </view>
-        </view>
-
-        <!-- Tags -->
-        <view class="post-tags" wx:if="{{post.tags}}">
-          <text class="post-tag" wx:for="{{post.tags}}" wx:key="index">#{{item}}</text>
-        </view>
-
-        <!-- Stats -->
-        <view class="post-stats">
-          <view class="stat-item">
-            <text class="material-symbols-outlined stat-icon">visibility</text>
-            <text class="stat-value">{{post.viewCount || 0}}</text>
-          </view>
-          <view class="stat-item">
-            <text class="material-symbols-outlined stat-icon {{post.isLiked ? 'icon-fill' : ''}}">favorite</text>
-            <text class="stat-value">{{post.likeCount || 0}}</text>
-          </view>
-          <view class="stat-item">
-            <text class="material-symbols-outlined stat-icon">chat_bubble</text>
-            <text class="stat-value">{{comments.length || 0}}</text>
-          </view>
-        </view>
-      </view>
-
-      <!-- Comments Section -->
-      <view class="comments-section">
-        <view class="comments-header">
-          <text class="comments-title">全部评论 ({{comments.length}})</text>
-        </view>
-
-        <view class="comment-list">
-          <view class="comment-item" wx:for="{{comments}}" wx:key="id">
-            <view class="comment-avatar-box">
-              <image wx:if="{{item.userAvatar}}" src="{{item.userAvatar}}" mode="aspectFill" class="comment-avatar-img" />
-              <view wx:else class="comment-avatar-placeholder">
-                <text class="material-symbols-outlined placeholder-icon">pets</text>
-              </view>
-            </view>
-            <view class="comment-body">
-              <view class="comment-header-row">
-                <text class="comment-author">{{item.userName || '匿名'}}</text>
-                <text class="comment-time">{{item.createTimeText}}</text>
-              </view>
-              <text class="comment-text">{{item.content}}</text>
-              <view class="comment-actions">
-                <view class="comment-action" bindtap="likeComment" data-id="{{item.id}}">
-                  <text class="material-symbols-outlined action-icon {{item.isLiked ? 'icon-fill' : ''}}">favorite</text>
-                  <text class="action-count">{{item.likeCount || 0}}</text>
-                </view>
-                <view class="comment-action" bindtap="replyComment" data-id="{{item.id}}">
-                  <text class="material-symbols-outlined action-icon">reply</text>
-                  <text class="action-count">回复</text>
-                </view>
-              </view>
-            </view>
-          </view>
-        </view>
-
-        <!-- Empty Comments -->
-        <view class="empty-comments" wx:if="{{comments.length === 0}}">
-          <text class="material-symbols-outlined empty-icon">chat_bubble</text>
-          <text class="empty-text">暂无评论，快来抢沙发~</text>
-        </view>
-      </view>
-
-      <view class="bottom-spacer"></view>
+  <!-- 主内容区 -->
+  <scroll-view scroll-y class="detail-content" style="padding-top: calc(var(--status-bar-height, 44rpx) + 88rpx);">
+    <!-- 图片轮播 -->
+    <view class="image-carousel" wx:if="{{picList.length > 0}}">
+      <swiper class="carousel-swiper" indicator-dots="true" autoplay="false" circular="true" indicator-color="rgba(255,255,255,0.4)" indicator-active-color="#ffffff">
+        <swiper-item wx:for="{{picList}}" wx:key="index">
+          <image src="{{item}}" mode="aspectFill" class="carousel-image" bindtap="previewImage" data-src="{{item}}"/>
+        </swiper-item>
+      </swiper>
     </view>
+
+    <!-- 内容卡片 -->
+    <view class="content-card">
+      <!-- 标题 -->
+      <text wx:if="{{post.title}}" class="post-title">{{post.title}}</text>
+      
+      <!-- 作者信息 -->
+      <view class="author-section">
+        <view class="author-info">
+          <view class="author-avatar-wrap">
+            <image wx:if="{{post.authorAvatar}}" class="author-avatar" src="{{post.authorAvatar}}"/>
+            <view wx:else class="author-avatar-default">{{post.authorName ? post.authorName[0] : 'U'}}</view>
+            <view class="author-badge">
+              <text class="material-symbols-outlined badge-icon">pets</text>
+            </view>
+          </view>
+          <text class="author-name">{{post.authorName || '匿名用户'}}</text>
+        </view>
+      </view>
+
+      <!-- 正文内容 -->
+      <view class="post-body">
+        <text class="post-text">{{post.content}}</text>
+      </view>
+
+      <!-- 话题标签 -->
+      <view class="topic-tags" wx:if="{{post.tags}}">
+        <view class="topic-tag" wx:for="{{post.tags}}" wx:key="index">
+          <text>#{{item}}</text>
+        </view>
+      </view>
+
+      <!-- 发布时间 -->
+      <view class="post-meta">
+        <text class="meta-text">{{post.createTimeText}}</text>
+      </view>
+    </view>
+
+    <!-- 评论区 -->
+    <view class="comment-section">
+      <view class="comment-header">
+        <text class="comment-title">评论</text>
+        <text class="comment-count">({{comments.length}})</text>
+      </view>
+
+      <!-- 评论列表 -->
+      <view class="comment-list" wx:if="{{comments.length > 0}}">
+        <view class="comment-item" wx:for="{{comments}}" wx:key="id">
+          <view class="comment-avatar-wrap">
+            <image wx:if="{{item.userAvatar}}" class="comment-avatar" src="{{item.userAvatar}}"/>
+            <view wx:else class="comment-avatar-default">{{item.userName ? item.userName[0] : 'U'}}</view>
+          </view>
+          <view class="comment-body">
+            <view class="comment-author-row">
+              <text class="comment-author-name">{{item.userName || '匿名用户'}}</text>
+            </view>
+            <text class="comment-text">{{item.content}}</text>
+            <view class="comment-footer">
+              <text class="comment-time">{{item.createTimeText}}</text>
+              <text class="comment-reply">回复</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 空评论状态 -->
+      <view class="empty-comment" wx:else>
+        <text class="material-symbols-outlined empty-icon">chat</text>
+        <text class="empty-text">还没有评论，快来抢沙发吧~</text>
+      </view>
+    </view>
+
+    <!-- 底部间距 -->
+    <view style="height: 160rpx;"></view>
   </scroll-view>
 
-  <!-- Comment Input Bar -->
-  <view class="comment-bar">
-    <view class="comment-input-wrap">
-      <input
-        class="comment-input"
-        placeholder="写下你的评论..."
-        value="{{commentText}}"
-        bindinput="onCommentInput"
-        confirm-type="send"
-        bindconfirm="submitComment"
-      />
+  <!-- 底部互动栏 -->
+  <view class="interaction-bar">
+    <view class="comment-input-wrapper" bindtap="focusComment">
+      <text class="input-placeholder">说点什么吧...</text>
     </view>
-    <view class="comment-actions-row">
-      <view class="action-btn {{post.isLiked ? 'liked' : ''}}" bindtap="likePost">
-        <text class="material-symbols-outlined action-icon {{post.isLiked ? 'icon-fill' : ''}}">favorite</text>
+    <view class="interaction-actions">
+      <view class="action-item" bindtap="likePost">
+        <text class="material-symbols-outlined action-icon {{post.isLiked ? 'active' : ''}}" style="{{post.isLiked ? 'font-variation-settings: &quot;FILL&quot; 1;' : ''}}">pets</text>
+        <text class="action-count {{post.isLiked ? 'active' : ''}}">{{post.likeCount || 0}}</text>
       </view>
-      <view class="action-btn" bindtap="sharePost">
-        <text class="material-symbols-outlined action-icon">share</text>
+      <view class="action-item" bindtap="collectPost">
+        <text class="material-symbols-outlined action-icon {{post.isCollected ? 'active' : ''}}" style="{{post.isCollected ? 'font-variation-settings: &quot;FILL&quot; 1;' : ''}}">bookmark</text>
+        <text class="action-count {{post.isCollected ? 'active' : ''}}">{{post.collectCount || 0}}</text>
       </view>
-    </view>
-    <view class="send-btn" bindtap="submitComment">
-      <text>发送</text>
     </view>
   </view>
 
-  <!-- Decorative Blurs -->
-  <view class="blur-top-left"></view>
-  <view class="blur-bottom-right"></view>
+  <!-- 评论输入弹窗 -->
+  <view class="comment-modal" wx:if="{{showCommentInput}}">
+    <view class="modal-mask" bindtap="hideCommentInput"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-cancel" bindtap="hideCommentInput">取消</text>
+        <text class="modal-title">写评论</text>
+        <text class="modal-submit {{commentText ? 'active' : ''}}" bindtap="submitComment">发送</text>
+      </view>
+      <textarea 
+        class="modal-textarea" 
+        placeholder="说点什么吧..." 
+        value="{{commentText}}"
+        bindinput="onCommentInput"
+        focus="{{showCommentInput}}"
+        maxlength="500"
+      />
+    </view>
+  </view>
 </view>

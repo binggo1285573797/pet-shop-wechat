@@ -1,144 +1,76 @@
+<!--pages/community/post/post.wxml - Stitch 风格发布帖子页面-->
 <view class="post-page">
-  <!-- TopAppBar -->
-  <view class="app-header">
-    <view class="header-row">
+  <!-- 顶部导航栏 -->
+  <view class="post-header">
+    <view class="header-left">
       <view class="back-btn" bindtap="goBack">
-        <text class="material-symbols-outlined back-icon">close</text>
+        <text class="material-symbols-outlined back-icon">arrow_back</text>
       </view>
-      <text class="header-title">发布帖子</text>
-      <view class="post-btn {{canPost ? 'active' : ''}}" bindtap="submitPost">
-        <text>发布</text>
-      </view>
+      <text class="material-symbols-outlined header-icon">pets</text>
+      <text class="header-title">爱宠家</text>
     </view>
   </view>
 
-  <scroll-view scroll-y class="post-scroll">
-    <view class="post-container">
-      <!-- Category Select -->
-      <view class="category-section">
-        <view class="section-label">
-          <text class="material-symbols-outlined label-icon">category</text>
-          <text>选择分类</text>
-        </view>
-        <scroll-view scroll-x class="category-scroll" enhanced show-scrollbar="{{false}}">
-          <view class="category-list">
-            <view
-              class="category-item {{selectedCategory === item.value ? 'active' : ''}}"
-              wx:for="{{categories}}"
-              wx:key="value"
-              bindtap="selectCategory"
-              data-value="{{item.value}}"
-            >
-              <text class="category-emoji">{{item.emoji}}</text>
-              <text class="category-name">{{item.label}}</text>
-            </view>
-          </view>
-        </scroll-view>
-      </view>
-
-      <!-- Content Input -->
-      <view class="content-section">
-        <view class="section-label">
-          <text class="material-symbols-outlined label-icon">edit_note</text>
-          <text>分享内容</text>
-        </view>
-        <view class="content-card">
-          <textarea
-            class="content-textarea"
-            placeholder="分享你和宠物的故事，或提问求助~"
-            value="{{content}}"
-            bindinput="onContentInput"
-            maxlength="500"
-            auto-height
-          />
-          <view class="char-count">{{content.length}}/500</view>
-        </view>
-      </view>
-
-      <!-- Image Upload -->
-      <view class="image-section">
-        <view class="section-label">
-          <text class="material-symbols-outlined label-icon">image</text>
-          <text>添加图片</text>
-          <text class="section-hint">(选填，最多9张)</text>
-        </view>
-        <view class="image-grid">
-          <view
-            class="image-item"
-            wx:for="{{images}}"
-            wx:key="index"
-          >
-            <image src="{{item}}" mode="aspectFill" class="uploaded-img" />
-            <view class="image-remove" bindtap="removeImage" data-index="{{index}}">
-              <text class="material-symbols-outlined remove-icon">close</text>
-            </view>
-          </view>
-          <view
-            class="image-add {{images.length >= 9 ? 'disabled' : ''}}"
-            wx:if="{{images.length < 9}}"
-            bindtap="chooseImage"
-          >
-            <text class="material-symbols-outlined add-icon">add_photo_alternate</text>
-            <text class="add-text">添加图片</text>
-          </view>
-        </view>
-      </view>
-
-      <!-- Tags -->
-      <view class="tags-section">
-        <view class="section-label">
-          <text class="material-symbols-outlined label-icon">tag</text>
-          <text>添加话题</text>
-        </view>
-        <view class="tags-card">
-          <view class="tags-input-row">
-            <input
-              class="tag-input"
-              placeholder="输入话题后点击添加"
-              value="{{tagInput}}"
-              bindinput="onTagInput"
-              confirm-type="done"
-              bindconfirm="addTag"
-            />
-            <view class="add-tag-btn" bindtap="addTag">
-              <text class="material-symbols-outlined">add</text>
-            </view>
-          </view>
-          <view class="tags-list" wx:if="{{tags.length > 0}}">
-            <view class="tag-item" wx:for="{{tags}}" wx:key="index">
-              <text>#{{item}}</text>
-              <view class="tag-remove" bindtap="removeTag" data-index="{{index}}">
-                <text class="material-symbols-outlined">close</text>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-
-      <!-- Suggestions -->
-      <view class="suggestions-section">
-        <view class="section-label">
-          <text class="material-symbols-outlined label-icon">auto_awesome</text>
-          <text>推荐话题</text>
-        </view>
-        <view class="suggestions-list">
-          <view
-            class="suggestion-item"
-            wx:for="{{suggestions}}"
-            wx:key="index"
-            bindtap="addSuggestion"
-            data-tag="{{item}}"
-          >
-            <text>#{{item}}</text>
-          </view>
-        </view>
-      </view>
-
-      <view class="bottom-spacer"></view>
+  <!-- 主内容区 -->
+  <scroll-view scroll-y class="post-content">
+    <!-- 输入卡片 -->
+    <view class="input-card">
+      <input
+        class="title-input"
+        placeholder="填写标题（必填）"
+        value="{{title}}"
+        bindinput="onTitleInput"
+      />
+      <textarea
+        class="content-textarea"
+        placeholder="分享关于宠物的一切..."
+        value="{{content}}"
+        bindinput="onContentInput"
+        maxlength="500"
+        auto-height
+      />
     </view>
+
+    <!-- 图片上传网格 -->
+    <view class="media-grid">
+      <!-- 已上传图片 -->
+      <view class="media-item" wx:for="{{images}}" wx:key="index">
+        <image class="media-image" src="{{item}}" mode="aspectFill"/>
+        <view class="media-delete" bindtap="removeImage" data-index="{{index}}">
+          <text class="material-symbols-outlined">close</text>
+        </view>
+      </view>
+      <!-- 上传按钮 -->
+      <view class="upload-btn" wx:if="{{images.length < 9}}" bindtap="chooseImage">
+        <text class="material-symbols-outlined upload-icon">photo_camera</text>
+        <text class="upload-text">添加图片/视频</text>
+      </view>
+      <!-- 占位 -->
+      <view 
+        class="media-placeholder" 
+        wx:for="{{9 - images.length - (images.length < 9 ? 1 : 0)}}" 
+        wx:key="index"
+      ></view>
+    </view>
+
+    <!-- 底部间距 -->
+    <view style="height: 240rpx;"></view>
   </scroll-view>
 
-  <!-- Decorative Blurs -->
-  <view class="blur-top-left"></view>
-  <view class="blur-bottom-right"></view>
+  <!-- 底部固定操作栏 -->
+  <view class="action-bar">
+    <view class="submit-btn {{canPost ? 'active' : ''}}" bindtap="submitPost">
+      <text>发布帖子</text>
+    </view>
+    <view class="action-options">
+      <view class="action-option">
+        <text class="material-symbols-outlined action-icon">visibility</text>
+        <text class="action-text">所有人可见</text>
+      </view>
+      <view class="action-option">
+        <text class="material-symbols-outlined action-icon">save</text>
+        <text class="action-text">保存草稿</text>
+      </view>
+    </view>
+  </view>
 </view>

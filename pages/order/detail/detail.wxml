@@ -18,7 +18,7 @@
     <!-- 商品 -->
     <view class="card" style="margin:0 24rpx 24rpx;">
       <view class="confirm-section-title">🛒 商品明细</view>
-      <view class="confirm-product-item" wx:for="{{order.orderItems}}" wx:key="id">
+      <view class="confirm-product-item" wx:for="{{items}}" wx:key="id">
         <view class="cart-img-box"><text style="font-size:48rpx;">🐾</text></view>
         <view class="confirm-item-info">
           <text class="cart-item-name">{{item.productName}}</text>

@@ -1,1 +1,4 @@
-{ "navigationBarTitleText": "添加爱宠" }
+{
+  "navigationStyle": "custom",
+  "usingComponents": {}
+}

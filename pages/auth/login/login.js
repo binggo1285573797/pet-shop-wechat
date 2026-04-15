@@ -9,10 +9,34 @@ Page({
   },
 
   onLoad() {
-    // 如已登录则跳过
+    // 检查是否已登录
+    this.checkAlreadyLogin();
+  },
+
+  onShow() {
+    // 每次显示页面时再次检查登录状态
+    this.checkAlreadyLogin();
+  },
+
+  // 检查是否已登录，如果已登录则跳转到首页
+  checkAlreadyLogin() {
     const token = wx.getStorageSync('token');
-    if (token) {
-      wx.reLaunch({ url: '/pages/index/index' });
+    const app = getApp();
+    
+    if (token && app) {
+      console.log('[Login] 检测到已登录，准备跳转首页');
+      // 延迟一点跳转，避免页面闪烁
+      setTimeout(() => {
+        wx.reLaunch({ 
+          url: '/pages/index/index',
+          success: () => {
+            console.log('[Login] 已跳转到首页');
+          },
+          fail: (err) => {
+            console.error('[Login] 跳转失败:', err);
+          }
+        });
+      }, 100);
     }
   },
 
@@ -36,20 +60,65 @@ Page({
     }
 
     this.setData({ loading: true });
+    
     api.login({ username: username.trim(), password }).then(res => {
       const token = res.data;
-      wx.setStorageSync('token', token);
-      // 获取用户详情可等跳转后由首页或者Profile页去拿，这里先存Token
       const app = getApp();
-      app.globalData.token = token;
+      
+      // 使用app的方法设置登录状态
+      if (app && app.setLoginState) {
+        app.setLoginState(token, null);
+      } else {
+        // 兼容旧版本
+        wx.setStorageSync('token', token);
+        if (app) {
+          app.globalData.token = token;
+        }
+      }
+
+      // 获取用户信息
+      this.fetchUserInfo();
 
       wx.showToast({ title: '登录成功', icon: 'success' });
       setTimeout(() => {
         wx.reLaunch({ url: '/pages/index/index' });
       }, 800);
-    }).catch(() => {
+    }).catch((err) => {
+      console.error('[Login] 登录失败:', err);
       this.setData({ loading: false });
+      
+      // 检查是否是账号被封禁的错误
+      if (err.code === 4011) {
+        wx.showModal({
+          title: '账号已被封禁',
+          content: '您的账号已被封禁，请联系管理员解封',
+          showCancel: false,
+          confirmText: '知道了',
+          confirmColor: '#FF8A65'
+        });
+      } else if (err.code === 4022) {
+        wx.showModal({
+          title: '店铺已被停用',
+          content: '您的店铺已被停用，请联系管理员',
+          showCancel: false,
+          confirmText: '知道了',
+          confirmColor: '#FF8A65'
+        });
+      } else {
+        wx.showToast({ title: err.message || '登录失败，请检查账号密码', icon: 'none' });
+      }
     });
+  },
+
+  // 获取用户信息
+  fetchUserInfo() {
+    const app = getApp();
+    api.getUserInfo().then(res => {
+      if (res.data && app) {
+        app.globalData.userInfo = res.data;
+        wx.setStorageSync('userInfo', res.data);
+      }
+    }).catch(() => {});
   },
 
   goToRegister() {

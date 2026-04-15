@@ -22,11 +22,11 @@
       <scroll-view class="cat-scroll" scroll-x enable-flex enhanced show-scrollbar="{{false}}">
         <view class="cat-list">
           <view
-            class="cat-item {{activeCategoryId === 0 ? 'active' : ''}}"
+            class="cat-item {{activeCategoryId === '' ? 'active' : ''}}"
             bindtap="onCategoryTap"
-            data-id="{{0}}"
+            data-id=""
           >
-            <text class="material-symbols-outlined cat-icon" style="font-variation-settings: 'FILL' {{activeCategoryId === 0 ? 1 : 0}};">apps</text>
+            <text class="material-symbols-outlined cat-icon" style="font-variation-settings: 'FILL' {{activeCategoryId === '' ? 1 : 0}};">apps</text>
             <text class="cat-name">全部</text>
           </view>
           <view
@@ -36,12 +36,8 @@
             bindtap="onCategoryTap"
             data-id="{{item.id}}"
           >
-            <text class="material-symbols-outlined cat-icon" style="font-variation-settings: 'FILL' {{activeCategoryId === item.id ? 1 : 0}};">{{item.icon || 'category'}}</text>
+            <text class="material-symbols-outlined cat-icon" style="font-variation-settings: 'FILL' {{activeCategoryId === item.id ? 1 : 0}};">{{item.icon}}</text>
             <text class="cat-name">{{item.name}}</text>
-          </view>
-          <!-- 如果没有分类数据，显示提示 -->
-          <view class="cat-empty" wx:if="{{categories.length === 0}}">
-            <text class="cat-empty-text">暂无分类</text>
           </view>
         </view>
       </scroll-view>

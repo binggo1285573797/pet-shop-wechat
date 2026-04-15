@@ -15,7 +15,8 @@ Page({
   onLoad(options) {
     const sysInfo = wx.getSystemInfoSync();
     this.setData({ statusBarHeight: sysInfo.statusBarHeight || 20 });
-    this.productId = options.id || 1; // 仅测试
+    // 确保 productId 是数字类型
+    this.productId = parseInt(options.id) || 1;
     this.loadDetail();
   },
 
@@ -70,21 +71,41 @@ Page({
     }).catch((err) => {
       console.error('[detail] loadDetail error:', err);
       this.setData({ loading: false });
+      wx.showToast({ title: '加载商品失败', icon: 'none' });
     });
   },
 
   addToCart() {
-    api.addToCart({ productId: this.productId, quantity: 1 }).then(() => {
+    const app = getApp();
+    if (!app.checkLogin()) return;
+
+    // 确保 productId 是数字类型
+    const productId = parseInt(this.productId);
+    console.log('加入购物车:', { productId, quantity: 1 });
+
+    api.addToCart({ productId: productId, quantity: 1 }).then(() => {
       wx.showToast({ title: '已加入购物车', icon: 'success' });
-      getApp().updateCartCount();
-      this.setData({ cartCount: getApp().globalData.cartCount });
+      if (app.updateCartCount) {
+        app.updateCartCount();
+      }
+      this.setData({ cartCount: app.globalData.cartCount || 0 });
+    }).catch(err => {
+      console.error('加入购物车失败:', err);
+      wx.showToast({ title: err.message || '加入购物车失败', icon: 'none' });
     });
   },
 
   buyNow() {
-    // 直接带单个商品到确认订单页
+    const app = getApp();
+    if (!app.checkLogin()) return;
+
     const p = this.data.product;
-    const info = encodeURIComponent(JSON.stringify([{ productId: p.id, quantity: 1 }]));
+    if (!p) {
+      wx.showToast({ title: '商品信息加载中', icon: 'none' });
+      return;
+    }
+    
+    const info = encodeURIComponent(JSON.stringify([{ productId: parseInt(p.id), quantity: 1 }]));
     wx.navigateTo({ url: `/pages/order/confirm/confirm?items=${info}` });
   }
 });

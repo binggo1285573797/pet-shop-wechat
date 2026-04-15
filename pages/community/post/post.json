@@ -1,1 +1,4 @@
-{ "navigationBarTitleText": "发布帖子" }
+{
+  "navigationStyle": "custom",
+  "usingComponents": {}
+}

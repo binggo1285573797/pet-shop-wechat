@@ -15,64 +15,22 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setSelected(3);
     }
-    // 开发预览时使用模拟数据
-    this.loadMockData();
-    // 实际使用时调用 this.loadCart();
-  },
-
-  // 模拟数据用于预览
-  loadMockData() {
-    const mockItems = [
-      {
-        id: 1,
-        productId: 101,
-        productName: '全价成猫粮 鸡肉味 5kg',
-        productPrice: 168.00,
-        quantity: 1,
-        spec: '5kg装',
-        productPic: '',
-        checked: true
-      },
-      {
-        id: 2,
-        productId: 102,
-        productName: '天然无谷狗粮 牛肉配方 2kg',
-        productPrice: 128.00,
-        quantity: 2,
-        spec: '2kg装',
-        productPic: '',
-        checked: true
-      },
-      {
-        id: 3,
-        productId: 103,
-        productName: '宠物零食冻干鸡肉粒 500g',
-        productPrice: 45.00,
-        quantity: 1,
-        spec: '500g装',
-        productPic: '',
-        checked: false
-      }
-    ];
-    this.setData({ cartItems: mockItems, loading: false });
-    this.calcTotal();
+    this.loadCart();
   },
 
   loadCart() {
     this.setData({ loading: true });
     api.getCartList().then(res => {
-      console.log('购物车数据:', res.data);
       const items = (res.data || []).map(item => ({
         ...item,
         checked: true,
-        productPic: util.getFirstPic(item.product?.picUrls || item.productPic || '')
+        productPic: item.productPic || ''
       }));
       this.setData({ cartItems: items, loading: false });
       this.calcTotal();
     }).catch(err => {
       console.error('加载购物车失败:', err);
-      this.setData({ loading: false });
-      wx.showToast({ title: '加载失败', icon: 'none' });
+      this.setData({ loading: false, cartItems: [] });
     });
   },
 
@@ -81,7 +39,7 @@ Page({
     const checkedItems = items.filter(i => i.checked);
     const total = checkedItems.reduce((sum, i) => sum + (i.productPrice || 0) * (i.quantity || 1), 0);
     this.setData({
-      totalPrice: util.formatPrice(total),
+      totalPrice: total.toFixed(2),
       checkedCount: checkedItems.length,
       allChecked: items.length > 0 && items.every(i => i.checked)
     });
@@ -105,12 +63,14 @@ Page({
     const id = e.currentTarget.dataset.id;
     const item = this.data.cartItems.find(i => i.id === id);
     if (!item) return;
+
+    if (item.quantity >= item.stock) {
+      wx.showToast({ title: '已达库存上限', icon: 'none' });
+      return;
+    }
     
     api.updateCartItem({ id, quantity: item.quantity + 1 }).then(() => {
       this.loadCart();
-      if (getApp().updateCartCount) {
-        getApp().updateCartCount();
-      }
     }).catch(() => {
       wx.showToast({ title: '更新失败', icon: 'none' });
     });
@@ -128,9 +88,6 @@ Page({
     
     api.updateCartItem({ id, quantity: item.quantity - 1 }).then(() => {
       this.loadCart();
-      if (getApp().updateCartCount) {
-        getApp().updateCartCount();
-      }
     }).catch(() => {
       wx.showToast({ title: '更新失败', icon: 'none' });
     });
@@ -146,9 +103,6 @@ Page({
           api.deleteCartItem(id).then(() => {
             wx.showToast({ title: '已删除', icon: 'success' });
             this.loadCart();
-            if (getApp().updateCartCount) {
-              getApp().updateCartCount();
-            }
           }).catch(() => {
             wx.showToast({ title: '删除失败', icon: 'none' });
           });
@@ -161,6 +115,12 @@ Page({
     const checked = this.data.cartItems.filter(i => i.checked);
     if (checked.length === 0) {
       wx.showToast({ title: '请选择商品', icon: 'none' });
+      return;
+    }
+    // 检查是否有下架商品
+    const offShelf = checked.filter(i => i.publishStatus === 0);
+    if (offShelf.length > 0) {
+      wx.showToast({ title: '包含已下架商品，请移除', icon: 'none' });
       return;
     }
     const cartIds = checked.map(i => i.id);

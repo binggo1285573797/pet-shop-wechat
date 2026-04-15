@@ -21,10 +21,10 @@
     <!-- Registration Form Card -->
     <view class="register-card">
       <view class="form-group">
-        <text class="form-label">用户名</text>
+        <text class="form-label">账号</text>
         <view class="input-group-auth">
           <text class="material-symbols-outlined input-icon">pets</text>
-          <input class="auth-input" placeholder="设置用户名" placeholder-class="auth-placeholder" bindinput="onInputUsername" />
+          <input class="auth-input" placeholder="设置账号" placeholder-class="auth-placeholder" bindinput="onInputUsername" />
         </view>
       </view>
 

@@ -1,36 +1,62 @@
 <view class="info-page">
   <scroll-view scroll-y class="info-scroll" style="margin-top: 0;">
     <view class="info-container">
+      <!-- 网络信息提示 -->
+      <view class="network-info" bindtap="testNetwork">
+        <text class="material-symbols-outlined network-icon">wifi</text>
+        <text class="network-text">{{networkInfo}}</text>
+        <text class="material-symbols-outlined network-arrow">chevron_right</text>
+      </view>
+
       <!-- Avatar Card -->
       <view class="avatar-card">
         <view class="avatar-section" bindtap="changeAvatar">
-          <view class="avatar-circle">
+          <view class="avatar-circle {{uploadingAvatar ? 'uploading' : ''}}">
             <image wx:if="{{userInfo.avatar}}" src="{{userInfo.avatar}}" mode="aspectFill" class="avatar-img" />
             <view wx:else class="avatar-placeholder">
               <text class="material-symbols-outlined">person</text>
+            </view>
+            <!-- 上传中遮罩 -->
+            <view wx:if="{{uploadingAvatar}}" class="avatar-loading">
+              <view class="loading-spinner"></view>
             </view>
           </view>
           <view class="avatar-change">
             <text class="material-symbols-outlined change-icon">camera_alt</text>
           </view>
         </view>
-        <text class="avatar-hint">点击更换头像</text>
+        <text class="avatar-hint">{{uploadingAvatar ? '上传中...' : '点击更换头像'}}</text>
       </view>
 
       <!-- Profile Card -->
       <view class="profile-card">
+        <!-- 登录账号（只读） -->
+        <view class="form-item">
+          <view class="form-label">
+            <text class="material-symbols-outlined label-icon">account_circle</text>
+            <text>登录账号</text>
+          </view>
+          <text class="form-text readonly">{{userInfo.username || '-'}}</text>
+        </view>
+        <view class="form-divider"></view>
+        <!-- 昵称（可编辑） -->
         <view class="form-item">
           <view class="form-label">
             <text class="material-symbols-outlined label-icon">person</text>
-            <text>用户名</text>
+            <text>昵称</text>
           </view>
+          <!-- 编辑模式显示输入框 -->
           <input
+            wx:if="{{isEditing}}"
             class="form-input"
-            value="{{form.username}}"
-            bindinput="onUsernameInput"
-            placeholder="请输入用户名"
+            value="{{form.nickname}}"
+            bindinput="onNicknameInput"
+            placeholder="请输入昵称"
             placeholder-class="input-placeholder"
+            maxlength="20"
           />
+          <!-- 只读模式显示文本 -->
+          <text wx:else class="form-text">{{form.nickname || '未设置'}}</text>
         </view>
         <view class="form-divider"></view>
         <view class="form-item">
@@ -38,20 +64,30 @@
             <text class="material-symbols-outlined label-icon">phone</text>
             <text>手机号</text>
           </view>
+          <!-- 编辑模式显示输入框 -->
           <input
-            class="form-input"
+            wx:if="{{isEditing}}"
+            class="form-input {{phoneError ? 'error' : ''}}"
             type="number"
             value="{{form.phone}}"
             bindinput="onPhoneInput"
+            bindblur="onPhoneBlur"
             placeholder="请输入手机号"
             placeholder-class="input-placeholder"
+            maxlength="11"
           />
+          <!-- 只读模式显示文本 -->
+          <text wx:else class="form-text">{{form.phone || '未设置'}}</text>
+        </view>
+        <!-- 手机号错误提示 -->
+        <view class="error-row" wx:if="{{isEditing && phoneError}}">
+          <text class="error-text">{{phoneErrorMsg}}</text>
         </view>
       </view>
 
-      <!-- Save Button -->
-      <view class="save-btn {{canSave ? 'active' : ''}}" bindtap="saveInfo">
-        <text class="save-text">保存修改</text>
+      <!-- Action Button -->
+      <view class="save-btn {{isEditing ? 'editing' : ''}}" bindtap="onActionTap">
+        <text class="save-text">{{isEditing ? '保存修改' : '修改信息'}}</text>
       </view>
 
       <view class="bottom-spacer"></view>

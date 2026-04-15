@@ -1,30 +1,128 @@
-<!--pages/pet/edit/edit.wxml-->
-<view class="page-no-tab" style="padding:24rpx;">
-  <view class="card">
-    <view class="info-field">
-      <text class="input-label">宠物名字</text>
-      <view class="input-group"><input class="form-input" value="{{form.name}}" bindinput="e=>set('name',e)" placeholder="给你的宠物起个名字" /></view>
-    </view>
-    <view class="info-field">
-      <text class="input-label">物种</text>
-      <view class="input-group">
-        <picker range="{{speciesList}}" value="{{speciesIdx}}" bindchange="onSpeciesChange">
-          <view class="form-input" style="display:flex;align-items:center;">{{form.species || '请选择物种'}}</view>
-        </picker>
+<view class="pet-edit-page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav">
+    <view class="nav-content">
+      <view class="back-btn" bindtap="goBack">
+        <text class="material-symbols-outlined back-icon">arrow_back</text>
       </view>
-    </view>
-    <view class="info-field">
-      <text class="input-label">品种</text>
-      <view class="input-group"><input class="form-input" value="{{form.breed}}" bindinput="e=>set('breed',e)" placeholder="如：英短、金毛..." /></view>
-    </view>
-    <view class="info-field">
-      <text class="input-label">年龄（岁）</text>
-      <view class="input-group"><input class="form-input" type="number" value="{{form.age}}" bindinput="e=>set('age',e)" placeholder="请输入年龄" /></view>
-    </view>
-    <view class="info-field">
-      <text class="input-label">备注</text>
-      <view class="input-group"><input class="form-input" value="{{form.note}}" bindinput="e=>set('note',e)" placeholder="过敏史、特殊喜好等..." /></view>
+      <text class="nav-title">{{form.id ? '编辑爱宠' : '添加爱宠'}}</text>
+      <view class="nav-placeholder"></view>
     </view>
   </view>
-  <button class="btn btn-primary" style="width:100%;margin-top:40rpx;" bindtap="save">保存</button>
+
+  <scroll-view scroll-y class="edit-scroll">
+    <view class="edit-container">
+      <!-- 页面标题 -->
+      <view class="page-header-section">
+        <text class="page-subtitle">记录您的小可爱信息</text>
+      </view>
+
+      <!-- 表单卡片 -->
+      <view class="form-card">
+        <!-- 宠物名字 -->
+        <view class="form-item">
+          <view class="form-label">
+            <text class="material-symbols-outlined label-icon">pets</text>
+            <text class="form-label-text">宠物名字</text>
+          </view>
+          <input 
+            class="form-input" 
+            value="{{form.name}}" 
+            bindinput="e=>set('name',e)" 
+            placeholder="给你的宠物起个名字" 
+            placeholder-class="input-placeholder"
+          />
+        </view>
+
+        <!-- 物种 -->
+        <view class="form-item">
+          <view class="form-label">
+            <text class="material-symbols-outlined label-icon">category</text>
+            <text class="form-label-text">物种</text>
+          </view>
+          <view class="picker-wrap" bindtap="showSpeciesPicker">
+            <view class="picker-value {{form.species ? 'has-value' : ''}}">
+              <text>{{form.species || '请选择物种'}}</text>
+              <text class="material-symbols-outlined picker-arrow">expand_more</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 品种 -->
+        <view class="form-item">
+          <view class="form-label">
+            <text class="material-symbols-outlined label-icon">star</text>
+            <text class="form-label-text">品种</text>
+          </view>
+          <input 
+            class="form-input" 
+            value="{{form.breed}}" 
+            bindinput="e=>set('breed',e)" 
+            placeholder="如：英短、金毛..." 
+            placeholder-class="input-placeholder"
+          />
+        </view>
+
+        <!-- 年龄 -->
+        <view class="form-item">
+          <view class="form-label">
+            <text class="material-symbols-outlined label-icon">cake</text>
+            <text class="form-label-text">年龄（岁）</text>
+          </view>
+          <input 
+            class="form-input" 
+            type="digit"
+            value="{{form.age}}" 
+            bindinput="e=>set('age',e)" 
+            placeholder="请输入年龄" 
+            placeholder-class="input-placeholder"
+          />
+        </view>
+
+        <!-- 备注 -->
+        <view class="form-item form-item-last">
+          <view class="form-label">
+            <text class="material-symbols-outlined label-icon">edit_note</text>
+            <text class="form-label-text">备注</text>
+          </view>
+          <textarea 
+            class="form-textarea" 
+            value="{{form.note}}" 
+            bindinput="e=>set('note',e)" 
+            placeholder="过敏史、特殊喜好等..." 
+            placeholder-class="input-placeholder"
+            maxlength="200"
+          />
+        </view>
+      </view>
+
+      <!-- 保存按钮 -->
+      <view class="save-btn {{canSave ? 'active' : ''}}" bindtap="save">
+        <text class="save-text">保存</text>
+      </view>
+
+      <view class="bottom-spacer"></view>
+    </view>
+  </scroll-view>
+
+  <!-- 物种选择弹窗 -->
+  <view class="picker-popup {{showSpeciesPicker ? 'show' : ''}}">
+    <view class="picker-mask" bindtap="hideSpeciesPicker"></view>
+    <view class="picker-content">
+      <view class="picker-header">
+        <text class="picker-cancel" bindtap="hideSpeciesPicker">取消</text>
+        <text class="picker-title">选择物种</text>
+        <text class="picker-confirm" bindtap="confirmSpecies">确定</text>
+      </view>
+      <picker-view class="picker-view" value="{{[speciesIdx]}}" bindchange="onSpeciesPickerChange">
+        <picker-view-column>
+          <view wx:for="{{speciesList}}" wx:key="index" class="picker-item">{{item}}</view>
+        </picker-view-column>
+      </picker-view>
+    </view>
+  </view>
+
+  <!-- 装饰模糊 -->
+  <view class="blur-top-right"></view>
+  <view class="blur-bottom-left"></view>
 </view>

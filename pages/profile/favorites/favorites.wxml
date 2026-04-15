@@ -1,67 +1,143 @@
+<!--pages/profile/favorites/favorites.wxml - 与社区页面一致的瀑布流布局-->
 <view class="favorites-page">
-  <!-- TopAppBar -->
-  <view class="app-header">
-    <view class="header-row">
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav">
+    <view class="nav-content">
       <view class="back-btn" bindtap="goBack">
         <text class="material-symbols-outlined back-icon">arrow_back</text>
       </view>
-      <text class="header-title">我的收藏</text>
-      <view class="header-spacer"></view>
+      <text class="nav-title">我的收藏</text>
+      <view class="nav-placeholder"></view>
     </view>
   </view>
 
-  <scroll-view scroll-y class="favorites-scroll">
-    <view class="favorites-container">
-      <!-- Favorites Grid -->
-      <view class="favorites-grid" wx:if="{{favorites.length > 0}}">
-        <view
-          class="favorite-card"
-          wx:for="{{favorites}}"
-          wx:key="id"
-          bindtap="goToDetail"
-          data-id="{{item.targetId}}"
-        >
-          <view class="product-img-box">
-            <image wx:if="{{item.productPic}}" src="{{item.productPic}}" mode="aspectFill" class="product-img" />
-            <view wx:else class="product-placeholder">
-              <text class="material-symbols-outlined">pets</text>
-            </view>
-          </view>
-          <view class="product-info">
-            <text class="product-name">{{item.productName || '收藏商品'}}</text>
-            <view class="product-bottom">
-              <view class="price-row">
-                <text class="price-symbol">¥</text>
-                <text class="price-value">{{item.productPrice || '--'}}</text>
+  <!-- 主内容区 -->
+  <view class="favorites-content">
+    <!-- 加载状态 -->
+    <view wx:if="{{loading && favorites.length === 0}}" class="loading-container">
+      <view class="paw-loader">
+        <text class="material-symbols-outlined paw-icon">pets</text>
+        <text class="material-symbols-outlined paw-icon">pets</text>
+        <text class="material-symbols-outlined paw-icon">pets</text>
+      </view>
+      <text class="loading-text">正在加载收藏...</text>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:elif="{{favorites.length === 0}}" class="empty-state">
+      <text class="material-symbols-outlined empty-icon">favorite</text>
+      <text class="empty-title">还没有收藏内容</text>
+      <text class="empty-desc">快去收藏你喜欢的商品或帖子吧~</text>
+    </view>
+
+    <!-- 瀑布流收藏列表 -->
+    <view wx:else class="waterfall-container">
+      <!-- 左列 -->
+      <view class="waterfall-column">
+        <block wx:for="{{favorites}}" wx:key="id" wx:if="{{index % 2 === 0}}">
+          <view class="post-card" bindtap="goToDetail" data-item="{{item}}">
+            <!-- 商品类型 -->
+            <block wx:if="{{item.targetType === 'PRODUCT'}}">
+              <image wx:if="{{item.productPic}}" class="post-image" src="{{item.productPic}}" mode="widthFix" lazy-load/>
+              <view wx:else class="post-text-card bg-gradient-1">
+                <text class="post-text-content">{{item.productName || '收藏商品'}}</text>
+                <view class="post-text-mask"></view>
               </view>
-              <view class="unfavorite-btn" catchtap="unfavorite" data-id="{{item.id}}">
-                <text class="material-symbols-outlined unfavorite-icon">favorite</text>
+              <view class="post-content">
+                <text class="post-title">{{item.productName || '收藏商品'}}</text>
+                <view class="post-footer">
+                  <view class="post-price">
+                    <text class="price-symbol">¥</text>
+                    <text class="price-value">{{item.productPrice || '--'}}</text>
+                  </view>
+                  <view class="post-likes">
+                    <text class="material-symbols-outlined unfavorite-icon active">favorite</text>
+                  </view>
+                </view>
               </view>
-            </view>
+            </block>
+            <!-- 帖子类型 -->
+            <block wx:elif="{{item.targetType === 'POST'}}">
+              <!-- 有图片的帖子 -->
+              <image wx:if="{{item.postPic}}" class="post-image" src="{{item.postPic}}" mode="widthFix" lazy-load/>
+              <!-- 无图片的帖子 -->
+              <view wx:else class="post-text-card {{item.bgClass || 'bg-gradient-1'}}">
+                <text class="post-text-content">{{item.postTitle || item.postContent || '收藏帖子'}}</text>
+                <view class="post-text-mask"></view>
+              </view>
+              <view class="post-content">
+                <text class="post-title">{{item.postTitle || item.postContent || '收藏帖子'}}</text>
+                <view class="post-footer">
+                  <view class="post-author">
+                    <image wx:if="{{item.authorAvatar}}" class="author-avatar" src="{{item.authorAvatar}}"/>
+                    <view wx:else class="author-avatar-text">{{item.authorName ? item.authorName[0] : 'U'}}</view>
+                    <text class="author-name">{{item.authorName || '匿名用户'}}</text>
+                  </view>
+                  <view class="post-likes">
+                    <text class="material-symbols-outlined like-icon {{item.isLiked ? 'active' : ''}}">pets</text>
+                    <text class="like-count {{item.isLiked ? 'active' : ''}}">{{item.likeCount || 0}}</text>
+                  </view>
+                </view>
+              </view>
+            </block>
           </view>
-        </view>
+        </block>
       </view>
 
-      <!-- Empty State -->
-      <view class="empty-state" wx:if="{{favorites.length === 0 && !loading}}">
-        <view class="empty-icon-box">
-          <text class="material-symbols-outlined empty-icon">favorite</text>
-        </view>
-        <text class="empty-title">还没有收藏内容</text>
-        <text class="empty-desc">快去收藏你喜欢的商品吧~</text>
-        <view class="empty-btn" bindtap="goShopping">
-          <text>去逛逛</text>
-        </view>
-      </view>
-
-      <!-- Loading -->
-      <view class="loading-state" wx:if="{{loading}}">
-        <text class="loading-text">加载中...</text>
+      <!-- 右列 -->
+      <view class="waterfall-column">
+        <block wx:for="{{favorites}}" wx:key="id" wx:if="{{index % 2 === 1}}">
+          <view class="post-card" bindtap="goToDetail" data-item="{{item}}">
+            <!-- 商品类型 -->
+            <block wx:if="{{item.targetType === 'PRODUCT'}}">
+              <image wx:if="{{item.productPic}}" class="post-image" src="{{item.productPic}}" mode="widthFix" lazy-load/>
+              <view wx:else class="post-text-card bg-gradient-2">
+                <text class="post-text-content">{{item.productName || '收藏商品'}}</text>
+                <view class="post-text-mask"></view>
+              </view>
+              <view class="post-content">
+                <text class="post-title">{{item.productName || '收藏商品'}}</text>
+                <view class="post-footer">
+                  <view class="post-price">
+                    <text class="price-symbol">¥</text>
+                    <text class="price-value">{{item.productPrice || '--'}}</text>
+                  </view>
+                  <view class="post-likes">
+                    <text class="material-symbols-outlined unfavorite-icon active">favorite</text>
+                  </view>
+                </view>
+              </view>
+            </block>
+            <!-- 帖子类型 -->
+            <block wx:elif="{{item.targetType === 'POST'}}">
+              <!-- 有图片的帖子 -->
+              <image wx:if="{{item.postPic}}" class="post-image" src="{{item.postPic}}" mode="widthFix" lazy-load/>
+              <!-- 无图片的帖子 -->
+              <view wx:else class="post-text-card {{item.bgClass || 'bg-gradient-2'}}">
+                <text class="post-text-content">{{item.postTitle || item.postContent || '收藏帖子'}}</text>
+                <view class="post-text-mask"></view>
+              </view>
+              <view class="post-content">
+                <text class="post-title">{{item.postTitle || item.postContent || '收藏帖子'}}</text>
+                <view class="post-footer">
+                  <view class="post-author">
+                    <image wx:if="{{item.authorAvatar}}" class="author-avatar" src="{{item.authorAvatar}}"/>
+                    <view wx:else class="author-avatar-text">{{item.authorName ? item.authorName[0] : 'U'}}</view>
+                    <text class="author-name">{{item.authorName || '匿名用户'}}</text>
+                  </view>
+                  <view class="post-likes">
+                    <text class="material-symbols-outlined like-icon {{item.isLiked ? 'active' : ''}}">pets</text>
+                    <text class="like-count {{item.isLiked ? 'active' : ''}}">{{item.likeCount || 0}}</text>
+                  </view>
+                </view>
+              </view>
+            </block>
+          </view>
+        </block>
       </view>
     </view>
-  </scroll-view>
 
-  <!-- Decorative Blurs -->
-  <view class="blur-top-right"></view>
-  <view class="blur-bottom-left"></view>
+    <!-- 底部安全区域 -->
+    <view class="safe-area-bottom"></view>
+  </view>
 </view>
