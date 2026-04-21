@@ -1,13 +1,6 @@
 <view class="info-page">
   <scroll-view scroll-y class="info-scroll" style="margin-top: 0;">
     <view class="info-container">
-      <!-- 网络信息提示 -->
-      <view class="network-info" bindtap="testNetwork">
-        <text class="material-symbols-outlined network-icon">wifi</text>
-        <text class="network-text">{{networkInfo}}</text>
-        <text class="material-symbols-outlined network-arrow">chevron_right</text>
-      </view>
-
       <!-- Avatar Card -->
       <view class="avatar-card">
         <view class="avatar-section" bindtap="changeAvatar">

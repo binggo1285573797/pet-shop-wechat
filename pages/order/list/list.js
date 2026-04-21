@@ -10,7 +10,8 @@ Page({
       { label: '待发货', value: 1 },
       { label: '待收货', value: 2 },
       { label: '已完成', value: 3 },
-      { label: '退款中', value: 4 }
+      { label: '退款中', value: 4 },
+      { label: '已关闭', value: 5 }
     ],
     activeStatus: -1,
     orders: [],
@@ -19,7 +20,11 @@ Page({
     noMore: false
   },
 
-  onLoad() {
+  onLoad(options) {
+    // 接收状态参数
+    if (options && options.status !== undefined) {
+      this.setData({ activeStatus: parseInt(options.status) });
+    }
     this.loadOrders(true);
   },
 
@@ -103,6 +108,39 @@ Page({
           });
         }
       }
+    });
+  },
+
+  // 待发货状态申请取消（需商家审核）
+  applyCancel(e) {
+    const orderId = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: '申请取消订单',
+      content: '提交后需商家审核，审核通过后将退款给您',
+      confirmText: '提交申请',
+      confirmColor: '#ff8a65',
+      success: res => {
+        if (res.confirm) {
+          wx.showLoading({ title: '提交中...' });
+          api.cancelOrder(orderId).then(() => {
+            wx.hideLoading();
+            wx.showToast({ title: '申请已提交', icon: 'success' });
+            this.loadOrders(true);
+          }).catch(err => {
+            wx.hideLoading();
+            console.error('申请取消失败:', err);
+            wx.showToast({ title: '申请失败', icon: 'none' });
+          });
+        }
+      }
+    });
+  },
+
+  // 已完成订单申请退款
+  applyRefund(e) {
+    const orderId = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: `/pages/order/refund/refund?orderId=${orderId}`
     });
   },
 

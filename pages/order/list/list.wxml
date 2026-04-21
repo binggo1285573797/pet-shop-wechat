@@ -37,7 +37,7 @@
           <view class="shop-icon-box">
             <text class="material-symbols-outlined shop-icon">storefront</text>
           </view>
-          <text class="shop-name">萌宠治愈生活馆</text>
+          <text class="shop-name">{{item.shopName || '未知店铺'}}</text>
           <view class="order-status-badge status-{{item.status}}">
             <text>{{item.statusText}}</text>
           </view>
@@ -77,6 +77,7 @@
 
         <!-- Action Buttons -->
         <view class="action-buttons" catchtap="stopPropagation">
+          <!-- 待付款：取消订单 + 去支付 -->
           <view
             class="action-btn btn-cancel"
             wx:if="{{item.status === 0}}"
@@ -93,6 +94,16 @@
           >
             <text>去支付</text>
           </view>
+          <!-- 待发货：申请取消（需商家审核） -->
+          <view
+            class="action-btn btn-cancel"
+            wx:if="{{item.status === 1}}"
+            bindtap="applyCancel"
+            data-id="{{item.id}}"
+          >
+            <text>申请取消</text>
+          </view>
+          <!-- 待收货：确认收货 -->
           <view
             class="action-btn btn-confirm"
             wx:if="{{item.status === 2}}"
@@ -100,6 +111,15 @@
             data-id="{{item.id}}"
           >
             <text>确认收货</text>
+          </view>
+          <!-- 已完成：申请退款 -->
+          <view
+            class="action-btn btn-cancel"
+            wx:if="{{item.status === 3}}"
+            bindtap="applyRefund"
+            data-id="{{item.id}}"
+          >
+            <text>申请退款</text>
           </view>
           <view
             class="action-btn btn-detail"

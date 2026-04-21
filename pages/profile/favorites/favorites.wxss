@@ -57,6 +57,43 @@ Page {
   padding: calc(var(--status-bar-height, 44rpx) + 104rpx) 24rpx 120rpx;
 }
 
+/* 选项卡 */
+.tab-container {
+  display: flex;
+  justify-content: center;
+  gap: 60rpx;
+  margin-bottom: 24rpx;
+  padding: 0 32rpx;
+}
+
+.tab-item {
+  position: relative;
+  padding: 16rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tab-text {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #999;
+  transition: color 0.3s ease;
+}
+
+.tab-item.active .tab-text {
+  color: #FF8A65;
+}
+
+.tab-line {
+  position: absolute;
+  bottom: 0;
+  width: 40rpx;
+  height: 4rpx;
+  background: linear-gradient(90deg, #FF8A65, #FFB399);
+  border-radius: 2rpx;
+}
+
 /* 瀑布流布局 */
 .waterfall-container {
   display: flex;

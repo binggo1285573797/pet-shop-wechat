@@ -27,7 +27,7 @@
             <text class="material-symbols-outlined">edit</text>
           </view>
         </view>
-        <text class="user-name">{{userInfo.nickname || userInfo.username || '布丁的铲屎官'}}</text>
+        <text class="user-name">{{userInfo.nickname || userInfo.username || '用户'}}</text>
       </view>
     </view>
 
@@ -107,6 +107,16 @@
               <text class="material-symbols-outlined">article</text>
             </view>
             <text class="menu-label">帖子管理</text>
+          </view>
+          <text class="material-symbols-outlined menu-arrow">chevron_right</text>
+        </view>
+        <view class="menu-divider"></view>
+        <view class="menu-item" bindtap="goToChangePassword">
+          <view class="menu-left">
+            <view class="menu-icon password">
+              <text class="material-symbols-outlined">lock</text>
+            </view>
+            <text class="menu-label">修改密码</text>
           </view>
           <text class="material-symbols-outlined menu-arrow">chevron_right</text>
         </view>

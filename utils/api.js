@@ -19,6 +19,9 @@ const getCategoryList = (type) => get('/category/list', type ? { type } : {});
 const getProductPage = (params) => get('/product/list', params);
 const getProductDetail = (id) => get(`/product/${id}`);
 
+// ===== 商家模块 =====
+const getMerchantDetail = (id) => get(`/user/shop/${id}`);
+
 // ===== 购物车 =====
 const getCartList = () => get('/cart/list');
 const getCartCount = () => get('/cart/count');
@@ -39,6 +42,7 @@ const applyRefund = (data) => post('/user/order/refund', data);
 const getPostPage = (params) => get('/community/post/list', params);
 const getPostDetail = (id) => get(`/community/post/${id}`);
 const addPost = (data) => post('/community/post/add', data);
+const updatePost = (id, data) => put(`/community/post/update/${id}`, data);
 const deletePost = (id) => del(`/community/post/delete/${id}`);
 const getMyPosts = (params) => get('/community/post/my', params);
 const likePost = (postId) => post(`/community/post/${postId}/like`);
@@ -120,12 +124,14 @@ module.exports = {
   getCategoryList,
   // 商品
   getProductPage, getProductDetail,
+  // 商家
+  getMerchantDetail,
   // 购物车
   getCartList, getCartCount, addToCart, updateCartItem, deleteCartItem,
   // 订单
   createOrder, payOrder, getOrderPage, getOrderDetail, cancelOrder, confirmReceipt, applyRefund,
   // 社区
-  getPostPage, getPostDetail, addPost, deletePost, getMyPosts,
+  getPostPage, getPostDetail, addPost, updatePost, deletePost, getMyPosts,
   likePost, unlikePost,
   addComment, getCommentPage, likeComment,
   // 地址

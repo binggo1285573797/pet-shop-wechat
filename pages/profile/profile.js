@@ -36,6 +36,7 @@ Page({
   goToAddress() { wx.navigateTo({ url: '/pages/profile/address/address' }); },
   goToFavorites() { wx.navigateTo({ url: '/pages/profile/favorites/favorites' }); },
   goToPosts() { wx.navigateTo({ url: '/pages/profile/posts/posts' }); },
+  goToChangePassword() { wx.navigateTo({ url: '/pages/profile/change-password/change-password' }); },
   goToPets() { wx.navigateTo({ url: '/pages/pet/pets/pets' }); },
   goToPetEdit(e) {
     wx.navigateTo({

@@ -131,11 +131,58 @@ page {
   box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
 }
 .btn-favorite::after { display: none; }
-.btn-favorite .material-symbols-outlined { 
-  color: #FF8A65; 
-  font-size: 40rpx; 
+.btn-favorite .material-symbols-outlined {
+  color: #999;
+  font-size: 40rpx;
   display: block;
   line-height: 1;
+}
+.btn-favorite.active .material-symbols-outlined {
+  color: #FF8A65;
+}
+
+/* 店铺信息 */
+.shop-section {
+  margin-top: 32rpx;
+}
+.shop-header {
+  margin-bottom: 16rpx;
+}
+.shop-label {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #666;
+}
+.shop-card {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  background: linear-gradient(135deg, #FFF8F5 0%, #FFF0EB 100%);
+  border-radius: 24rpx;
+  border: 2rpx solid rgba(255, 138, 101, 0.1);
+}
+.shop-avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+  background: #fff;
+  box-shadow: 0 4rpx 16rpx rgba(255, 138, 101, 0.15);
+}
+.shop-avatar-default {
+  background: linear-gradient(135deg, #FF8A65 0%, #FFB399 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.shop-avatar-default .material-symbols-outlined {
+  color: #fff;
+  font-size: 40rpx;
+}
+.shop-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1a1c1c;
 }
 
 .title-wrap { margin-bottom: 16rpx; }

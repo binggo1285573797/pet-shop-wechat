@@ -362,6 +362,10 @@
   background: linear-gradient(135deg, rgba(255, 183, 77, 0.18) 0%, rgba(255, 183, 77, 0.1) 100%);
 }
 
+.menu-icon.password {
+  background: linear-gradient(135deg, rgba(129, 199, 132, 0.18) 0%, rgba(129, 199, 132, 0.1) 100%);
+}
+
 .menu-icon .material-symbols-outlined {
   font-size: 28rpx;
 }
@@ -376,6 +380,10 @@
 
 .menu-icon.post .material-symbols-outlined {
   color: #ffb74d;
+}
+
+.menu-icon.password .material-symbols-outlined {
+  color: #81c784;
 }
 
 .menu-label {

@@ -83,6 +83,28 @@
   color: #333333;
 }
 
+/* 编辑按钮 */
+.edit-btn {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 138, 101, 0.1);
+  transition: all 0.2s ease;
+}
+
+.edit-btn:active {
+  background: rgba(255, 138, 101, 0.2);
+  transform: scale(0.95);
+}
+
+.edit-icon {
+  font-size: 32rpx;
+  color: #FF8A65;
+}
+
 .action-btn {
   width: 72rpx;
   height: 72rpx;

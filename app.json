@@ -13,11 +13,13 @@
     "pages/order/confirm/confirm",
     "pages/order/list/list",
     "pages/order/detail/detail",
+    "pages/order/refund/refund",
     "pages/profile/info/info",
     "pages/profile/address/address",
     "pages/profile/address-edit/address-edit",
     "pages/profile/favorites/favorites",
     "pages/profile/posts/posts",
+    "pages/profile/change-password/change-password",
     "pages/pet/pets/pets",
     "pages/pet/edit/edit"
   ],

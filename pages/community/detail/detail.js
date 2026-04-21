@@ -166,7 +166,7 @@ Page({
         this.setData({ post });
       });
     } else {
-      api.addFavorite({ targetType: 'POST', targetId: parseInt(this.postId) }).catch(() => {
+      api.addFavorite({ targetType: 1, targetId: parseInt(this.postId) }).catch(() => {
         this.setData({ post });
       });
     }
@@ -239,8 +239,13 @@ Page({
   // 编辑帖子
   editPost() {
     const post = this.data.post;
-    wx.navigateTo({ 
-      url: `/pages/community/post/post?id=${post.id}&data=${encodeURIComponent(JSON.stringify(post))}` 
+    // 将帖子数据和图片列表一起存储到全局
+    getApp().globalData.editPostData = {
+      ...post,
+      picList: this.data.picList
+    };
+    wx.navigateTo({
+      url: `/pages/community/post/post?id=${post.id}&edit=1`
     });
   },
 

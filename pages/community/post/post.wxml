@@ -7,7 +7,7 @@
         <text class="material-symbols-outlined back-icon">arrow_back</text>
       </view>
       <text class="material-symbols-outlined header-icon">pets</text>
-      <text class="header-title">爱宠家</text>
+      <text class="header-title">{{isEdit ? '编辑帖子' : '爱宠家'}}</text>
     </view>
   </view>
 

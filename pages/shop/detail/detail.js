@@ -3,13 +3,14 @@ const api = require('../../../utils/api');
 const util = require('../../../utils/util');
 
 Page({
-  data: { 
-    product: null, 
-    picList: [], 
+  data: {
+    product: null,
+    picList: [],
     loading: false,
     currentSwiperIndex: 1,
     statusBarHeight: 20,
-    cartCount: 0
+    cartCount: 0,
+    isFavorite: false
   },
 
   onLoad(options) {
@@ -63,9 +64,13 @@ Page({
         picList = [''];
       }
       console.log('[detail] picList:', picList);
+      console.log('[detail] isFavorite:', p.isFavorite);
+      console.log('[detail] shopName:', p.shopName);
+      console.log('[detail] shopLogo:', p.shopLogo);
       this.setData({
         product: p,
         picList,
+        isFavorite: !!p.isFavorite,
         loading: false
       });
     }).catch((err) => {
@@ -104,8 +109,43 @@ Page({
       wx.showToast({ title: '商品信息加载中', icon: 'none' });
       return;
     }
-    
+
     const info = encodeURIComponent(JSON.stringify([{ productId: parseInt(p.id), quantity: 1 }]));
     wx.navigateTo({ url: `/pages/order/confirm/confirm?items=${info}` });
+  },
+
+  // 切换收藏状态
+  toggleFavorite() {
+    const app = getApp();
+    if (!app.checkLogin()) return;
+
+    const { isFavorite, product } = this.data;
+    const productId = parseInt(this.productId);
+
+    if (isFavorite) {
+      // 取消收藏
+      api.deleteFavorite(productId).then(() => {
+        this.setData({ isFavorite: false });
+        wx.showToast({ title: '已取消收藏', icon: 'success' });
+      }).catch(() => {
+        wx.showToast({ title: '操作失败', icon: 'none' });
+      });
+    } else {
+      // 添加收藏
+      api.addFavorite({ targetType: 2, targetId: productId }).then(() => {
+        this.setData({ isFavorite: true });
+        wx.showToast({ title: '收藏成功', icon: 'success' });
+      }).catch(() => {
+        wx.showToast({ title: '操作失败', icon: 'none' });
+      });
+    }
+  },
+
+  // 进入店铺
+  goToShop() {
+    const { product } = this.data;
+    if (product && product.merchantId) {
+      wx.navigateTo({ url: `/pages/shop/shop?id=${product.merchantId}` });
+    }
   }
 });

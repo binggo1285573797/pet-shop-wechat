@@ -59,7 +59,6 @@
           <view wx:else class="card-placeholder">
             <text class="material-symbols-outlined">pets</text>
           </view>
-          <view wx:if="{{item.sales > 0}}" class="card-badge">月售 {{item.sales}}+</view>
         </view>
         <view class="card-body">
           <text class="product-title">{{item.name}}</text>

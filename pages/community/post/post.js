@@ -7,14 +7,39 @@ Page({
     title: '',
     content: '',
     images: [],
-    canPost: false
+    canPost: false,
+    isEdit: false,
+    postId: null
   },
 
-  onLoad() {
+  onLoad(options) {
     // 检查登录状态
     const app = getApp();
     if (!app.checkLogin()) {
       return;
+    }
+
+    // 判断是否为编辑模式
+    if (options.edit === '1' && options.id) {
+      this.setData({ isEdit: true, postId: parseInt(options.id) });
+      this.loadPostData();
+    }
+  },
+
+  // 加载编辑数据
+  loadPostData() {
+    const app = getApp();
+    const postData = app.globalData.editPostData;
+    if (postData) {
+      const images = postData.picList || [];
+      this.setData({
+        title: postData.title || '',
+        content: postData.content || '',
+        images: images
+      });
+      this.checkCanPost();
+      // 清除全局数据
+      app.globalData.editPostData = null;
     }
   },
 
@@ -69,18 +94,18 @@ Page({
       return;
     }
 
-    wx.showLoading({ title: '发布中...', mask: true });
+    wx.showLoading({ title: this.data.isEdit ? '保存中...' : '发布中...', mask: true });
 
     // 如果有图片，先上传图片
     if (this.data.images.length > 0) {
       this.uploadImages().then(picUrls => {
-        this.createPost(picUrls);
+        this.data.isEdit ? this.updatePost(picUrls) : this.createPost(picUrls);
       }).catch(() => {
         wx.hideLoading();
         wx.showToast({ title: '图片上传失败', icon: 'none' });
       });
     } else {
-      this.createPost('');
+      this.data.isEdit ? this.updatePost('') : this.createPost('');
     }
   },
 
@@ -101,17 +126,43 @@ Page({
     api.addPost(data).then(() => {
       wx.hideLoading();
       wx.showToast({ title: '发布成功', icon: 'success' });
-      
+
       // 通知社区页面刷新
       const app = getApp();
       app.globalData.refreshCommunity = true;
-      
+
       setTimeout(() => {
         wx.navigateBack();
       }, 800);
     }).catch(err => {
       wx.hideLoading();
       wx.showToast({ title: err.message || '发布失败', icon: 'none' });
+    });
+  },
+
+  // 更新帖子
+  updatePost(picUrls) {
+    const data = {
+      title: this.data.title,
+      content: this.data.content,
+      picUrls: picUrls
+    };
+
+    api.updatePost(this.data.postId, data).then(() => {
+      wx.hideLoading();
+      wx.showToast({ title: '保存成功', icon: 'success' });
+
+      // 通知刷新
+      const app = getApp();
+      app.globalData.refreshCommunity = true;
+      app.globalData.refreshMyPosts = true;
+
+      setTimeout(() => {
+        wx.navigateBack();
+      }, 800);
+    }).catch(err => {
+      wx.hideLoading();
+      wx.showToast({ title: err.message || '保存失败', icon: 'none' });
     });
   },
 

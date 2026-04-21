@@ -51,7 +51,7 @@
           <view class="shop-icon-box">
             <text class="material-symbols-outlined shop-icon">storefront</text>
           </view>
-          <text class="shop-name">萌宠治愈生活馆</text>
+          <text class="shop-name">{{merchantName || '萌宠天地'}}</text>
         </view>
 
         <view class="product-list">

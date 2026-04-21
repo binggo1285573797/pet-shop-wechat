@@ -13,6 +13,18 @@
 
   <!-- 主内容区 -->
   <view class="favorites-content">
+    <!-- 选项卡 -->
+    <view class="tab-container">
+      <view class="tab-item {{activeTab === 'product' ? 'active' : ''}}" bindtap="switchTab" data-tab="product">
+        <text class="tab-text">商品</text>
+        <view class="tab-line" wx:if="{{activeTab === 'product'}}"></view>
+      </view>
+      <view class="tab-item {{activeTab === 'post' ? 'active' : ''}}" bindtap="switchTab" data-tab="post">
+        <text class="tab-text">帖子</text>
+        <view class="tab-line" wx:if="{{activeTab === 'post'}}"></view>
+      </view>
+    </view>
+
     <!-- 加载状态 -->
     <view wx:if="{{loading && favorites.length === 0}}" class="loading-container">
       <view class="paw-loader">
@@ -24,20 +36,24 @@
     </view>
 
     <!-- 空状态 -->
-    <view wx:elif="{{favorites.length === 0}}" class="empty-state">
+    <view wx:elif="{{filteredFavorites.length === 0}}" class="empty-state">
       <text class="material-symbols-outlined empty-icon">favorite</text>
-      <text class="empty-title">还没有收藏内容</text>
-      <text class="empty-desc">快去收藏你喜欢的商品或帖子吧~</text>
+      <text class="empty-title">
+        {{activeTab === 'product' ? '还没有收藏商品' : '还没有收藏帖子'}}
+      </text>
+      <text class="empty-desc">
+        {{activeTab === 'product' ? '快去收藏你喜欢的商品吧~' : '快去收藏感兴趣的帖子吧~'}}
+      </text>
     </view>
 
     <!-- 瀑布流收藏列表 -->
     <view wx:else class="waterfall-container">
       <!-- 左列 -->
       <view class="waterfall-column">
-        <block wx:for="{{favorites}}" wx:key="id" wx:if="{{index % 2 === 0}}">
+        <block wx:for="{{filteredFavorites}}" wx:key="id" wx:if="{{index % 2 === 0}}">
           <view class="post-card" bindtap="goToDetail" data-item="{{item}}">
             <!-- 商品类型 -->
-            <block wx:if="{{item.targetType === 'PRODUCT'}}">
+            <block wx:if="{{item.targetType === 2}}">
               <image wx:if="{{item.productPic}}" class="post-image" src="{{item.productPic}}" mode="widthFix" lazy-load/>
               <view wx:else class="post-text-card bg-gradient-1">
                 <text class="post-text-content">{{item.productName || '收藏商品'}}</text>
@@ -57,7 +73,7 @@
               </view>
             </block>
             <!-- 帖子类型 -->
-            <block wx:elif="{{item.targetType === 'POST'}}">
+            <block wx:elif="{{item.targetType === 1}}">
               <!-- 有图片的帖子 -->
               <image wx:if="{{item.postPic}}" class="post-image" src="{{item.postPic}}" mode="widthFix" lazy-load/>
               <!-- 无图片的帖子 -->
@@ -86,10 +102,10 @@
 
       <!-- 右列 -->
       <view class="waterfall-column">
-        <block wx:for="{{favorites}}" wx:key="id" wx:if="{{index % 2 === 1}}">
+        <block wx:for="{{filteredFavorites}}" wx:key="id" wx:if="{{index % 2 === 1}}">
           <view class="post-card" bindtap="goToDetail" data-item="{{item}}">
             <!-- 商品类型 -->
-            <block wx:if="{{item.targetType === 'PRODUCT'}}">
+            <block wx:if="{{item.targetType === 2}}">
               <image wx:if="{{item.productPic}}" class="post-image" src="{{item.productPic}}" mode="widthFix" lazy-load/>
               <view wx:else class="post-text-card bg-gradient-2">
                 <text class="post-text-content">{{item.productName || '收藏商品'}}</text>
@@ -109,7 +125,7 @@
               </view>
             </block>
             <!-- 帖子类型 -->
-            <block wx:elif="{{item.targetType === 'POST'}}">
+            <block wx:elif="{{item.targetType === 1}}">
               <!-- 有图片的帖子 -->
               <image wx:if="{{item.postPic}}" class="post-image" src="{{item.postPic}}" mode="widthFix" lazy-load/>
               <!-- 无图片的帖子 -->

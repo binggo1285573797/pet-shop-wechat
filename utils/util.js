@@ -37,7 +37,8 @@ function formatOrderStatus(status) {
     2: '待收货',
     3: '已完成',
     4: '退款中',
-    5: '已关闭'
+    5: '已关闭',
+    6: '已取消'
   };
   return map[status] || '未知';
 }
@@ -52,7 +53,8 @@ function getOrderStatusTag(status) {
     2: 'primary',
     3: 'success',
     4: 'danger',
-    5: 'default'
+    5: 'default',
+    6: 'default'
   };
   return map[status] || 'default';
 }
@@ -76,12 +78,22 @@ function getFirstPic(picUrls) {
  */
 function getPicList(picUrls) {
   if (!picUrls) return [];
-  if (Array.isArray(picUrls)) return picUrls;
-  try {
-    return JSON.parse(picUrls);
-  } catch (e) {
-    return picUrls.split(',').filter(Boolean);
+  let list = [];
+  if (Array.isArray(picUrls)) {
+    list = picUrls;
+  } else {
+    try {
+      list = JSON.parse(picUrls);
+    } catch (e) {
+      list = picUrls.split(',').filter(Boolean);
+    }
   }
+  // 为本地图片路径添加完整URL
+  const BASE_URL = 'http://localhost:8080';
+  return list.map(url => {
+    if (url.startsWith('http')) return url;
+    return BASE_URL + url;
+  });
 }
 
 /**

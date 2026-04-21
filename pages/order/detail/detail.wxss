@@ -1,9 +1,545 @@
-/* pages/order/detail/detail.wxss */
-.confirm-section-title { font-size: 30rpx; font-weight: 700; color: var(--text-secondary); margin-bottom: 20rpx; }
-.address-name { font-size: 32rpx; font-weight: 600; color: var(--text-primary); }
-.address-detail { font-size: 28rpx; line-height: 1.5; margin-top: 8rpx; }
-.confirm-product-item { display: flex; gap: 24rpx; align-items: center; margin-top: 20rpx; padding-top: 20rpx; border-top: 1rpx solid var(--border); }
-.cart-img-box { width: 120rpx; height: 120rpx; border-radius: var(--radius-md); overflow: hidden; flex-shrink: 0; background: var(--surface-container); display: flex; align-items: center; justify-content: center; }
-.confirm-item-info { flex: 1; }
-.cart-item-name { font-size: 28rpx; font-weight: 600; color: var(--text-primary); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.cart-item-price { font-size: 32rpx; font-weight: 700; color: var(--primary); margin-top: 12rpx; }
+/* pages/order/detail/detail.wxss - 基于Stitch设计 */
+.order-detail-page {
+  width: 100vw;
+  min-height: 100vh;
+  background: #fdfbf9;
+  position: relative;
+  padding: 24rpx 32rpx 40rpx;
+  box-sizing: border-box;
+}
+
+/* 状态卡片 */
+.status-card {
+  background: linear-gradient(135deg, #ff8a65 0%, #ffab91 100%);
+  border-radius: 48rpx;
+  padding: 48rpx;
+  margin-bottom: 24rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 24rpx 80rpx rgba(255, 138, 101, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.status-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -30%;
+  width: 200rpx;
+  height: 200rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.status-icon-box {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24rpx;
+  backdrop-filter: blur(10rpx);
+}
+
+.status-icon {
+  font-size: 64rpx;
+  color: #ffffff;
+}
+
+.status-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.status-text {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #ffffff;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  margin-bottom: 12rpx;
+}
+
+.order-sn {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+.countdown-box {
+  margin-top: 24rpx;
+  padding: 16rpx 32rpx;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 32rpx;
+  backdrop-filter: blur(10rpx);
+}
+
+.countdown-text {
+  font-size: 24rpx;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* 详情卡片 */
+.detail-card {
+  background: #ffffff;
+  border-radius: 48rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 24rpx 80rpx rgba(255, 138, 101, 0.06);
+  border: 1rpx solid rgba(255, 138, 101, 0.05);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+  padding-bottom: 24rpx;
+  border-bottom: 2rpx dashed rgba(137, 114, 107, 0.15);
+}
+
+.header-icon-box {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shop-icon-bg {
+  background: rgba(255, 138, 101, 0.15);
+}
+
+.address-icon-bg {
+  background: rgba(33, 150, 243, 0.15);
+}
+
+.product-icon-bg {
+  background: rgba(156, 39, 176, 0.15);
+}
+
+.amount-icon-bg {
+  background: rgba(76, 175, 80, 0.15);
+}
+
+.logistics-icon-bg {
+  background: rgba(255, 152, 0, 0.15);
+}
+
+.refund-icon-bg {
+  background: rgba(244, 67, 54, 0.15);
+}
+
+.header-icon {
+  font-size: 32rpx;
+  color: #ff8a65;
+}
+
+.address-icon-bg .header-icon {
+  color: #2196f3;
+}
+
+.product-icon-bg .header-icon {
+  color: #9c27b0;
+}
+
+.amount-icon-bg .header-icon {
+  color: #4caf50;
+}
+
+.logistics-icon-bg .header-icon {
+  color: #ff9800;
+}
+
+.refund-icon-bg .header-icon {
+  color: #f44336;
+}
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1a1c1c;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.card-content {
+  padding: 0 8rpx;
+}
+
+/* 信息行 */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-label {
+  font-size: 28rpx;
+  color: #89726b;
+}
+
+.info-value {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1a1c1c;
+}
+
+.shop-name {
+  font-weight: 700;
+  color: #ff8a65;
+}
+
+/* 收货地址 */
+.receiver-row {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.receiver-name {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1a1c1c;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.receiver-phone {
+  font-size: 26rpx;
+  color: #89726b;
+  font-weight: 500;
+}
+
+.address-text {
+  font-size: 28rpx;
+  color: #56423c;
+  line-height: 1.6;
+}
+
+/* 商品列表 */
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.product-item {
+  display: flex;
+  gap: 24rpx;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid rgba(137, 114, 107, 0.08);
+}
+
+.product-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.product-img-box {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+  background: #f3f3f3;
+  flex-shrink: 0;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.06);
+}
+
+.product-img {
+  width: 100%;
+  height: 100%;
+}
+
+.product-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-placeholder .material-symbols-outlined {
+  font-size: 56rpx;
+  color: rgba(0, 0, 0, 0.1);
+}
+
+.product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8rpx 0;
+}
+
+.product-name {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1a1c1c;
+  line-height: 1.4;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.product-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+}
+
+.price-symbol {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #ff8a65;
+}
+
+.price-value {
+  font-size: 36rpx;
+  font-weight: 900;
+  color: #ff8a65;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.product-qty {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #89726b;
+}
+
+/* 金额信息 */
+.amount-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid rgba(137, 114, 107, 0.08);
+}
+
+.amount-row:last-child {
+  border-bottom: none;
+}
+
+.total-row {
+  padding-top: 24rpx;
+  margin-top: 8rpx;
+}
+
+.amount-label {
+  font-size: 28rpx;
+  color: #89726b;
+}
+
+.amount-value {
+  font-size: 28rpx;
+  color: #56423c;
+  font-weight: 500;
+}
+
+.total-price {
+  display: flex;
+  align-items: baseline;
+  gap: 2rpx;
+}
+
+.total-symbol {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #ff8a65;
+}
+
+.total-value {
+  font-size: 48rpx;
+  font-weight: 900;
+  color: #ff8a65;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  letter-spacing: -2rpx;
+}
+
+/* 物流信息 */
+.logistics-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12rpx 0;
+}
+
+.logistics-label {
+  font-size: 28rpx;
+  color: #89726b;
+}
+
+.logistics-value {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1a1c1c;
+}
+
+/* 退款信息 */
+.refund-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12rpx 0;
+  border-bottom: 1rpx solid rgba(137, 114, 107, 0.08);
+}
+
+.refund-row:last-child {
+  border-bottom: none;
+}
+
+.refund-label {
+  font-size: 28rpx;
+  color: #89726b;
+}
+
+.refund-status {
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.refund-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+}
+
+.refund-price .price-symbol {
+  font-size: 24rpx;
+}
+
+.refund-price .price-value {
+  font-size: 36rpx;
+}
+
+.refund-value {
+  font-size: 28rpx;
+  color: #56423c;
+  max-width: 400rpx;
+  text-align: right;
+}
+
+/* 退款凭证 */
+.proof-section {
+  margin-top: 24rpx;
+  padding-top: 24rpx;
+  border-top: 1rpx solid rgba(137, 114, 107, 0.08);
+}
+
+.proof-label {
+  display: block;
+  font-size: 28rpx;
+  color: #89726b;
+  margin-bottom: 16rpx;
+}
+
+.proof-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.proof-img {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 16rpx;
+  border: 2rpx solid rgba(137, 114, 107, 0.1);
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 底部操作栏 */
+.action-bar-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24rpx 32rpx calc(24rpx + env(safe-area-inset-bottom));
+  background: #ffffff;
+  border-top: 1rpx solid rgba(255, 138, 101, 0.1);
+  z-index: 100;
+}
+
+.action-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20rpx;
+  max-width: 750rpx;
+  margin: 0 auto;
+}
+
+.action-btn {
+  padding: 20rpx 40rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+.btn-cancel {
+  background: rgba(137, 114, 107, 0.1);
+  color: #89726b;
+  border: 2rpx solid rgba(137, 114, 107, 0.2);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #ff8a65 0%, #ffab91 100%);
+  color: #ffffff;
+  box-shadow: 0 8rpx 24rpx rgba(255, 138, 101, 0.3);
+}
+
+.btn-confirm {
+  background: linear-gradient(135deg, #4caf50 0%, #81c784 100%);
+  color: #ffffff;
+  box-shadow: 0 8rpx 24rpx rgba(76, 175, 80, 0.3);
+}
+
+.bottom-spacer {
+  height: 140rpx;
+}
+
+/* 装饰性模糊背景 */
+.blur-top-right {
+  position: fixed;
+  top: 10%;
+  right: -160rpx;
+  width: 320rpx;
+  height: 320rpx;
+  background: rgba(255, 138, 101, 0.05);
+  border-radius: 50%;
+  filter: blur(80rpx);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.blur-bottom-left {
+  position: fixed;
+  bottom: 20%;
+  left: -200rpx;
+  width: 400rpx;
+  height: 400rpx;
+  background: rgba(255, 138, 101, 0.08);
+  border-radius: 50%;
+  filter: blur(100rpx);
+  z-index: -1;
+  pointer-events: none;
+}

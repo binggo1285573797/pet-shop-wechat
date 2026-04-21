@@ -124,7 +124,7 @@ Page({
       return;
     }
     const cartIds = checked.map(i => i.id);
-    wx.navigateTo({ url: `/pages/order/confirm/confirm?cartIds=${JSON.stringify(cartIds)}` });
+    wx.navigateTo({ url: `/pages/order/confirm/confirm?cartIds=${encodeURIComponent(JSON.stringify(cartIds))}` });
   },
 
   goToDetail(e) {

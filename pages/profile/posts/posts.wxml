@@ -42,31 +42,25 @@
       <view class="waterfall-column">
         <block wx:for="{{posts}}" wx:key="id" wx:if="{{index % 2 === 0}}">
           <view class="post-card" bindtap="goToDetail" data-id="{{item.id}}">
-            <!-- 有图片的帖子 -->
-            <block wx:if="{{item.firstPic}}">
-              <image class="post-image" src="{{item.firstPic}}" mode="widthFix" lazy-load/>
-            </block>
-            <!-- 无图片的帖子 -->
-            <block wx:else>
-              <view class="post-text-card {{item.bgClass || 'bg-gradient-1'}}">
-                <text class="post-text-content">{{item.title || item.content}}</text>
-                <view class="post-text-mask"></view>
-              </view>
-            </block>
+            <!-- 有图片时显示图片 -->
+            <image wx:if="{{item.picList && item.picList.length > 0}}" class="post-image" src="{{item.picList[0]}}" mode="widthFix" lazy-load/>
+            <!-- 无图片时显示文字背景卡片 -->
+            <view wx:else class="post-text-card {{item.bgClass || 'bg-gradient-1'}}">
+              <text class="post-text-content">{{item.title || item.content}}</text>
+              <view class="post-text-mask"></view>
+            </view>
             <view class="post-content">
-              <text class="post-title">{{item.title || item.content}}</text>
+              <text wx:if="{{item.picList && item.picList.length > 0}}" class="post-title">{{item.title || item.content}}</text>
               <view class="post-footer">
-                <view class="post-stats">
-                  <view class="stat-item">
-                    <text class="material-symbols-outlined stat-icon">pets</text>
-                    <text class="stat-count">{{item.likeCount || 0}}</text>
-                  </view>
-                  <view class="stat-item">
-                    <text class="material-symbols-outlined stat-icon">chat_bubble</text>
-                    <text class="stat-count">{{item.commentCount || 0}}</text>
-                  </view>
+                <view class="post-author">
+                  <image wx:if="{{item.authorAvatar}}" class="author-avatar" src="{{item.authorAvatar}}"/>
+                  <view wx:else class="author-avatar-text">{{item.authorName ? item.authorName[0] : 'U'}}</view>
+                  <text class="author-name">{{item.authorName || '匿名用户'}}</text>
                 </view>
-                <text class="post-time">{{item.createTimeText}}</text>
+                <view class="post-likes">
+                  <text class="material-symbols-outlined like-icon {{item.isCollected ? 'active' : ''}}" style="{{item.isCollected ? 'font-variation-settings: &quot;FILL&quot; 1;' : ''}}">bookmark</text>
+                  <text class="like-count {{item.isCollected ? 'active' : ''}}">{{item.collectCount || 0}}</text>
+                </view>
               </view>
             </view>
           </view>
@@ -77,31 +71,25 @@
       <view class="waterfall-column">
         <block wx:for="{{posts}}" wx:key="id" wx:if="{{index % 2 === 1}}">
           <view class="post-card" bindtap="goToDetail" data-id="{{item.id}}">
-            <!-- 有图片的帖子 -->
-            <block wx:if="{{item.firstPic}}">
-              <image class="post-image" src="{{item.firstPic}}" mode="widthFix" lazy-load/>
-            </block>
-            <!-- 无图片的帖子 -->
-            <block wx:else>
-              <view class="post-text-card {{item.bgClass || 'bg-gradient-2'}}">
-                <text class="post-text-content">{{item.title || item.content}}</text>
-                <view class="post-text-mask"></view>
-              </view>
-            </block>
+            <!-- 有图片时显示图片 -->
+            <image wx:if="{{item.picList && item.picList.length > 0}}" class="post-image" src="{{item.picList[0]}}" mode="widthFix" lazy-load/>
+            <!-- 无图片时显示文字背景卡片 -->
+            <view wx:else class="post-text-card {{item.bgClass || 'bg-gradient-2'}}">
+              <text class="post-text-content">{{item.title || item.content}}</text>
+              <view class="post-text-mask"></view>
+            </view>
             <view class="post-content">
-              <text class="post-title">{{item.title || item.content}}</text>
+              <text wx:if="{{item.picList && item.picList.length > 0}}" class="post-title">{{item.title || item.content}}</text>
               <view class="post-footer">
-                <view class="post-stats">
-                  <view class="stat-item">
-                    <text class="material-symbols-outlined stat-icon">pets</text>
-                    <text class="stat-count">{{item.likeCount || 0}}</text>
-                  </view>
-                  <view class="stat-item">
-                    <text class="material-symbols-outlined stat-icon">chat_bubble</text>
-                    <text class="stat-count">{{item.commentCount || 0}}</text>
-                  </view>
+                <view class="post-author">
+                  <image wx:if="{{item.authorAvatar}}" class="author-avatar" src="{{item.authorAvatar}}"/>
+                  <view wx:else class="author-avatar-text">{{item.authorName ? item.authorName[0] : 'U'}}</view>
+                  <text class="author-name">{{item.authorName || '匿名用户'}}</text>
                 </view>
-                <text class="post-time">{{item.createTimeText}}</text>
+                <view class="post-likes">
+                  <text class="material-symbols-outlined like-icon {{item.isCollected ? 'active' : ''}}" style="{{item.isCollected ? 'font-variation-settings: &quot;FILL&quot; 1;' : ''}}">bookmark</text>
+                  <text class="like-count {{item.isCollected ? 'active' : ''}}">{{item.collectCount || 0}}</text>
+                </view>
               </view>
             </view>
           </view>

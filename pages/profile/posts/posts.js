@@ -13,18 +13,23 @@ Page({
     this.loadPosts(); 
   },
   
-  onShow() { 
-    this.loadPosts(); 
+  onShow() {
+    const app = getApp();
+    if (app.globalData.refreshMyPosts) {
+      app.globalData.refreshMyPosts = false;
+      this.loadPosts();
+    }
   },
   
   loadPosts() {
     this.setData({ loading: true });
     api.getMyPosts({ page: 1, size: 50 }).then(res => {
-      const posts = (res.data?.records || []).map(p => ({ 
-        ...p, 
-        createTimeText: util.formatTime(p.createTime) 
+      const posts = (res.data?.records || []).map(p => ({
+        ...p,
+        picList: util.getPicList(p.picUrls),
+        createTimeText: util.formatTime(p.createTime)
       }));
-      this.setData({ 
+      this.setData({
         posts,
         loading: false,
         noMore: posts.length >= (res.data?.total || 0)
@@ -35,7 +40,8 @@ Page({
   },
   
   goToDetail(e) { 
-    wx.navigateTo({ url: `/pages/community/detail/detail?id=${e.currentTarget.dataset.id}` }); 
+    const id = e.currentTarget.dataset.id;
+    wx.navigateTo({ url: `/pages/community/detail/detail?id=${id}&from=myPosts` }); 
   },
   
   goToPost() { 
@@ -44,8 +50,10 @@ Page({
   
   editPost(e) {
     const item = e.currentTarget.dataset.item;
-    wx.navigateTo({ 
-      url: `/pages/community/post/post?id=${item.id}&data=${encodeURIComponent(JSON.stringify(item))}` 
+    // 将帖子数据存储到全局，避免URL过长
+    getApp().globalData.editPostData = item;
+    wx.navigateTo({
+      url: `/pages/community/post/post?id=${item.id}&edit=1`
     });
   },
   

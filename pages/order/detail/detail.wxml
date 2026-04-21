@@ -1,52 +1,200 @@
 <!--pages/order/detail/detail.wxml-->
-<view class="page-no-tab" style="padding-bottom:40rpx;">
+<view class="order-detail-page">
   <view wx:if="{{order}}">
-    <!-- 状态 -->
-    <view class="card" style="margin:24rpx;text-align:center;background:linear-gradient(135deg,var(--primary-dark),var(--primary));">
-      <text style="display:block;font-size:48rpx;margin-bottom:12rpx;">{{statusIcon}}</text>
-      <text style="font-size:36rpx;font-weight:800;color:#fff;">{{order.statusText}}</text>
-      <text style="display:block;font-size:26rpx;color:rgba(255,255,255,0.85);margin-top:8rpx;">订单号：{{order.orderSn}}</text>
+    <!-- 状态卡片 -->
+    <view class="status-card">
+      <view class="status-icon-box">
+        <text class="material-symbols-outlined status-icon">{{statusIcon}}</text>
+      </view>
+      <view class="status-info">
+        <text class="status-text">{{order.statusText}}</text>
+        <text class="order-sn">订单号：{{order.orderSn}}</text>
+      </view>
+      <!-- 待付款倒计时 -->
+      <view wx:if="{{order.status === 0 && countdownText}}" class="countdown-box">
+        <text class="countdown-text">⏰ 支付剩余时间：{{countdownText}}</text>
+      </view>
+    </view>
+
+    <!-- 店铺信息 -->
+    <view class="detail-card">
+      <view class="card-header">
+        <view class="header-icon-box shop-icon-bg">
+          <text class="material-symbols-outlined header-icon">storefront</text>
+        </view>
+        <text class="card-title">店铺信息</text>
+      </view>
+      <view class="card-content">
+        <view class="info-row">
+          <text class="info-label">店铺名称</text>
+          <text class="info-value shop-name">{{order.shopName || '未知店铺'}}</text>
+        </view>
+      </view>
     </view>
 
     <!-- 收货地址 -->
-    <view class="card" style="margin:0 24rpx 24rpx;">
-      <view class="confirm-section-title">📍 收货信息</view>
-      <view class="address-name">{{order.receiverName}} <text class="text-hint">{{order.receiverPhone}}</text></view>
-      <view class="address-detail text-hint">{{order.detailAddress}}</view>
+    <view class="detail-card">
+      <view class="card-header">
+        <view class="header-icon-box address-icon-bg">
+          <text class="material-symbols-outlined header-icon">location_on</text>
+        </view>
+        <text class="card-title">收货信息</text>
+      </view>
+      <view class="card-content">
+        <view class="receiver-row">
+          <text class="receiver-name">{{order.receiverName}}</text>
+          <text class="receiver-phone">{{order.receiverPhone}}</text>
+        </view>
+        <view class="address-text">{{order.detailAddress}}</view>
+      </view>
     </view>
 
-    <!-- 商品 -->
-    <view class="card" style="margin:0 24rpx 24rpx;">
-      <view class="confirm-section-title">🛒 商品明细</view>
-      <view class="confirm-product-item" wx:for="{{items}}" wx:key="id">
-        <view class="cart-img-box"><text style="font-size:48rpx;">🐾</text></view>
-        <view class="confirm-item-info">
-          <text class="cart-item-name">{{item.productName}}</text>
-          <view class="flex-between">
-            <text class="cart-item-price">¥{{item.productPrice}}</text>
-            <text class="text-hint">×{{item.quantity}}</text>
+    <!-- 商品明细 -->
+    <view class="detail-card">
+      <view class="card-header">
+        <view class="header-icon-box product-icon-bg">
+          <text class="material-symbols-outlined header-icon">shopping_bag</text>
+        </view>
+        <text class="card-title">商品明细</text>
+      </view>
+      <view class="card-content">
+        <view class="product-list">
+          <view class="product-item" wx:for="{{items}}" wx:key="id">
+            <view class="product-img-box">
+              <image wx:if="{{item.productPic}}" src="{{item.productPic}}" mode="aspectFill" class="product-img" />
+              <view wx:else class="product-placeholder">
+                <text class="material-symbols-outlined">pets</text>
+              </view>
+            </view>
+            <view class="product-info">
+              <text class="product-name">{{item.productName}}</text>
+              <view class="product-bottom">
+                <view class="product-price">
+                  <text class="price-symbol">¥</text>
+                  <text class="price-value">{{item.productPrice}}</text>
+                </view>
+                <text class="product-qty">× {{item.quantity}}</text>
+              </view>
+            </view>
           </view>
         </view>
       </view>
     </view>
 
-    <!-- 金额 -->
-    <view class="card" style="margin:0 24rpx 24rpx;">
-      <view class="flex-between">
-        <text class="text-hint">下单时间</text>
-        <text class="text-sm">{{order.createTimeText}}</text>
+    <!-- 订单金额 -->
+    <view class="detail-card">
+      <view class="card-header">
+        <view class="header-icon-box amount-icon-bg">
+          <text class="material-symbols-outlined header-icon">receipt_long</text>
+        </view>
+        <text class="card-title">订单金额</text>
       </view>
-      <view class="flex-between" style="margin-top:12rpx;">
-        <text class="text-hint">实付金额</text>
-        <text class="price price-lg">¥{{order.totalAmount}}</text>
+      <view class="card-content">
+        <view class="amount-row">
+          <text class="amount-label">下单时间</text>
+          <text class="amount-value">{{order.createTimeText}}</text>
+        </view>
+        <view class="amount-row total-row">
+          <text class="amount-label">实付金额</text>
+          <view class="total-price">
+            <text class="total-symbol">¥</text>
+            <text class="total-value">{{order.totalAmount}}</text>
+          </view>
+        </view>
       </view>
     </view>
 
-    <!-- 物流（有数据才显示） -->
-    <view class="card" style="margin:0 24rpx 24rpx;" wx:if="{{order.deliverySn}}">
-      <view class="confirm-section-title">🚚 物流信息</view>
-      <view class="text-hint">承运公司：{{order.logisticsCmp}}</view>
-      <view class="text-hint" style="margin-top:8rpx;">运单号：{{order.deliverySn}}</view>
+    <!-- 物流信息（有数据才显示） -->
+    <view class="detail-card" wx:if="{{order.deliverySn}}">
+      <view class="card-header">
+        <view class="header-icon-box logistics-icon-bg">
+          <text class="material-symbols-outlined header-icon">local_shipping</text>
+        </view>
+        <text class="card-title">物流信息</text>
+      </view>
+      <view class="card-content">
+        <view class="logistics-row">
+          <text class="logistics-label">承运公司</text>
+          <text class="logistics-value">{{order.logisticsCmp}}</text>
+        </view>
+        <view class="logistics-row">
+          <text class="logistics-label">运单号</text>
+          <text class="logistics-value">{{order.deliverySn}}</text>
+        </view>
+      </view>
     </view>
+
+    <!-- 退款信息（有数据才显示） -->
+    <view class="detail-card" wx:if="{{refundInfo}}">
+      <view class="card-header">
+        <view class="header-icon-box refund-icon-bg">
+          <text class="material-symbols-outlined header-icon">currency_exchange</text>
+        </view>
+        <text class="card-title">退款信息</text>
+      </view>
+      <view class="card-content">
+        <view class="refund-row">
+          <text class="refund-label">退款状态</text>
+          <text class="refund-status" style="color:{{refundInfo.statusColor}}">{{refundInfo.statusText}}</text>
+        </view>
+        <view class="refund-row">
+          <text class="refund-label">退款金额</text>
+          <view class="refund-price">
+            <text class="price-symbol">¥</text>
+            <text class="price-value">{{refundInfo.refundAmount}}</text>
+          </view>
+        </view>
+        <view class="refund-row">
+          <text class="refund-label">退款原因</text>
+          <text class="refund-value">{{refundInfo.reason || '未填写'}}</text>
+        </view>
+        <view class="refund-row" wx:if="{{refundInfo.handleNote}}">
+          <text class="refund-label">处理备注</text>
+          <text class="refund-value">{{refundInfo.handleNote}}</text>
+        </view>
+        <!-- 退款凭证图片 -->
+        <view wx:if="{{refundInfo.proofPics.length > 0}}" class="proof-section">
+          <text class="proof-label">退款凭证</text>
+          <view class="proof-images">
+            <image wx:for="{{refundInfo.proofPics}}" wx:key="index" src="{{item}}" mode="aspectFill" class="proof-img" bindtap="previewRefundImage" data-url="{{item}}" data-urls="{{refundInfo.proofPics}}"/>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部操作栏 -->
+    <view class="action-bar-wrapper" wx:if="{{order.status === 0 || order.status === 1 || order.status === 2 || order.status === 3}}">
+      <view class="action-bar">
+        <!-- 待付款 -->
+        <view class="action-btn btn-cancel" wx:if="{{order.status === 0}}" bindtap="cancelOrder">
+          <text>取消订单</text>
+        </view>
+        <view class="action-btn btn-primary" wx:if="{{order.status === 0}}" bindtap="payOrder">
+          <text>去支付</text>
+        </view>
+        
+        <!-- 待发货 -->
+        <view class="action-btn btn-cancel" wx:if="{{order.status === 1}}" bindtap="applyCancel">
+          <text>申请取消</text>
+        </view>
+        
+        <!-- 待收货 -->
+        <view class="action-btn btn-confirm" wx:if="{{order.status === 2}}" bindtap="confirmReceipt">
+          <text>确认收货</text>
+        </view>
+        
+        <!-- 已完成 -->
+        <view class="action-btn btn-cancel" wx:if="{{order.status === 3}}" bindtap="applyRefund">
+          <text>申请退款</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部占位 -->
+    <view class="bottom-spacer" wx:if="{{order.status === 0 || order.status === 1 || order.status === 2 || order.status === 3}}"></view>
   </view>
+
+  <!-- 装饰性模糊背景 -->
+  <view class="blur-top-right"></view>
+  <view class="blur-bottom-left"></view>
 </view>

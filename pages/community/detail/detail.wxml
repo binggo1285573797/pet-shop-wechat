@@ -7,10 +7,10 @@
         <text class="material-symbols-outlined back-icon">arrow_back</text>
       </view>
       <text class="nav-title">帖子详情</text>
-      <!-- 更多操作按钮（仅自己帖子显示） -->
+      <!-- 编辑按钮（仅自己帖子显示） -->
       <view class="nav-actions" wx:if="{{isMyPost}}">
-        <view class="more-btn" bindtap="showPostActions">
-          <text class="material-symbols-outlined more-icon">more_vert</text>
+        <view class="edit-btn" bindtap="editPost">
+          <text class="material-symbols-outlined edit-icon">edit</text>
         </view>
       </view>
       <view class="nav-actions" wx:else></view>

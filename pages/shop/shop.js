@@ -3,11 +3,12 @@ const util = require('../../utils/util');
 
 // 固定四大分类
 // type: 1=宠物, 2=用品
+// categoryId: 后端分类ID（1=狗狗, 2=猫咪, 4=粮食, 8=用品）
 const FIXED_CATEGORIES = [
-  { id: 'cat', name: '猫咪', icon: 'pets', type: 1 },
-  { id: 'dog', name: '狗狗', icon: 'pets', type: 1 },
-  { id: 'food', name: '粮食', icon: 'restaurant', type: 2 },
-  { id: 'supplies', name: '用品', icon: 'shopping_bag', type: 2 }
+  { id: 'cat', name: '猫咪', icon: 'pets', type: 1, categoryId: 2 },
+  { id: 'dog', name: '狗狗', icon: 'pets', type: 1, categoryId: 1 },
+  { id: 'food', name: '粮食', icon: 'restaurant', type: 2, categoryId: 4 },
+  { id: 'supplies', name: '用品', icon: 'shopping_bag', type: 2, categoryId: 8 }
 ];
 
 Page({
@@ -33,6 +34,7 @@ Page({
   },
 
   onReachBottom() {
+    console.log('触底加载更多, noMore:', this.data.noMore, 'loading:', this.data.loading, 'activeCategoryId:', this.data.activeCategoryId);
     if (!this.data.noMore && !this.data.loading) {
       this.loadProducts(false);
     }
@@ -53,27 +55,45 @@ Page({
       page,
       size: this.data.pageSize
     };
-    
+
     if (this.data.keyword) {
       params.keyword = this.data.keyword;
     }
-    
-    // 根据分类筛选 - 使用 type 参数
-    // 猫咪/狗狗 -> type=1 (宠物)
-    // 粮食/用品 -> type=2 (用品)
+
+    // 根据分类筛选
+    // 猫咪/狗狗 -> 使用 categoryId 精确筛选
+    // 粮食/用品 -> 使用 type 参数
     if (this.data.activeCategoryId) {
       const category = FIXED_CATEGORIES.find(c => c.id === this.data.activeCategoryId);
       if (category) {
-        params.type = category.type;
+        if (category.categoryId) {
+          // 宠物分类使用 categoryId 精确筛选
+          params.categoryId = category.categoryId;
+        } else {
+          // 用品分类使用 type 参数
+          params.type = category.type;
+        }
       }
     }
+
+    console.log('加载商品参数:', params, 'reset:', reset, 'activeCategoryId:', this.data.activeCategoryId);
 
     return api.getProductPage(params).then(res => {
       const records = (res.data?.records || []).map(p => ({
         ...p,
         firstPic: util.getFirstPic(p.picUrls)
       }));
-      const products = reset ? records : [...this.data.products, ...records];
+      // 合并数据并去重
+      let products;
+      if (reset) {
+        products = records;
+      } else {
+        // 使用 Map 去重，以 id 为 key
+        const productMap = new Map();
+        this.data.products.forEach(p => productMap.set(p.id, p));
+        records.forEach(p => productMap.set(p.id, p));
+        products = Array.from(productMap.values());
+      }
       this.setData({
         products,
         page,

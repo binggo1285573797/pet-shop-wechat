@@ -1,14 +1,12 @@
 // pages/profile/info/info.js
 const api = require('../../../utils/api');
-const config = require('../../../utils/config');
 
 Page({
-  data: { 
-    userInfo: null, 
-    form: { nickname:'', phone:'' }, 
+  data: {
+    userInfo: null,
+    form: { nickname:'', phone:'' },
     loading: false,
     uploadingAvatar: false,
-    networkInfo: '',
     phoneError: false,
     phoneErrorMsg: '',
     isEditing: false  // 是否处于编辑模式
@@ -19,21 +17,22 @@ Page({
   },
 
   onShow() {
-    // 每次显示页面时重新加载用户信息
-    this.loadUserInfo();
+    // 如果不是编辑模式，才重新加载用户信息
+    if (!this.data.isEditing) {
+      this.loadUserInfo();
+    }
   },
 
   // 加载用户信息
   loadUserInfo() {
     const userInfo = wx.getStorageSync('userInfo') || {};
-    this.setData({ 
-      userInfo, 
-      form: { 
-        ...this.data.form, 
-        nickname: userInfo.nickname || '', 
-        phone: userInfo.phone || '' 
-      },
-      networkInfo: `当前服务器: ${config.BASE_URL}`
+    this.setData({
+      userInfo,
+      form: {
+        ...this.data.form,
+        nickname: userInfo.nickname || '',
+        phone: userInfo.phone || ''
+      }
     });
   },
 
@@ -80,52 +79,11 @@ Page({
     }
   },
 
-  // 网络诊断
-  testNetwork() {
-    wx.showLoading({ title: '检测中...' });
-    
-    // 测试普通请求
-    wx.request({
-      url: config.BASE_URL + '/home/index',
-      method: 'GET',
-      timeout: 5000,
-      success: (res) => {
-        wx.hideLoading();
-        if (res.statusCode === 200) {
-          wx.showModal({
-            title: '网络检测',
-            content: `✅ 网络连接正常\n服务器: ${config.BASE_URL}\n状态码: ${res.statusCode}`,
-            showCancel: false
-          });
-        } else {
-          wx.showModal({
-            title: '网络检测',
-            content: `⚠️ 服务器响应异常\n状态码: ${res.statusCode}`,
-            showCancel: false
-          });
-        }
-      },
-      fail: (err) => {
-        wx.hideLoading();
-        console.error('网络检测失败:', err);
-        wx.showModal({
-          title: '网络检测失败',
-          content: `❌ 无法连接到服务器\n地址: ${config.BASE_URL}\n错误: ${err.errMsg || '未知错误'}\n\n请检查:\n1. 手机和电脑在同一WiFi\n2. 后端服务已启动\n3. 防火墙已关闭`,
-          showCancel: false
-        });
-      }
-    });
-  },
-
   // 更换头像
   changeAvatar() {
     wx.showActionSheet({
-      itemList: ['拍照', '从相册选择', '网络诊断'],
+      itemList: ['拍照', '从相册选择'],
       success: (res) => {
-        if (res.tapIndex === 2) {
-          this.testNetwork();
-          return;
-        }
         const sourceType = res.tapIndex === 0 ? ['camera'] : ['album'];
         this.chooseImage(sourceType);
       }
