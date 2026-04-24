@@ -14,6 +14,7 @@
     "pages/order/list/list",
     "pages/order/detail/detail",
     "pages/order/refund/refund",
+    "pages/order/payment/payment",
     "pages/profile/info/info",
     "pages/profile/address/address",
     "pages/profile/address-edit/address-edit",

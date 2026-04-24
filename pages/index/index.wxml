@@ -27,7 +27,7 @@
           <view class="stat-inner">
             <view class="stat-label-row">
               <view class="stat-icon-bg">
-                <text class="material-symbols-outlined stat-icon">{{index === 0 ? 'pets' : 'auto_awesome'}}</text>
+                <text class="material-symbols-outlined stat-icon">{{item.iconType === 'new' ? 'fiber_new' : 'local_fire_department'}}</text>
               </view>
               <text class="stat-label">{{item.label}}</text>
             </view>

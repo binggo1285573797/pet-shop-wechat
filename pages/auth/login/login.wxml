@@ -30,6 +30,19 @@
 
       <button class="login-btn" bindtap="onLogin">登 录</button>
 
+      <!-- Divider -->
+      <view class="divider">
+        <view class="divider-line"></view>
+        <text class="divider-text">或</text>
+        <view class="divider-line"></view>
+      </view>
+
+      <!-- WeChat Login Button -->
+      <button class="wechat-btn" open-type="agreePrivacyAuthorization" bindagreeprivacyauthorization="onWechatLogin">
+        <text class="wechat-icon">W</text>
+        <text class="wechat-text">微信一键登录</text>
+      </button>
+
       <!-- Registration Link -->
       <view class="register-link-wrap">
         <text class="text-hint">没有账号？</text>
@@ -44,3 +57,4 @@
     <text class="footer-link" bindtap="showAgreement">《爱宠家用户协议》</text>
   </view>
 </view>
+

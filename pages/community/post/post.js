@@ -105,14 +105,14 @@ Page({
         wx.showToast({ title: '图片上传失败', icon: 'none' });
       });
     } else {
-      this.data.isEdit ? this.updatePost('') : this.createPost('');
+      this.data.isEdit ? this.updatePost([]) : this.createPost([]);
     }
   },
 
   uploadImages() {
     const promises = this.data.images.map(path => api.uploadImage(path, 'post'));
     return Promise.all(promises).then(results => {
-      return results.map(r => r.url).join(',');
+      return results.map(r => r.url);
     });
   },
 
@@ -120,7 +120,7 @@ Page({
     const data = {
       title: this.data.title,
       content: this.data.content,
-      picUrls: picUrls
+      picUrls: picUrls || []
     };
 
     api.addPost(data).then(() => {
@@ -145,7 +145,7 @@ Page({
     const data = {
       title: this.data.title,
       content: this.data.content,
-      picUrls: picUrls
+      picUrls: picUrls || []
     };
 
     api.updatePost(this.data.postId, data).then(() => {

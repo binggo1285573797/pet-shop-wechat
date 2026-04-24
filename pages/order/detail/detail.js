@@ -149,23 +149,8 @@ Page({
   },
 
   payOrder() {
-    wx.showModal({
-      title: '确认支付',
-      content: '是否确认支付该订单？',
-      confirmColor: '#ff8a65',
-      success: res => {
-        if (res.confirm) {
-          wx.showLoading({ title: '支付中...' });
-          api.payOrder(this.orderId).then(() => {
-            wx.hideLoading();
-            wx.showToast({ title: '支付成功', icon: 'success' });
-            this.loadDetail();
-          }).catch(() => {
-            wx.hideLoading();
-            wx.showToast({ title: '支付失败', icon: 'none' });
-          });
-        }
-      }
+    wx.navigateTo({
+      url: `/pages/order/payment/payment?orderId=${this.orderId}`
     });
   },
 

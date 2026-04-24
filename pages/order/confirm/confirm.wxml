@@ -133,8 +133,8 @@
       <text class="action-price-symbol">¥</text>
       <text class="action-price-value">{{totalAmount}}</text>
     </view>
-    <view class="action-btn" bindtap="submitOrder">
-      <text>立即支付</text>
+    <view class="action-btn {{orderCreated ? '' : 'action-btn-disabled'}}" bindtap="{{orderCreated ? 'payNow' : ''}}">
+      <text>{{orderCreated ? '立即支付' : '创建订单中...'}}</text>
     </view>
   </view>
 

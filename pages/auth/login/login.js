@@ -1,5 +1,6 @@
 // pages/auth/login/login.js
 const api = require('../../../utils/api');
+const { BASE_URL } = require('../../../utils/config');
 
 Page({
   data: {
@@ -123,6 +124,74 @@ Page({
 
   goToRegister() {
     wx.navigateTo({ url: '/pages/auth/register/register' });
+  },
+
+  // 微信一键登录
+  onWechatLogin() {
+    wx.showLoading({ title: '登录中...' });
+
+    wx.getUserProfile({
+      desc: '用于完善用户资料',
+      success: (profileRes) => {
+        const userInfo = profileRes.userInfo;
+        const nickname = userInfo.nickName;
+        const avatar = userInfo.avatarUrl;
+
+        wx.login({
+          success: (loginRes) => {
+            if (!loginRes.code) {
+              wx.hideLoading();
+              wx.showToast({ title: '登录失败，请重试', icon: 'none' });
+              return;
+            }
+
+            wx.request({
+              url: `${BASE_URL}/user/wx-login`,
+              method: 'POST',
+              header: { 'Content-Type': 'application/json' },
+              data: {
+                code: loginRes.code,
+                nickname: nickname,
+                avatar: avatar
+              },
+              success: (response) => {
+                wx.hideLoading();
+                if (response.statusCode === 200 && response.data.code === 200) {
+                  const data = response.data.data;
+                  wx.setStorageSync('token', data.token);
+                  wx.setStorageSync('userId', data.userId);
+                  wx.setStorageSync('userInfo', {
+                    nickname: data.nickname,
+                    avatar: data.avatar || '',
+                    phone: data.phone || ''
+                  });
+
+                  wx.showToast({ title: '登录成功', icon: 'success' });
+
+                  setTimeout(() => {
+                    wx.switchTab({ url: '/pages/index/index' });
+                  }, 800);
+                } else {
+                  wx.showToast({ title: response.data.message || '登录失败', icon: 'none' });
+                }
+              },
+              fail: () => {
+                wx.hideLoading();
+                wx.showToast({ title: '网络请求失败', icon: 'none' });
+              }
+            });
+          },
+          fail: () => {
+            wx.hideLoading();
+            wx.showToast({ title: '获取登录凭证失败', icon: 'none' });
+          }
+        });
+      },
+      fail: () => {
+        wx.hideLoading();
+        wx.showToast({ title: '获取用户信息失败', icon: 'none' });
+      }
+    });
   },
 
   showAgreement() {

@@ -31,25 +31,21 @@ Page({
       }
     }
 
-    if (options.items) {
-      try {
-        const items = JSON.parse(decodeURIComponent(options.items));
-        this.setData({ fromCart: false, directItems: items });
-        this.loadProductItems(items);
-      } catch (e) {
-        console.error('解析 items 失败:', e);
-      }
-    }
-
     this.loadDefaultAddress().then(() => {
-      if (!options.items) {
+      if (options.items) {
+        try {
+          const items = JSON.parse(decodeURIComponent(options.items));
+          this.setData({ fromCart: false, directItems: items });
+          this.loadProductItems(items).then(() => {
+            this.autoCreateOrder();
+          });
+        } catch (e) {
+          console.error('解析 items 失败:', e);
+        }
+      } else {
         this.buildOrderItemsFromCart().then(() => {
-          // 自动创建订单
           this.autoCreateOrder();
         });
-      } else {
-        // 直接购买也创建订单
-        this.autoCreateOrder();
       }
     });
   },
@@ -60,13 +56,13 @@ Page({
     
     if (!address) {
       wx.showToast({ title: '请选择收货地址', icon: 'none' });
-      this.setData({ loading: false });
+      this.setData({ loading: false, orderCreated: true });
       return;
     }
 
     if (orderItems.length === 0) {
       wx.showToast({ title: '没有可购买的商品', icon: 'none' });
-      this.setData({ loading: false });
+      this.setData({ loading: false, orderCreated: true });
       return;
     }
 
@@ -100,21 +96,27 @@ Page({
       });
     }).catch(err => {
       console.error('自动创建订单失败:', err);
-      this.setData({ loading: false });
-      wx.showToast({
-        title: err.message || '创建订单失败',
-        icon: 'none'
+      this.setData({ 
+        loading: false,
+        orderCreated: true,
+        orderId: null
+      });
+      wx.showModal({
+        title: '订单创建失败',
+        content: (err.message || '创建订单失败') + '\n\n点击"立即购买"直接跳转到订单列表选择待付款订单支付',
+        showCancel: false,
+        confirmText: '我知道了'
       });
     });
   },
 
   loadProductItems(items) {
-    if (!items || items.length === 0) return;
+    if (!items || items.length === 0) return Promise.resolve();
 
     const productId = items[0].productId;
     const quantity = items[0].quantity;
 
-    api.getProductDetail(productId).then(res => {
+    return api.getProductDetail(productId).then(res => {
       const p = res.data;
       // 兼容处理：picUrls可能是数组或字符串
       let productPic = '';
@@ -144,24 +146,27 @@ Page({
       });
 
       // 加载商家信息
-      this.loadMerchantInfo(p.merchantId);
+      return this.loadMerchantInfo(p.merchantId);
     }).catch(err => {
       console.error('加载商品详情失败:', err);
       wx.showToast({ title: '加载商品失败', icon: 'none' });
+      return Promise.resolve();
     });
   },
 
   // 加载商家信息
   loadMerchantInfo(merchantId) {
-    if (!merchantId) return;
-    api.getMerchantDetail(merchantId).then(res => {
+    if (!merchantId) return Promise.resolve();
+    return api.getMerchantDetail(merchantId).then(res => {
       const merchant = res.data;
       this.setData({
         merchantName: merchant.shopName || merchant.name || '未知商家'
       });
+      return Promise.resolve();
     }).catch(err => {
       console.error('加载商家信息失败:', err);
       this.setData({ merchantName: '萌宠天地' });
+      return Promise.resolve();
     });
   },
 
@@ -252,22 +257,18 @@ Page({
 
   // 立即支付
   payNow() {
-    const { orderId } = this.data;
+    const { orderId, orderCreated } = this.data;
     if (!orderId) {
-      wx.showToast({ title: '订单不存在', icon: 'none' });
+      if (!orderCreated) {
+        wx.showToast({ title: '订单创建中，请稍候', icon: 'none' });
+      } else {
+        wx.showToast({ title: '订单信息异常，请返回重试', icon: 'none' });
+      }
       return;
     }
 
-    wx.showLoading({ title: '支付中...' });
-    api.payOrder(orderId).then(() => {
-      wx.hideLoading();
-      wx.showToast({ title: '支付成功', icon: 'success' });
-      setTimeout(() => {
-        wx.switchTab({ url: '/pages/profile/profile' });
-      }, 800);
-    }).catch(err => {
-      wx.hideLoading();
-      wx.showToast({ title: err.message || '支付失败', icon: 'none' });
+    wx.navigateTo({
+      url: `/pages/order/payment/payment?orderId=${orderId}`
     });
   },
 
