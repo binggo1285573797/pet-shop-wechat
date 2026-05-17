@@ -30,7 +30,7 @@
             </view>
           </view>
           <view class="address-detail-text">
-            <text>{{address.detailAddress}}</text>
+            <text>{{address.address}}</text>
           </view>
         </view>
         <view class="address-empty" wx:else>

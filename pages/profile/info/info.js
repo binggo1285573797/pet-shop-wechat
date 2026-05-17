@@ -81,13 +81,7 @@ Page({
 
   // 更换头像
   changeAvatar() {
-    wx.showActionSheet({
-      itemList: ['拍照', '从相册选择'],
-      success: (res) => {
-        const sourceType = res.tapIndex === 0 ? ['camera'] : ['album'];
-        this.chooseImage(sourceType);
-      }
-    });
+    this.chooseImage(['album']);
   },
 
   // 选择图片

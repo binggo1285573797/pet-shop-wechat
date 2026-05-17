@@ -38,7 +38,7 @@
               </view>
             </view>
             <view class="address-body">
-              <text class="address-detail">{{item.region}} {{item.detailAddress}}</text>
+              <text class="address-detail">{{item.address}}</text>
             </view>
             <!-- 设为默认按钮 -->
             <view class="default-action-row" wx:if="{{item.isDefault !== 1 && !isSelect}}">

@@ -40,14 +40,33 @@ Page({
       wx.setNavigationBarTitle({ title: '编辑地址' });
       if (options.data) {
         const data = JSON.parse(decodeURIComponent(options.data));
+        // 后端返回的address字段包含完整地址，需要解析出省市区和详细地址
+        const addressStr = data.address || '';
+        let region = '';
+        let detailAddress = '';
+        
+        // 尝试解析地址：省市区 详细地址
+        const parts = addressStr.split(' ');
+        if (parts.length >= 4) {
+          // 格式：省 市 区 详细地址
+          region = `${parts[0]} ${parts[1]} ${parts[2]}`;
+          detailAddress = parts.slice(3).join(' ');
+        } else if (parts.length === 1) {
+          // 只有详细地址
+          detailAddress = addressStr;
+        } else {
+          // 其他情况，全部作为详细地址
+          detailAddress = addressStr;
+        }
+        
         const form = { 
           receiverName: data.receiverName, 
           receiverPhone: data.receiverPhone,
-          region: data.region || '',
-          province: data.province || '',
-          city: data.city || '',
-          district: data.district || '',
-          detailAddress: data.detailAddress, 
+          region: region,
+          province: '',
+          city: '',
+          district: '',
+          detailAddress: detailAddress, 
           isDefault: data.isDefault 
         };
         this.setData({ form });
@@ -204,7 +223,14 @@ Page({
     if (!detailAddress.trim()) { wx.showToast({ title: '请输入详细地址', icon: 'none' }); return; }
 
     this.setData({ loading: true });
-    const payload = { ...this.data.form };
+    
+    // 将省市区和详细地址合并为一个address字段
+    const payload = {
+      receiverName: this.data.form.receiverName,
+      receiverPhone: this.data.form.receiverPhone,
+      address: `${region} ${detailAddress}`,
+      isDefault: this.data.form.isDefault
+    };
     
     // 根据是否有 editId 判断是新增还是编辑
     const promise = this.data.editId 
