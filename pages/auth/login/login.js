@@ -130,74 +130,68 @@ Page({
   onWechatLogin() {
     wx.showLoading({ title: '登录中...' });
 
-    wx.getUserProfile({
-      desc: '用于完善用户资料',
-      success: (profileRes) => {
-        const userInfo = profileRes.userInfo;
-        const nickname = userInfo.nickName;
-        const avatar = userInfo.avatarUrl;
+    wx.login({
+      success: (loginRes) => {
+        if (!loginRes.code) {
+          wx.hideLoading();
+          wx.showToast({ title: '登录失败，请重试', icon: 'none' });
+          return;
+        }
 
-        wx.login({
-          success: (loginRes) => {
-            if (!loginRes.code) {
-              wx.hideLoading();
-              wx.showToast({ title: '登录失败，请重试', icon: 'none' });
-              return;
-            }
+        wx.request({
+          url: `${BASE_URL}/user/wx-login`,
+          method: 'POST',
+          header: { 'Content-Type': 'application/json' },
+          data: {
+            code: loginRes.code
+          },
+          success: (response) => {
+            wx.hideLoading();
+            if (response.statusCode === 200 && response.data.code === 200) {
+              const data = response.data.data;
+              wx.setStorageSync('token', data.token);
+              wx.setStorageSync('userId', data.userId);
+              wx.setStorageSync('userInfo', {
+                nickname: data.nickname,
+                avatar: data.avatar || '',
+                phone: data.phone || ''
+              });
 
-            wx.request({
-              url: `${BASE_URL}/user/wx-login`,
-              method: 'POST',
-              header: { 'Content-Type': 'application/json' },
-              data: {
-                code: loginRes.code,
-                nickname: nickname,
-                avatar: avatar
-              },
-              success: (response) => {
-                wx.hideLoading();
-                if (response.statusCode === 200 && response.data.code === 200) {
-                  const data = response.data.data;
-                  wx.setStorageSync('token', data.token);
-                  wx.setStorageSync('userId', data.userId);
-                  wx.setStorageSync('userInfo', {
-                    nickname: data.nickname,
-                    avatar: data.avatar || '',
-                    phone: data.phone || ''
-                  });
-
-                  wx.showToast({ title: '登录成功', icon: 'success' });
-
-                  setTimeout(() => {
-                    wx.switchTab({ url: '/pages/index/index' });
-                  }, 800);
-                } else {
-                  wx.showToast({ title: response.data.message || '登录失败', icon: 'none' });
-                }
-              },
-              fail: () => {
-                wx.hideLoading();
-                wx.showToast({ title: '网络请求失败', icon: 'none' });
+              const app = getApp();
+              if (app && app.setLoginState) {
+                app.setLoginState(data.token, {
+                  nickname: data.nickname,
+                  avatar: data.avatar || '',
+                  phone: data.phone || ''
+                });
               }
-            });
+
+              wx.showToast({ title: '登录成功', icon: 'success' });
+
+              setTimeout(() => {
+                wx.switchTab({ url: '/pages/index/index' });
+              }, 800);
+            } else {
+              wx.showToast({ title: response.data.message || '登录失败', icon: 'none' });
+            }
           },
           fail: () => {
             wx.hideLoading();
-            wx.showToast({ title: '获取登录凭证失败', icon: 'none' });
+            wx.showToast({ title: '网络请求失败', icon: 'none' });
           }
         });
       },
       fail: () => {
         wx.hideLoading();
-        wx.showToast({ title: '获取用户信息失败', icon: 'none' });
+        wx.showToast({ title: '获取登录凭证失败', icon: 'none' });
       }
     });
   },
 
   showAgreement() {
     wx.showModal({
-      title: '爱宠家用户协议',
-      content: '欢迎使用爱宠家小程序！\r\n\r\n1. 请在法律允许范围内使用本软件，禁止发布违法违规内容。\r\n\r\n2. 我们将妥善保管您的个人隐私信息，非经授权绝不向无关第三方泄露。\r\n\r\n3. 您在社区发布的信息应秉持友善交流原则。\r\n\r\n感谢您为宠物提供一个温馨的数字家园！',
+      title: '宠物商城用户协议',
+      content: '欢迎使用宠物商城小程序！\r\n\r\n1. 请在法律允许范围内使用本软件，禁止发布违法违规内容。\r\n\r\n2. 我们将妥善保管您的个人隐私信息，非经授权绝不向无关第三方泄露。\r\n\r\n3. 您在社区发布的信息应秉持友善交流原则。\r\n\r\n感谢您为宠物提供一个温馨的数字家园！',
       showCancel: false,
       confirmText: '已知晓',
       confirmColor: '#2B3930'

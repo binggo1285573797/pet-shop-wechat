@@ -316,3 +316,34 @@ Page {
   font-size: 24rpx;
   color: #a8a8a8;
 }
+
+/* 删除帖子按钮 */
+.delete-btn {
+  width: 85%;
+  max-width: 600rpx;
+  height: 72rpx;
+  background: rgba(244, 67, 54, 0.08);
+  border-radius: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  margin-top: 20rpx;
+  transition: all 0.2s ease;
+}
+
+.delete-btn:active {
+  transform: scale(0.95);
+  background: rgba(244, 67, 54, 0.15);
+}
+
+.delete-icon {
+  font-size: 28rpx;
+  color: #F44336;
+}
+
+.delete-btn text:last-child {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #F44336;
+}

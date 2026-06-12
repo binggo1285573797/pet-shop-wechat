@@ -7,7 +7,7 @@
         <text class="material-symbols-outlined back-icon">arrow_back</text>
       </view>
       <text class="material-symbols-outlined header-icon">pets</text>
-      <text class="header-title">{{isEdit ? '编辑帖子' : '爱宠家'}}</text>
+      <text class="header-title">{{isEdit ? '编辑帖子' : '宠物商城'}}</text>
     </view>
   </view>
 
@@ -60,17 +60,11 @@
   <!-- 底部固定操作栏 -->
   <view class="action-bar">
     <view class="submit-btn {{canPost ? 'active' : ''}}" bindtap="submitPost">
-      <text>发布帖子</text>
+      <text>{{isEdit ? '保存修改' : '发布帖子'}}</text>
     </view>
-    <view class="action-options">
-      <view class="action-option">
-        <text class="material-symbols-outlined action-icon">visibility</text>
-        <text class="action-text">所有人可见</text>
-      </view>
-      <view class="action-option">
-        <text class="material-symbols-outlined action-icon">save</text>
-        <text class="action-text">保存草稿</text>
-      </view>
+    <view class="delete-btn" wx:if="{{isEdit}}" bindtap="deletePost">
+      <text class="material-symbols-outlined delete-icon">delete</text>
+      <text>删除帖子</text>
     </view>
   </view>
 </view>

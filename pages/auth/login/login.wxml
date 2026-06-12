@@ -10,7 +10,7 @@
       ></image>
     </view>
     <view class="brand-title-wrap">
-      <text class="brand-title cat-ear">爱宠家</text>
+      <text class="brand-title cat-ear">宠物商城</text>
     </view>
     <text class="brand-subtitle">给毛孩子一个温暖的家</text>
   </view>
@@ -38,7 +38,7 @@
       </view>
 
       <!-- WeChat Login Button -->
-      <button class="wechat-btn" open-type="agreePrivacyAuthorization" bindagreeprivacyauthorization="onWechatLogin">
+      <button class="wechat-btn" bindtap="onWechatLogin">
         <text class="wechat-icon">W</text>
         <text class="wechat-text">微信一键登录</text>
       </button>
@@ -54,7 +54,7 @@
   <!-- Footer Section -->
   <view class="login-footer">
     <text class="footer-text">登录即代表同意</text>
-    <text class="footer-link" bindtap="showAgreement">《爱宠家用户协议》</text>
+    <text class="footer-link" bindtap="showAgreement">《宠物商城用户协议》</text>
   </view>
 </view>
 

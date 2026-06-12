@@ -16,6 +16,9 @@ Page({
   },
 
   onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setSelected(2);
+    }
     // 检查是否需要刷新
     const app = getApp();
     if (app.globalData.refreshCommunity) {

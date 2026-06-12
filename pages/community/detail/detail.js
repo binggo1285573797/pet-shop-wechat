@@ -273,14 +273,14 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: this.data.post?.content?.substring(0, 50) || '爱宠家社区',
+      title: this.data.post?.content?.substring(0, 50) || '宠物商城社区',
       path: `/pages/community/detail/detail?id=${this.postId}`
     };
   },
 
   onShareTimeline() {
     return {
-      title: this.data.post?.content?.substring(0, 50) || '爱宠家社区',
+      title: this.data.post?.content?.substring(0, 50) || '宠物商城社区',
       query: `id=${this.postId}`
     };
   },

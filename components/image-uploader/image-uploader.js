@@ -19,7 +19,7 @@ Component({
       value: 'common'
     },
     // 关联业务ID
-    businessId: {
+    business: {
       type: String,
       value: ''
     },
@@ -88,7 +88,7 @@ Component({
           const result = await api.uploadImage(
             tempFilePaths[i],
             this.properties.module,
-            this.properties.businessId
+            this.properties.business
           );
           uploadedImages.push(result);
         } catch (err) {

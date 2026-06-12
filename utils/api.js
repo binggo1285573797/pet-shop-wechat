@@ -66,16 +66,20 @@ const addFavorite = (data) => post('/favorite/add', data);
 const deleteFavorite = (targetId) => del(`/favorite/${targetId}`);
 
 // ===== 图片上传 =====
-const uploadImage = (filePath, module, businessId) => {
-  console.log('上传图片:', { filePath, module, businessId, url: UPLOAD_URL });
+const uploadImage = (filePath, module, business) => {
+  console.log('上传图片:', { filePath, module, business, url: UPLOAD_URL });
   return new Promise((resolve, reject) => {
+    const token = wx.getStorageSync('token') || '';
     const uploadTask = wx.uploadFile({
       url: UPLOAD_URL,
       filePath: filePath,
       name: 'file',
+      header: {
+        'Authorization': token ? `Bearer ${token}` : ''
+      },
       formData: {
         module: module || 'common',
-        businessId: businessId || ''
+        business: business || ''
       },
       success: (res) => {
         console.log('上传响应:', res);
@@ -112,7 +116,7 @@ const uploadImage = (filePath, module, businessId) => {
   });
 };
 
-const getImageList = (module, businessId) => get('/image/list', { module, businessId });
+const getImageList = (module, business) => get('/image/list', { module, business });
 const deleteImage = (url) => del('/image/delete', { url });
 
 module.exports = {

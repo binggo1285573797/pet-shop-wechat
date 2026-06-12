@@ -8,10 +8,6 @@
             <view class="hero-slide">
               <image wx:if="{{item.pic}}" src="{{item.pic}}" mode="aspectFill" class="hero-image" />
               <view wx:else class="hero-placeholder {{item.theme}}"></view>
-              <view class="hero-content">
-                <text class="hero-title">{{item.title}}</text>
-                <text class="hero-subtitle">{{item.desc}}</text>
-              </view>
             </view>
           </swiper-item>
         </swiper>

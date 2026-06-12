@@ -3,7 +3,7 @@
   <view class="app-header">
     <view class="header-row">
       <view class="header-spacer"></view>
-      <text class="header-title">爱宠家</text>
+      <text class="header-title">宠物商城</text>
       <view class="header-spacer"></view>
     </view>
   </view>
@@ -124,7 +124,7 @@
 
       <!-- Logout Button -->
       <view class="logout-btn" bindtap="logout">
-        <text class="logout-text">切换账号</text>
+        <text class="logout-text">退出登录</text>
       </view>
 
       <view class="bottom-spacer"></view>

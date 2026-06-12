@@ -166,6 +166,33 @@ Page({
     });
   },
 
+  // 删除帖子
+  deletePost() {
+    wx.showModal({
+      title: '确认删除',
+      content: '删除后无法恢复，是否确认删除？',
+      confirmColor: '#F44336',
+      success: (res) => {
+        if (res.confirm) {
+          wx.showLoading({ title: '删除中...', mask: true });
+          api.deletePost(this.data.postId).then(() => {
+            wx.hideLoading();
+            wx.showToast({ title: '删除成功', icon: 'success' });
+            const app = getApp();
+            app.globalData.refreshCommunity = true;
+            app.globalData.refreshMyPosts = true;
+            setTimeout(() => {
+              wx.navigateBack();
+            }, 800);
+          }).catch(err => {
+            wx.hideLoading();
+            wx.showToast({ title: err.message || '删除失败', icon: 'none' });
+          });
+        }
+      }
+    });
+  },
+
   goBack() {
     const pages = getCurrentPages();
     if (pages.length > 1) {

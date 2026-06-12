@@ -42,10 +42,10 @@
       </view>
       <view class="card-content">
         <view class="receiver-row">
-          <text class="receiver-name">{{order.receiverName}}</text>
-          <text class="receiver-phone">{{order.receiverPhone}}</text>
+          <text class="receiver-name">{{order.address.receiverName}}</text>
+          <text class="receiver-phone">{{order.address.receiverPhone}}</text>
         </view>
-        <view class="address-text">{{order.detailAddress}}</view>
+        <view class="address-text">{{order.address.address}}</view>
       </view>
     </view>
 

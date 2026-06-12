@@ -4,7 +4,7 @@
   <view class="community-header">
     <view class="header-content">
       <text class="material-symbols-outlined header-icon">pets</text>
-      <text class="header-title">爱宠家</text>
+      <text class="header-title">宠物商城</text>
     </view>
   </view>
 
